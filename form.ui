@@ -27,16 +27,6 @@
      <string>Orgnize</string>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>140</y>
-      <width>451</width>
-      <height>521</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
@@ -47,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Create AIFile</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
@@ -156,7 +146,7 @@
      <rect>
       <x>270</x>
       <y>110</y>
-      <width>571</width>
+      <width>561</width>
       <height>25</height>
      </rect>
     </property>
@@ -176,9 +166,42 @@
      <rect>
       <x>860</x>
       <y>411</y>
-      <width>331</width>
+      <width>321</width>
       <height>251</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>140</y>
+      <width>441</width>
+      <height>501</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>640</y>
+      <width>441</width>
+      <height>16</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="search">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>110</y>
+      <width>71</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Search</string>
     </property>
    </widget>
   </widget>
