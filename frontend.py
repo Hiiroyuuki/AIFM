@@ -2,27 +2,34 @@
 PySide6 desktop frontend for the AI file manager.
 
 The module is organized by UI responsibility: resource loading, display models,
-Everything search integration, widget collection, layout, browsing, preview,
-history, and the top-level window controller.
+widget collection, layout, browsing, preview, search display, history, and the
+top-level window controller.
 """
 
-import ctypes
 import html
 import json
 import mimetypes
 import re
-import shutil
-import subprocess
 import sys
-import time
-from ctypes import wintypes
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from PySide6.QtCore import QDir, QFile, QFileInfo, Qt, QUrl
+from PySide6.QtCore import (
+    QDir,
+    QFile,
+    QFileInfo,
+    QItemSelectionModel,
+    QMimeData,
+    Qt,
+    QSortFilterProxyModel,
+    QTimer,
+    QUrl,
+)
 from PySide6.QtGui import (
     QDesktopServices,
+    QKeySequence,
+    QShortcut,
     QStandardItem,
     QStandardItemModel,
     QTextDocument,
@@ -38,6 +45,8 @@ from PySide6.QtWidgets import (
     QHeaderView,
     QLineEdit,
     QListWidget,
+    QMenu,
+    QMessageBox,
     QPushButton,
     QSizePolicy,
     QSplitter,
@@ -50,14 +59,18 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from mainFunctions import (
+    EverythingSdkSearch,
+    FileOperationService,
+    FolderAnalysisStore,
+    format_bytes,
+)
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_PATH = "C:/"
 FILE_TYPE_NAMES_PATH = BASE_DIR / "file_type_names.json"
 UI_PATH = BASE_DIR / "form.ui"
-EVERYTHING_RESULT_LIMIT = 1000
-EVERYTHING_SDK_DLL_PATH = BASE_DIR / "Everything-SDK" / "dll" / "Everything64.dll"
-EVERYTHING_START_TIMEOUT_SECONDS = 6
 FOLDER_COLUMN_WIDTHS = (220, 90, 140, 160)
 SEARCH_NAME_COLUMN_WIDTH = 180
 
@@ -286,223 +299,133 @@ class FileTableModel(QFileSystemModel):
     """
     QFileSystemModel used by the regular folder browser table.
 
-    Qt's default modified-time string follows system locale conventions, which
-    can make the column visually uneven. This subclass keeps all filesystem
-    behavior from QFileSystemModel and only normalizes the Date Modified display
-    column.
+    This subclass keeps the normal filesystem data source while adding three UI
+    details: multi-select check states, a stable modified-time display, and
+    analysed folder sizes in the Size column.
     """
 
     MODIFIED_COLUMN = 3
+    SIZE_COLUMN = 1
     MODIFIED_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
+    def __init__(self, parent=None):
+        """Create the file model and local UI state caches."""
+        super().__init__(parent)
+        self.checked_paths = set()
+        self.folder_size_map = {}
+
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
-        """Format the modified time column with fixed-width date components."""
+        """Return check states, formatted dates, analysed sizes, or Qt defaults."""
+        if (
+            index.isValid()
+            and role == Qt.ItemDataRole.CheckStateRole
+            and index.column() == 0
+        ):
+            path_text = self.filePath(index)
+            if path_text in self.checked_paths:
+                return Qt.CheckState.Checked
+
+            return Qt.CheckState.Unchecked
+
         if role == Qt.ItemDataRole.DisplayRole and index.column() == self.MODIFIED_COLUMN:
             modified = self.fileInfo(index).lastModified()
             if modified.isValid():
                 return modified.toString(self.MODIFIED_FORMAT)
 
+        if role == Qt.ItemDataRole.DisplayRole and index.column() == self.SIZE_COLUMN:
+            size_bytes = self.folder_size_bytes(index)
+            if size_bytes is not None:
+                return format_bytes(size_bytes)
+
         return super().data(index, role)
 
+    def flags(self, index):
+        """Make the Name column checkable for multi-select display."""
+        flags = super().flags(index)
+        if index.isValid() and index.column() == 0:
+            flags |= Qt.ItemFlag.ItemIsUserCheckable
 
-class EverythingSdkSearch:
-    """
-    Adapter for the Everything SDK DLL.
+        return flags
 
-    The rest of the app treats search as a Python method returning paths plus
-    an optional message. This class owns all ctypes binding details, readiness
-    checks, optional Everything.exe startup, query execution, and SDK error
-    translation.
-    """
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        """Update the local checked-path cache when a checkbox changes."""
+        if (
+            index.isValid()
+            and role == Qt.ItemDataRole.CheckStateRole
+            and index.column() == 0
+        ):
+            path_text = self.filePath(index)
+            if value == Qt.CheckState.Checked.value or value == Qt.CheckState.Checked:
+                self.checked_paths.add(path_text)
+            else:
+                self.checked_paths.discard(path_text)
+            self.dataChanged.emit(index, index, [Qt.ItemDataRole.CheckStateRole])
+            return True
 
-    ERROR_MESSAGES = {
-        1: "Memory allocation failed.",
-        2: "Everything IPC is unavailable. Please make sure Everything is running.",
-        3: "Unable to register Everything SDK window class.",
-        4: "Unable to create Everything SDK window.",
-        5: "Unable to create Everything SDK thread.",
-        6: "Invalid search call.",
-        7: "Invalid index.",
-        8: "Invalid Everything call.",
-    }
+        return super().setData(index, value, role)
 
-    REQUEST_FILE_NAME = 0x00000001
-    REQUEST_PATH = 0x00000002
-    SORT_PATH_ASCENDING = 3
+    def set_checked_paths(self, paths):
+        """Replace the checked-path cache from the current table selection."""
+        self.checked_paths = set(paths)
 
-    def __init__(self, result_limit=EVERYTHING_RESULT_LIMIT):
-        """Load the SDK and remember the maximum number of shown results."""
-        self.result_limit = result_limit
-        self.dll_path = EVERYTHING_SDK_DLL_PATH
-        self.core_exe_path = self.find_core_executable()
-        self.dll = self.load_dll()
+    def set_folder_sizes(self, folder_sizes):
+        """Store analysed folder sizes keyed by normalized path."""
+        self.folder_size_map = {
+            self.normalized_path(path): size
+            for path, size in folder_sizes.items()
+        }
 
-    def start(self):
-        """Ensure the SDK can talk to an Everything process."""
-        if not self.dll:
-            return f"Everything SDK DLL was not found: {self.dll_path}"
-
-        return self.ensure_running()
-
-    def find_core_executable(self):
-        """Locate Everything.exe for optional startup support."""
-        candidates = [
-            shutil.which("Everything.exe"),
-            BASE_DIR / "Everything.exe",
-            BASE_DIR / "Everything" / "Everything.exe",
-            Path("C:/Program Files/Everything/Everything.exe"),
-            Path("C:/Program Files (x86)/Everything/Everything.exe"),
-        ]
-
-        for candidate in candidates:
-            if candidate and Path(candidate).exists():
-                return str(candidate)
-
-        return None
-
-    def ensure_running(self):
-        """Start Everything if possible and wait briefly for its database."""
-        if self.is_ready():
-            return ""
-
-        if not self.core_exe_path:
-            return (
-                "Everything is not running and Everything.exe was not found. "
-                "Place Everything.exe in the project root or install Everything."
-            )
-
-        try:
-            subprocess.Popen(
-                [self.core_exe_path, "-startup"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        except OSError as error:
-            return f"Failed to start Everything: {error}"
-
-        deadline = time.monotonic() + EVERYTHING_START_TIMEOUT_SECONDS
-        while time.monotonic() < deadline:
-            if self.is_ready():
-                return ""
-            time.sleep(0.25)
-
-        return "Everything was started, but its database is still loading."
-
-    def is_ready(self):
-        """Return whether the Everything SDK reports a loaded database."""
-        try:
-            if hasattr(self.dll, "Everything_IsDBLoaded") and self.dll.Everything_IsDBLoaded():
-                return True
-        except OSError:
-            return False
-
-        return False
-
-    def search(self, query):
-        """Run a query and return paths plus an optional error message."""
-        if not self.dll:
-            return [], f"Everything SDK DLL was not found: {self.dll_path}"
-
-        self.dll.Everything_Reset()
-        self.dll.Everything_SetSearchW(query)
-        self.dll.Everything_SetMax(self.result_limit)
-        self.dll.Everything_SetRequestFlags(self.REQUEST_FILE_NAME | self.REQUEST_PATH)
-        self.dll.Everything_SetSort(self.SORT_PATH_ASCENDING)
-
-        if not self.dll.Everything_QueryW(True):
-            if self.last_error_code() == 2:
-                message = self.ensure_running()
-                if not message and self.dll.Everything_QueryW(True):
-                    return self.collect_paths(), ""
-            return [], self.last_error_message()
-
-        return self.collect_paths(), ""
-
-    def load_dll(self):
-        """Load and bind the Everything SDK DLL."""
-        if not self.dll_path.exists():
+    def folder_size_bytes(self, index):
+        """Return an analysed folder size for index when one is available."""
+        name_index = index.sibling(index.row(), 0)
+        if not name_index.isValid() or not self.isDir(name_index):
             return None
 
-        try:
-            dll = ctypes.WinDLL(str(self.dll_path))
-        except OSError:
-            return None
+        return self.folder_size_map.get(self.normalized_path(self.filePath(name_index)))
 
-        self.bind_functions(dll)
-        return dll
+    def size_sort_value(self, index):
+        """Return a numeric byte value for sorting the Size column."""
+        size_bytes = self.folder_size_bytes(index)
+        if size_bytes is not None:
+            return int(size_bytes)
 
-    def bind_functions(self, dll):
-        """Declare ctypes signatures for the SDK functions used here."""
-        dll.Everything_Reset.argtypes = []
-        dll.Everything_Reset.restype = None
+        file_info = self.fileInfo(index.sibling(index.row(), 0))
+        if file_info.isDir():
+            return -1
 
-        dll.Everything_SetSearchW.argtypes = [wintypes.LPCWSTR]
-        dll.Everything_SetSearchW.restype = None
+        return file_info.size()
 
-        dll.Everything_SetMax.argtypes = [wintypes.DWORD]
-        dll.Everything_SetMax.restype = None
+    @staticmethod
+    def normalized_path(path_text):
+        """Normalize a path for case-insensitive table cache lookups."""
+        return QDir.cleanPath(str(path_text)).casefold()
 
-        dll.Everything_SetRequestFlags.argtypes = [wintypes.DWORD]
-        dll.Everything_SetRequestFlags.restype = None
 
-        dll.Everything_SetSort.argtypes = [wintypes.DWORD]
-        dll.Everything_SetSort.restype = None
+class FileSortProxyModel(QSortFilterProxyModel):
+    """
+    Sorts the file browser table using semantic values.
 
-        dll.Everything_QueryW.argtypes = [wintypes.BOOL]
-        dll.Everything_QueryW.restype = wintypes.BOOL
+    QFileSystemModel does not know analysed recursive folder sizes, so this
+    proxy lets the Size column sort by raw bytes while the table still displays
+    formatted text such as MB or GB.
+    """
 
-        dll.Everything_GetLastError.argtypes = []
-        dll.Everything_GetLastError.restype = wintypes.DWORD
+    def lessThan(self, left, right):
+        """Compare two source indexes for table sorting."""
+        source_model = self.sourceModel()
+        if left.column() == FileTableModel.SIZE_COLUMN:
+            return source_model.size_sort_value(left) < source_model.size_sort_value(
+                right
+            )
 
-        dll.Everything_GetNumResults.argtypes = []
-        dll.Everything_GetNumResults.restype = wintypes.DWORD
+        if left.column() == FileTableModel.MODIFIED_COLUMN:
+            left_time = source_model.fileInfo(left.sibling(left.row(), 0)).lastModified()
+            right_time = source_model.fileInfo(right.sibling(right.row(), 0)).lastModified()
+            return left_time < right_time
 
-        dll.Everything_GetTotResults.argtypes = []
-        dll.Everything_GetTotResults.restype = wintypes.DWORD
-
-        dll.Everything_GetResultFullPathNameW.argtypes = [
-            wintypes.DWORD,
-            wintypes.LPWSTR,
-            wintypes.DWORD,
-        ]
-        dll.Everything_GetResultFullPathNameW.restype = wintypes.DWORD
-
-        if hasattr(dll, "Everything_IsDBLoaded"):
-            dll.Everything_IsDBLoaded.argtypes = []
-            dll.Everything_IsDBLoaded.restype = wintypes.BOOL
-
-    def collect_paths(self):
-        """Collect full result paths from the last SDK query."""
-        paths = []
-        count = self.dll.Everything_GetNumResults()
-
-        for index in range(count):
-            buffer = ctypes.create_unicode_buffer(32768)
-            self.dll.Everything_GetResultFullPathNameW(index, buffer, len(buffer))
-            if buffer.value:
-                paths.append(buffer.value)
-
-        return paths
-
-    def total_result_count(self):
-        """Return the total result count reported by the last SDK query."""
-        if not self.dll:
-            return 0
-
-        return self.dll.Everything_GetTotResults()
-
-    def last_error_message(self):
-        """Return a friendly message for the last SDK error code."""
-        error_code = self.last_error_code()
-        message = self.ERROR_MESSAGES.get(
-            error_code,
-            f"Everything SDK query failed with error {error_code}.",
-        )
-        return message
-
-    def last_error_code(self):
-        """Return the SDK's last error code."""
-        return self.dll.Everything_GetLastError()
+        left_text = source_model.data(left, Qt.ItemDataRole.DisplayRole) or ""
+        right_text = source_model.data(right, Qt.ItemDataRole.DisplayRole) or ""
+        return str(left_text).casefold() < str(right_text).casefold()
 
 
 @dataclass
@@ -520,8 +443,11 @@ class UiElements:
     tree_view: QTreeView
     table_view: QTableView
     status_list: QListWidget
+    analyse_button: QPushButton
     back_button: QPushButton
     forward_button: QPushButton
+    undo_button: QPushButton
+    redo_button: QPushButton
     navigate_bar: QLineEdit
     search_button: QPushButton
     preview_view: QTableView
@@ -537,15 +463,26 @@ class UiElements:
             tree_view=window.findChild(QTreeView, "treeView"),
             table_view=window.findChild(QTableView, "tableView"),
             status_list=window.findChild(QListWidget, "listWidget"),
+            analyse_button=window.findChild(QPushButton, "analyse"),
             back_button=window.findChild(QPushButton, "back"),
             forward_button=window.findChild(QPushButton, "forward"),
+            undo_button=window.findChild(QPushButton, "undo"),
+            redo_button=window.findChild(QPushButton, "redo"),
             navigate_bar=window.findChild(QLineEdit, "navigateBar"),
             search_button=window.findChild(QPushButton, "search"),
             preview_view=window.findChild(QTableView, "preview"),
             ai_view=window.findChild(QTableView, "AIview"),
             side_buttons=[
-                window.findChild(QPushButton, f"pushButton_{index}")
-                for index in range(1, 8)
+                window.findChild(QPushButton, object_name)
+                for object_name in (
+                    "analyse",
+                    "createaifolder",
+                    "pushButton_3",
+                    "pushButton_4",
+                    "pushButton_5",
+                    "pushButton_6",
+                    "pushButton_7",
+                )
             ],
         )
 
@@ -562,6 +499,8 @@ class LayoutManager:
 
     SIDE_PANEL_WIDTH = 110
     PANEL_SPACING = 6
+    STATUS_ROW_HEIGHT = 24
+    STATUS_BUTTON_WIDTH = 54
 
     def __init__(self, ui):
         """Store resolved UI widgets for layout composition."""
@@ -606,12 +545,15 @@ class LayoutManager:
 
     def create_content_splitter(self):
         """Create the resizable tree, file, preview, and AI preview panes."""
+        status_row = self.create_status_row()
+
         file_splitter = QSplitter(Qt.Orientation.Vertical, self.ui.central_widget)
         file_splitter.addWidget(self.ui.table_view)
-        file_splitter.addWidget(self.ui.status_list)
+        file_splitter.addWidget(status_row)
         file_splitter.setStretchFactor(0, 1)
         file_splitter.setStretchFactor(1, 0)
-        file_splitter.setSizes([500, 28])
+        file_splitter.setSizes([500, self.STATUS_ROW_HEIGHT])
+        file_splitter.setHandleWidth(1)
         file_splitter.setChildrenCollapsible(False)
 
         preview_splitter = QSplitter(Qt.Orientation.Vertical, self.ui.central_widget)
@@ -633,12 +575,28 @@ class LayoutManager:
         content_splitter.setChildrenCollapsible(False)
         return content_splitter
 
+    def create_status_row(self):
+        """Create the compact undo, redo, and folder-info row."""
+        status_row = QWidget(self.ui.central_widget)
+        status_row.setFixedHeight(self.STATUS_ROW_HEIGHT)
+        status_layout = QHBoxLayout(status_row)
+        status_layout.setContentsMargins(0, 0, 0, 0)
+        status_layout.setSpacing(2)
+        status_layout.addWidget(self.ui.undo_button)
+        status_layout.addWidget(self.ui.redo_button)
+        status_layout.addWidget(self.ui.status_list, 1)
+        return status_row
+
     def apply_sizes(self, side_panel):
         """Apply minimum and fixed sizes after widgets enter splitters."""
         side_panel.setFixedWidth(self.SIDE_PANEL_WIDTH)
         self.ui.tree_view.setMinimumWidth(180)
         self.ui.table_view.setMinimumWidth(260)
-        self.ui.status_list.setFixedHeight(28)
+        self.ui.status_list.setFixedHeight(self.STATUS_ROW_HEIGHT)
+        self.ui.undo_button.setFixedHeight(self.STATUS_ROW_HEIGHT)
+        self.ui.redo_button.setFixedHeight(self.STATUS_ROW_HEIGHT)
+        self.ui.undo_button.setFixedWidth(self.STATUS_BUTTON_WIDTH)
+        self.ui.redo_button.setFixedWidth(self.STATUS_BUTTON_WIDTH)
         self.ui.preview_view.setMinimumWidth(220)
         self.ui.ai_view.setMinimumWidth(220)
         self.ui.tree_view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -662,9 +620,16 @@ class FileBrowser:
         self.syncing_tree = False
         self.dir_model = QFileSystemModel(ui.window)
         self.file_model = FileTableModel(ui.window)
+        self.file_proxy_model = FileSortProxyModel(ui.window)
         self.icon_provider = QFileIconProvider()
         self.search_model = QStandardItemModel(ui.window)
         self.table_delegate = CharacterElideDelegate(ui.table_view)
+        self.syncing_selection_checks = False
+        self.connected_table_selection_model = None
+        self.file_proxy_model.setSourceModel(self.file_model)
+        self.file_proxy_model.setDynamicSortFilter(True)
+        self.file_model.dataChanged.connect(self.apply_file_check_selection)
+        self.search_model.itemChanged.connect(self.apply_search_check_selection)
 
     def setup(self):
         """Initialize tree, table, status line, and default folder."""
@@ -702,8 +667,11 @@ class FileBrowser:
         self.file_model.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)
         self.file_model.setRootPath(DEFAULT_PATH)
 
-        self.ui.table_view.setModel(self.file_model)
-        self.ui.table_view.setRootIndex(self.file_model.index(DEFAULT_PATH))
+        self.ui.table_view.setModel(self.file_proxy_model)
+        self.ui.table_view.setRootIndex(
+            self.file_proxy_model.mapFromSource(self.file_model.index(DEFAULT_PATH))
+        )
+        self.connect_table_selection()
         self.update_folder_info(DEFAULT_PATH)
 
     def setup_table_view(self):
@@ -713,7 +681,7 @@ class FileBrowser:
             QAbstractItemView.SelectionBehavior.SelectRows
         )
         self.ui.table_view.setSelectionMode(
-            QAbstractItemView.SelectionMode.SingleSelection
+            QAbstractItemView.SelectionMode.ExtendedSelection
         )
         self.ui.table_view.setAlternatingRowColors(True)
         self.ui.table_view.setSortingEnabled(True)
@@ -752,14 +720,214 @@ class FileBrowser:
 
         self.ui.table_view.clearSelection()
 
+    def connect_table_selection(self):
+        """Connect the active table selection model to checkbox syncing."""
+        selection_model = self.ui.table_view.selectionModel()
+        if selection_model is None:
+            return
+
+        if selection_model is self.connected_table_selection_model:
+            return
+
+        if self.connected_table_selection_model is not None:
+            try:
+                self.connected_table_selection_model.selectionChanged.disconnect(
+                    self.sync_checks_to_selection
+                )
+            except (RuntimeError, TypeError):
+                pass
+
+        selection_model.selectionChanged.connect(self.sync_checks_to_selection)
+        self.connected_table_selection_model = selection_model
+
+    def sync_checks_to_selection(self, *_args):
+        """Mirror selected table rows into checkboxes for both table modes."""
+        if self.syncing_selection_checks:
+            return
+
+        self.syncing_selection_checks = True
+        try:
+            selected_paths = self.selected_table_paths()
+            if self.search_mode:
+                self.sync_search_checks(selected_paths)
+            else:
+                self.file_model.set_checked_paths(selected_paths)
+                self.refresh_file_check_column()
+        finally:
+            self.syncing_selection_checks = False
+
+    def selected_table_paths(self):
+        """Return unique filesystem paths from selected table rows."""
+        selection_model = self.ui.table_view.selectionModel()
+        if selection_model is None:
+            return []
+
+        paths = []
+        for index in selection_model.selectedRows(0):
+            path_text = self.table_path(index)
+            if path_text:
+                paths.append(path_text)
+
+        return paths
+
+    def refresh_file_check_column(self):
+        """Repaint the checkbox column for the current folder root."""
+        root_index = self.current_file_root_index()
+        row_count = self.file_model.rowCount(root_index)
+        if row_count <= 0:
+            return
+
+        top_left = self.file_model.index(0, 0, root_index)
+        bottom_right = self.file_model.index(row_count - 1, 0, root_index)
+        self.file_model.dataChanged.emit(
+            top_left,
+            bottom_right,
+            [Qt.ItemDataRole.CheckStateRole],
+        )
+
+    def set_folder_size_map(self, folder_sizes):
+        """Apply analysed child-folder sizes to the regular file table."""
+        self.file_model.set_folder_sizes(folder_sizes)
+        self.refresh_folder_size_column()
+        self.resort_folder_table()
+
+    def refresh_folder_size_column(self):
+        """Repaint the Size column after analysed folder sizes change."""
+        root_index = self.current_file_root_index()
+        row_count = self.file_model.rowCount(root_index)
+        if row_count <= 0:
+            return
+
+        top_left = self.file_model.index(0, FileTableModel.SIZE_COLUMN, root_index)
+        bottom_right = self.file_model.index(
+            row_count - 1,
+            FileTableModel.SIZE_COLUMN,
+            root_index,
+        )
+        self.file_model.dataChanged.emit(
+            top_left,
+            bottom_right,
+            [Qt.ItemDataRole.DisplayRole],
+        )
+
+    def current_file_root_index(self):
+        """Return the source-model root index for the current folder table."""
+        if self.ui.table_view.model() is self.file_proxy_model:
+            return self.file_proxy_model.mapToSource(self.ui.table_view.rootIndex())
+
+        return self.ui.table_view.rootIndex()
+
+    def resort_folder_table(self):
+        """Re-run folder table sorting after size data changes."""
+        if self.search_mode or self.ui.table_view.model() is not self.file_proxy_model:
+            return
+
+        header = self.ui.table_view.horizontalHeader()
+        self.file_proxy_model.sort(
+            header.sortIndicatorSection(),
+            header.sortIndicatorOrder(),
+        )
+
+    def sync_search_checks(self, selected_paths):
+        """Mirror selected search-result rows into search result checkboxes."""
+        selected_path_set = {QDir.cleanPath(path).casefold() for path in selected_paths}
+        for row in range(self.search_model.rowCount()):
+            item = self.search_model.item(row, 0)
+            if item is None or not item.isCheckable():
+                continue
+            path_text = item.data(Qt.ItemDataRole.UserRole) or ""
+            check_state = Qt.CheckState.Checked
+            if QDir.cleanPath(path_text).casefold() not in selected_path_set:
+                check_state = Qt.CheckState.Unchecked
+            item.setCheckState(check_state)
+
+    def apply_file_check_selection(self, top_left, _bottom_right, roles=None):
+        """Select or deselect one folder-mode row when its checkbox changes."""
+        if self.syncing_selection_checks:
+            return
+
+        if roles:
+            role_values = {
+                role.value if hasattr(role, "value") else role
+                for role in roles
+            }
+            if Qt.ItemDataRole.CheckStateRole.value not in role_values:
+                return
+
+        if top_left.column() != 0:
+            return
+
+        checked = self.file_model.data(top_left, Qt.ItemDataRole.CheckStateRole)
+        self.set_table_row_selected(
+            self.file_proxy_model.mapFromSource(top_left),
+            checked == Qt.CheckState.Checked,
+        )
+
+    def apply_search_check_selection(self, item):
+        """Select or deselect one search-mode row when its checkbox changes."""
+        if self.syncing_selection_checks:
+            return
+
+        if item.column() != 0:
+            return
+
+        path_text = item.data(Qt.ItemDataRole.UserRole) or ""
+        if not path_text:
+            return
+
+        index = self.search_model.indexFromItem(item)
+        self.set_table_row_selected(index, item.checkState() == Qt.CheckState.Checked)
+
+    def set_table_row_selected(self, index, selected):
+        """Apply row selection state to the table selection model."""
+        selection_model = self.ui.table_view.selectionModel()
+        if selection_model is None or not index.isValid():
+            return
+
+        flags = QItemSelectionModel.SelectionFlag.Rows
+        if selected:
+            flags |= QItemSelectionModel.SelectionFlag.Select
+            self.ui.table_view.setCurrentIndex(index)
+        else:
+            flags |= QItemSelectionModel.SelectionFlag.Deselect
+
+        selection_model.select(index, flags)
+
+    def is_row_selected(self, index):
+        """Return whether the row containing index is currently selected."""
+        selection_model = self.ui.table_view.selectionModel()
+        if selection_model is None or not index.isValid():
+            return False
+
+        return selection_model.isRowSelected(index.row(), index.parent())
+
+    def select_single_row(self, index):
+        """Clear selection and select only the row containing index."""
+        selection_model = self.ui.table_view.selectionModel()
+        if selection_model is None or not index.isValid():
+            return
+
+        row_index = index.sibling(index.row(), 0)
+        self.ui.table_view.setCurrentIndex(row_index)
+        selection_model.select(
+            row_index,
+            QItemSelectionModel.SelectionFlag.ClearAndSelect
+            | QItemSelectionModel.SelectionFlag.Rows,
+        )
+        self.sync_checks_to_selection()
+
     def show_folder(self, folder_path):
         """Display a folder with the QFileSystemModel table."""
-        self.search_mode = False
         self.clear_table_selection()
+        self.search_mode = False
+        self.file_model.set_folder_sizes({})
         self.table_delegate.set_highlight_query("")
-        self.ui.table_view.setModel(self.file_model)
+        self.ui.table_view.setModel(self.file_proxy_model)
         self.configure_folder_columns()
-        self.ui.table_view.setRootIndex(self.file_model.setRootPath(folder_path))
+        root_index = self.file_model.setRootPath(folder_path)
+        self.ui.table_view.setRootIndex(self.file_proxy_model.mapFromSource(root_index))
+        self.connect_table_selection()
+        self.sync_checks_to_selection()
         self.update_folder_info(folder_path)
 
     def configure_folder_columns(self):
@@ -774,8 +942,8 @@ class FileBrowser:
 
     def show_search_results(self, paths, message="", query=""):
         """Display Everything search results in the central table."""
-        self.search_mode = True
         self.clear_table_selection()
+        self.search_mode = True
         self.table_delegate.set_highlight_query(query)
         self.search_model.clear()
         self.search_model.setHorizontalHeaderLabels(["Name", "Path"])
@@ -796,7 +964,87 @@ class FileBrowser:
 
         self.ui.table_view.setModel(self.search_model)
         self.ui.table_view.setRootIndex(self.search_model.index(0, 0).parent())
+        self.connect_table_selection()
         self.configure_search_columns()
+        self.sync_checks_to_selection()
+
+    def current_table_path(self):
+        """Return the current table row path, if any."""
+        index = self.ui.table_view.currentIndex()
+        if not index.isValid():
+            return ""
+
+        return self.table_path(index)
+
+    def current_folder_path(self):
+        """Return the folder currently shown in regular browser mode."""
+        if self.search_mode:
+            return ""
+
+        return self.file_model.filePath(self.current_file_root_index())
+
+    def select_all_rows(self):
+        """Select every visible table row and sync checkboxes."""
+        self.ui.table_view.selectAll()
+        self.sync_checks_to_selection()
+
+    def restore_table_position(self, path_text):
+        """Restore selection and scroll position for a path."""
+        self.select_table_path(path_text, attempts=6)
+
+    def select_table_path(self, path_text, attempts=0):
+        """Select a path in the active table, retrying while Qt loads rows."""
+        if not path_text:
+            return False
+
+        if self.search_mode:
+            index = self.search_table_index(path_text)
+        else:
+            index = self.folder_table_index(path_text)
+
+        if index is not None and index.isValid():
+            self.ui.table_view.setCurrentIndex(index)
+            self.ui.table_view.selectRow(index.row())
+            self.ui.table_view.scrollTo(
+                index,
+                QAbstractItemView.ScrollHint.PositionAtCenter,
+            )
+            return True
+
+        if attempts > 0:
+            QTimer.singleShot(
+                50,
+                lambda: self.select_table_path(path_text, attempts - 1),
+            )
+
+        return False
+
+    def folder_table_index(self, path_text):
+        """Return the proxy-model table index for a child path in folder mode."""
+        root_path = QDir.cleanPath(self.file_model.filePath(self.current_file_root_index()))
+        parent_path = QDir.cleanPath(str(Path(path_text).parent))
+        if not self.same_path(root_path, parent_path):
+            return None
+
+        index = self.file_model.index(path_text)
+        if not index.isValid():
+            return None
+
+        return self.file_proxy_model.mapFromSource(index.sibling(index.row(), 0))
+
+    def search_table_index(self, path_text):
+        """Return the search-model index for a result path."""
+        for row in range(self.search_model.rowCount()):
+            index = self.search_model.index(row, 0)
+            if self.same_path(index.data(Qt.ItemDataRole.UserRole) or "", path_text):
+                return index
+
+        return None
+
+    @staticmethod
+    def same_path(left, right):
+        """Compare paths using Qt's clean path format and case folding."""
+        return QDir.cleanPath(str(left)).casefold() == QDir.cleanPath(str(right)).casefold()
 
     def configure_search_columns(self):
         """Keep Name fixed and let only Path expand for search results."""
@@ -812,7 +1060,7 @@ class FileBrowser:
         path = Path(path_text)
         name = path.name or path_text
         parent = str(path.parent) if path.parent != path else ""
-        name_item = self.create_search_item(name, path_text)
+        name_item = self.create_search_item(name, path_text, checkable=True)
         path_item = self.create_search_item(parent, path_text)
         name_item.setIcon(self.icon_provider.icon(QFileInfo(path_text)))
         return [name_item, path_item]
@@ -821,17 +1069,20 @@ class FileBrowser:
     def create_search_row(name, path_text):
         """Create a generic two-column search row."""
         return [
-            FileBrowser.create_search_item(name, path_text),
+            FileBrowser.create_search_item(name, path_text, checkable=bool(path_text)),
             FileBrowser.create_search_item(path_text, path_text),
         ]
 
     @staticmethod
-    def create_search_item(text, path_text):
+    def create_search_item(text, path_text, checkable=False):
         """Create a non-editable search table cell."""
         item = QStandardItem(text)
         item.setEditable(False)
         item.setToolTip(path_text or text)
         item.setData(path_text, Qt.ItemDataRole.UserRole)
+        if checkable and path_text:
+            item.setCheckable(True)
+            item.setCheckState(Qt.CheckState.Unchecked)
         return item
 
     def set_status_fields(self, fields):
@@ -892,7 +1143,7 @@ class FileBrowser:
         if self.search_mode:
             return index.data(Qt.ItemDataRole.UserRole) or ""
 
-        return self.file_model.filePath(index.sibling(index.row(), 0))
+        return self.file_model.filePath(self.folder_source_index(index))
 
     def is_table_dir(self, index):
         """Return whether a table index points to a directory."""
@@ -900,7 +1151,11 @@ class FileBrowser:
             path_text = self.table_path(index)
             return bool(path_text) and Path(path_text).is_dir()
 
-        return self.file_model.isDir(index.sibling(index.row(), 0))
+        return self.file_model.isDir(self.folder_source_index(index))
+
+    def folder_source_index(self, index):
+        """Map a visible folder-mode table index back to the source model."""
+        return self.file_proxy_model.mapToSource(index.sibling(index.row(), 0))
 
 
 class PreviewPanel:
@@ -943,14 +1198,22 @@ class PreviewPanel:
         self.ui.preview_view.setStyleSheet(PREVIEW_TABLE_STYLE)
 
     def set_table_rows(self, model, headers, rows, value_tooltips=False):
-        """Replace a table model with simple string rows."""
+        """Replace all rows in a preview-style table model."""
         model.clear()
         model.setHorizontalHeaderLabels(headers)
+        self.append_table_rows(model, rows, value_tooltips)
+
+    def append_table_rows(self, model, rows, value_tooltips=False):
+        """Append rows to a preview-style table model."""
         for row in rows:
             items = [QStandardItem(str(value)) for value in row]
             if value_tooltips and len(items) > 1:
                 items[1].setToolTip(str(row[1]))
             model.appendRow(items)
+
+    def append_preview_rows(self, rows, value_tooltips=False):
+        """Append rows to the main preview table."""
+        self.append_table_rows(self.preview_model, rows, value_tooltips)
 
     def set_ai_placeholder(self):
         """Show a placeholder until AI preview is connected."""
@@ -1039,15 +1302,16 @@ class NavigationHistory:
         self.index = 0
 
     @staticmethod
-    def folder_entry(folder_path):
+    def folder_entry(folder_path, selected_path=""):
         """Create a history entry for a folder."""
         return {
             "type": "folder",
             "path": folder_path,
+            "selected_path": selected_path,
         }
 
     @staticmethod
-    def search_entry(query, paths, message, total_results, result_limit):
+    def search_entry(query, paths, message, total_results, result_limit, selected_path=""):
         """Create a history entry for an Everything search."""
         return {
             "type": "search",
@@ -1056,26 +1320,60 @@ class NavigationHistory:
             "message": message,
             "total_results": total_results,
             "result_limit": result_limit,
+            "selected_path": selected_path,
         }
 
-    def push_folder(self, folder_path):
+    def push_folder(self, folder_path, selected_path=""):
         """Push a folder navigation state."""
-        self.push(self.folder_entry(folder_path))
+        self.push(self.folder_entry(folder_path, selected_path))
 
-    def push_search(self, query, paths, message, total_results, result_limit):
+    def push_search(
+        self,
+        query,
+        paths,
+        message,
+        total_results,
+        result_limit,
+        selected_path="",
+    ):
         """Push a search result navigation state."""
         self.push(
-            self.search_entry(query, paths, message, total_results, result_limit)
+            self.search_entry(
+                query,
+                paths,
+                message,
+                total_results,
+                result_limit,
+                selected_path,
+            )
         )
 
     def push(self, entry):
         """Add a new state and discard forward history."""
-        if self.entries[self.index] == entry:
+        current_entry = self.entries[self.index]
+        if self.same_target(current_entry, entry):
+            if entry.get("selected_path"):
+                current_entry["selected_path"] = entry["selected_path"]
             return
 
         del self.entries[self.index + 1 :]
         self.entries.append(entry)
         self.index = len(self.entries) - 1
+
+    def update_current_selected_path(self, selected_path):
+        """Store the latest selected row path on the current history entry."""
+        self.entries[self.index]["selected_path"] = selected_path or ""
+
+    @staticmethod
+    def same_target(left, right):
+        """Return whether two history entries point to the same state."""
+        if left["type"] != right["type"]:
+            return False
+
+        if left["type"] == "folder":
+            return left["path"] == right["path"]
+
+        return left["query"] == right["query"] and left["paths"] == right["paths"]
 
     def can_go_back(self):
         """Return whether a previous history state exists."""
@@ -1134,6 +1432,14 @@ class FileManagerWindow:
         self.browser = FileBrowser(self.ui)
         self.preview = PreviewPanel(self.ui, self.file_types)
         self.history = NavigationHistory(DEFAULT_PATH)
+        self.analysis_store = FolderAnalysisStore()
+        self.file_operations = FileOperationService()
+        self.clipboard_paths = []
+        self.clipboard_move = False
+        self.shortcuts = []
+        self.undo_stack = []
+        self.redo_stack = []
+        self.status_restore_token = 0
 
         self.layout.setup()
         self.browser.setup()
@@ -1141,6 +1447,7 @@ class FileManagerWindow:
         self.everything_startup_message = self.everything.start()
         self.connect_signals()
         self.navigate_to(DEFAULT_PATH, add_history=False)
+        self.update_operation_buttons()
         self.show_startup_status()
 
     def connect_signals(self):
@@ -1148,33 +1455,74 @@ class FileManagerWindow:
         self.ui.tree_view.selectionModel().currentChanged.connect(self.show_files)
         self.ui.table_view.doubleClicked.connect(self.open_item)
         self.ui.table_view.clicked.connect(self.preview_selected)
+        self.ui.analyse_button.clicked.connect(self.analyse_selected_folder)
         self.ui.back_button.clicked.connect(self.go_back)
         self.ui.forward_button.clicked.connect(self.go_forward)
+        self.ui.undo_button.clicked.connect(self.undo_file_operation)
+        self.ui.redo_button.clicked.connect(self.redo_file_operation)
         self.ui.search_button.clicked.connect(self.go_to_typed_path)
         self.ui.navigate_bar.returnPressed.connect(self.go_to_typed_path)
         self.ui.navigate_bar.editingFinished.connect(self.go_to_typed_path)
+        self.setup_shortcuts()
+        self.setup_context_menu()
+
+    def setup_shortcuts(self):
+        """Install keyboard shortcuts for common file-browser actions."""
+        self.add_table_shortcut("Ctrl+C", self.copy_selected_files)
+        self.add_table_shortcut("Ctrl+X", self.cut_selected_files)
+        self.add_table_shortcut("Ctrl+V", self.paste_files)
+        self.add_table_shortcut("Ctrl+A", self.select_all_files)
+        self.add_table_shortcut("Delete", self.delete_selected_files)
+        self.add_table_shortcut("Ctrl+Z", self.undo_file_operation)
+        self.add_table_shortcut("Ctrl+Y", self.redo_file_operation)
+        self.add_table_shortcut("Ctrl+Shift+Z", self.redo_file_operation)
+
+    def add_table_shortcut(self, key_sequence, handler):
+        """Register one shortcut on the central table view."""
+        shortcut = QShortcut(QKeySequence(key_sequence), self.ui.table_view)
+        shortcut.setContext(Qt.ShortcutContext.WidgetWithChildrenShortcut)
+        shortcut.activated.connect(handler)
+        self.shortcuts.append(shortcut)
+
+    def setup_context_menu(self):
+        """Enable the file-browser right-click menu."""
+        self.ui.table_view.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.ui.table_view.customContextMenuRequested.connect(
+            self.show_file_context_menu
+        )
 
     def show_startup_status(self):
         """Display Everything startup errors in the status bar when available."""
         if self.everything_startup_message and hasattr(self.window, "statusBar"):
             self.window.statusBar().showMessage(self.everything_startup_message)
 
-    def navigate_to(self, folder_path, add_history=True, sync_tree=True):
+    def navigate_to(
+        self,
+        folder_path,
+        add_history=True,
+        sync_tree=True,
+        selected_path="",
+    ):
         """Navigate the browser to a folder path."""
         folder_path = QDir.cleanPath(QDir(folder_path).absolutePath())
         if not QDir(folder_path).exists():
             return
 
+        if add_history:
+            self.save_current_browser_position()
+
         self.browser.show_folder(folder_path)
+        self.update_folder_size_cache(folder_path)
         self.ui.navigate_bar.setText(folder_path)
-        self.preview.preview_path(folder_path)
+        self.preview_path_with_analysis(folder_path)
 
         if add_history:
-            self.history.push_folder(folder_path)
+            self.history.push_folder(folder_path, selected_path)
 
         if sync_tree:
             self.browser.sync_tree_to_path(folder_path)
 
+        self.restore_saved_table_position({"selected_path": selected_path})
         self.update_history_buttons()
 
     def show_files(self, index, _previous=None):
@@ -1193,13 +1541,478 @@ class FileManagerWindow:
         if self.browser.is_table_dir(index):
             self.navigate_to(item_path)
         else:
+            self.save_current_browser_position()
             QDesktopServices.openUrl(QUrl.fromLocalFile(item_path))
 
     def preview_selected(self, index, _previous=None):
         """Refresh the preview panel for a clicked table row."""
         path_text = self.browser.table_path(index) if index.isValid() else ""
         if path_text:
-            self.preview.preview_path(path_text)
+            self.history.update_current_selected_path(path_text)
+            self.preview_path_with_analysis(path_text)
+
+    def update_folder_size_cache(self, folder_path):
+        """Load analysed child-folder sizes into the browser table."""
+        self.browser.set_folder_size_map(
+            self.analysis_store.child_folder_size_map(folder_path)
+        )
+
+    def show_file_context_menu(self, position):
+        """Build and execute the context menu for the central table."""
+        index = self.ui.table_view.indexAt(position)
+        paths = []
+        if index.isValid():
+            if not self.browser.is_row_selected(index):
+                self.browser.select_single_row(index)
+            self.preview_selected(index)
+            paths = self.selected_paths_for_shortcut()
+
+        menu = QMenu(self.window)
+        actions = {}
+
+        if paths:
+            if len(paths) == 1:
+                actions[menu.addAction("Open")] = self.open_selected_item
+                menu.addSeparator()
+
+            if self.can_undo_file_operation():
+                actions[menu.addAction("Undo")] = self.undo_file_operation
+            if self.can_redo_file_operation():
+                actions[menu.addAction("Redo")] = self.redo_file_operation
+            if self.can_undo_file_operation() or self.can_redo_file_operation():
+                menu.addSeparator()
+
+            actions[menu.addAction("Copy")] = self.copy_selected_files
+            actions[menu.addAction("Cut")] = self.cut_selected_files
+            actions[menu.addAction("Delete")] = self.delete_selected_files
+            menu.addSeparator()
+        else:
+            if self.can_undo_file_operation():
+                actions[menu.addAction("Undo")] = self.undo_file_operation
+            if self.can_redo_file_operation():
+                actions[menu.addAction("Redo")] = self.redo_file_operation
+            if self.can_undo_file_operation() or self.can_redo_file_operation():
+                menu.addSeparator()
+
+        if self.can_paste_files():
+            actions[menu.addAction("Paste")] = self.paste_files
+
+        actions[menu.addAction("Refresh")] = self.refresh_browser
+        actions[menu.addAction("Select All")] = self.select_all_files
+
+        action = menu.exec(self.ui.table_view.viewport().mapToGlobal(position))
+        handler = actions.get(action)
+        if handler is not None:
+            handler()
+
+    def open_selected_item(self):
+        """Open the current table row from the context menu."""
+        index = self.ui.table_view.currentIndex()
+        if index.isValid():
+            self.open_item(index)
+
+    def selected_paths_for_shortcut(self):
+        """Return selected paths, falling back to the current row."""
+        paths = self.browser.selected_table_paths()
+        if not paths:
+            current_path = self.browser.current_table_path()
+            if current_path:
+                paths = [current_path]
+
+        return list(dict.fromkeys(paths))
+
+    def copy_selected_files(self):
+        """Copy selected paths into the app and system clipboard."""
+        paths = self.selected_paths_for_shortcut()
+        if not paths:
+            self.show_temporary_status(["No files selected to copy."])
+            return
+
+        self.set_file_clipboard(paths, move=False)
+        self.show_temporary_status([f"Copied to clipboard: {len(paths)}"])
+
+    def cut_selected_files(self):
+        """Mark selected paths for move paste."""
+        paths = self.selected_paths_for_shortcut()
+        if not paths:
+            self.show_temporary_status(["No files selected to cut."])
+            return
+
+        self.set_file_clipboard(paths, move=True)
+        self.show_temporary_status([f"Cut to clipboard: {len(paths)}"])
+
+    def paste_files(self):
+        """Paste copied or cut paths into the current folder."""
+        destination = self.current_paste_destination()
+        if not destination:
+            self.show_temporary_status(["Paste is only available in a folder."])
+            return
+
+        paths, move = self.file_clipboard_contents()
+        if not paths:
+            self.show_temporary_status(["Clipboard has no files to paste."])
+            return
+
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+        try:
+            result = self.file_operations.paste(paths, destination, move=move)
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        if move and not result["errors"]:
+            self.clipboard_paths = []
+            self.clipboard_move = False
+
+        self.record_file_operation("move" if move else "copy", result)
+        self.browser.update_folder_info(destination)
+        self.show_paste_result(result, move)
+
+    def select_all_files(self):
+        """Select all rows in the active table."""
+        self.browser.select_all_rows()
+
+    def delete_selected_files(self):
+        """Move selected paths to the app trash so the action can be undone."""
+        paths = self.selected_paths_for_shortcut()
+        if not paths:
+            self.show_temporary_status(["No files selected to delete."])
+            return
+
+        if not self.confirm_delete(paths):
+            return
+
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+        try:
+            result = self.file_operations.delete_for_undo(paths)
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        self.remove_deleted_clipboard_paths(result["done"])
+        self.record_file_operation("delete", result)
+        self.refresh_browser()
+        self.show_delete_result(result)
+
+    def confirm_delete(self, paths):
+        """Ask for confirmation before deleting selected paths."""
+        item_text = "item" if len(paths) == 1 else "items"
+        message = f"Delete {len(paths)} selected {item_text}?"
+        reply = QMessageBox.question(
+            self.window,
+            "Delete",
+            message,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        return reply == QMessageBox.StandardButton.Yes
+
+    def record_file_operation(self, action, result):
+        """Push a successful file operation onto the undo stack."""
+        operations = result.get("operations", [])
+        if not operations:
+            self.update_operation_buttons()
+            return
+
+        self.undo_stack.append(
+            {
+                "action": action,
+                "operations": operations,
+            }
+        )
+        self.redo_stack.clear()
+        self.update_operation_buttons()
+
+    def undo_file_operation(self):
+        """Undo the most recent file operation batch."""
+        if not self.undo_stack:
+            self.show_temporary_status(["Nothing to undo."])
+            return
+
+        entry = self.undo_stack.pop()
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+        try:
+            result = self.file_operations.undo(entry["operations"])
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        if result["errors"]:
+            self.undo_stack.append(entry)
+        else:
+            self.redo_stack.append(entry)
+
+        self.refresh_browser()
+        self.update_operation_buttons()
+        self.show_operation_result("Undo", result)
+
+    def redo_file_operation(self):
+        """Redo the most recently undone file operation batch."""
+        if not self.redo_stack:
+            self.show_temporary_status(["Nothing to redo."])
+            return
+
+        entry = self.redo_stack.pop()
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+        try:
+            result = self.file_operations.redo(entry["operations"])
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        if result["errors"]:
+            self.redo_stack.append(entry)
+        else:
+            self.undo_stack.append(entry)
+
+        self.refresh_browser()
+        self.update_operation_buttons()
+        self.show_operation_result("Redo", result)
+
+    def can_undo_file_operation(self):
+        """Return whether undo is currently available."""
+        return bool(self.undo_stack)
+
+    def can_redo_file_operation(self):
+        """Return whether redo is currently available."""
+        return bool(self.redo_stack)
+
+    def update_operation_buttons(self):
+        """Enable or disable undo and redo buttons."""
+        self.ui.undo_button.setEnabled(self.can_undo_file_operation())
+        self.ui.redo_button.setEnabled(self.can_redo_file_operation())
+
+    def set_file_clipboard(self, paths, move=False):
+        """Store file paths in the app clipboard and the system clipboard."""
+        self.clipboard_paths = list(paths)
+        self.clipboard_move = move
+
+        mime_data = QMimeData()
+        mime_data.setUrls([QUrl.fromLocalFile(path) for path in paths])
+        QApplication.clipboard().setMimeData(mime_data)
+
+    def file_clipboard_contents(self):
+        """Return app clipboard paths or local file URLs from the system clipboard."""
+        if self.clipboard_paths:
+            return self.clipboard_paths, self.clipboard_move
+
+        mime_data = QApplication.clipboard().mimeData()
+        paths = [
+            url.toLocalFile()
+            for url in mime_data.urls()
+            if url.isLocalFile() and url.toLocalFile()
+        ]
+        return paths, False
+
+    def can_paste_files(self):
+        """Return whether paste can run in the current browser state."""
+        paths, _move = self.file_clipboard_contents()
+        return bool(paths) and bool(self.current_paste_destination())
+
+    def current_paste_destination(self):
+        """Return the folder that should receive pasted files."""
+        folder_path = self.browser.current_folder_path()
+        if folder_path and Path(folder_path).is_dir():
+            return folder_path
+
+        typed_path = self.ui.navigate_bar.text().strip()
+        if typed_path and Path(typed_path).is_dir():
+            return str(Path(typed_path))
+
+        return ""
+
+    def show_paste_result(self, result, move):
+        """Show a temporary status message for paste results."""
+        verb = "Moved" if move else "Copied"
+        fields = [f"{verb}: {len(result['done'])}"]
+
+        if result["skipped"]:
+            fields.append(f"Skipped: {len(result['skipped'])}")
+
+        if result["errors"]:
+            fields.append(f"Errors: {len(result['errors'])}")
+            fields.append(result["errors"][0])
+
+        self.show_temporary_status(fields)
+
+    def show_delete_result(self, result):
+        """Show a temporary status message for delete results."""
+        fields = [f"Deleted: {len(result['done'])}"]
+
+        if result["skipped"]:
+            fields.append(f"Skipped: {len(result['skipped'])}")
+
+        if result["errors"]:
+            fields.append(f"Errors: {len(result['errors'])}")
+            fields.append(result["errors"][0])
+
+        self.show_temporary_status(fields)
+
+    def show_operation_result(self, label, result):
+        """Show a temporary status message for undo or redo results."""
+        fields = [f"{label}: {len(result['done'])}"]
+
+        if result["skipped"]:
+            fields.append(f"Skipped: {len(result['skipped'])}")
+
+        if result["errors"]:
+            fields.append(f"Errors: {len(result['errors'])}")
+            fields.append(result["errors"][0])
+
+        self.show_temporary_status(fields)
+
+    def show_temporary_status(self, fields, duration_ms=3000):
+        """Show a status message briefly, then restore the normal status."""
+        self.status_restore_token += 1
+        token = self.status_restore_token
+        self.browser.set_status_fields(fields)
+        QTimer.singleShot(duration_ms, lambda: self.restore_status_after_delay(token))
+
+    def restore_status_after_delay(self, token):
+        """Restore normal status when the latest temporary message expires."""
+        if token != self.status_restore_token:
+            return
+
+        self.restore_current_status()
+
+    def restore_current_status(self):
+        """Restore folder or search summary status for the active state."""
+        folder_path = self.browser.current_folder_path()
+        if folder_path and Path(folder_path).is_dir():
+            self.browser.update_folder_info(folder_path)
+            return
+
+        entry = self.history.current()
+        if entry["type"] == "folder" and Path(entry["path"]).is_dir():
+            self.browser.update_folder_info(entry["path"])
+            return
+
+        if entry["type"] == "search":
+            self.browser.set_status_fields(
+                [
+                    f"Shown results: {len(entry['paths'])}",
+                    f"Total results: {entry['total_results']}",
+                    f"Limit: {entry['result_limit']}",
+                    f"Status: {entry['message'] or 'Ready'}",
+                ]
+            )
+
+    def remove_deleted_clipboard_paths(self, deleted_paths):
+        """Drop deleted paths from the pending cut/copy clipboard."""
+        deleted_path_set = {QDir.cleanPath(path).casefold() for path in deleted_paths}
+        self.clipboard_paths = [
+            path
+            for path in self.clipboard_paths
+            if QDir.cleanPath(path).casefold() not in deleted_path_set
+        ]
+        if not self.clipboard_paths:
+            self.clipboard_move = False
+
+    def refresh_browser(self):
+        """Reload the active folder or search history entry."""
+        entry = self.history.current()
+        if entry["type"] == "folder":
+            self.navigate_to(entry["path"], add_history=False)
+        elif entry["type"] == "search":
+            self.search_everything(entry["query"], add_history=False)
+
+    def save_current_browser_position(self):
+        """Store the current selected table path in history."""
+        self.history.update_current_selected_path(self.browser.current_table_path())
+
+    def restore_saved_table_position(self, entry):
+        """Restore selected table path saved on a history entry."""
+        selected_path = entry.get("selected_path") or ""
+        if not selected_path:
+            return
+
+        self.browser.restore_table_position(selected_path)
+        if Path(selected_path).exists():
+            self.preview_path_with_analysis(selected_path)
+
+    def preview_path_with_analysis(self, path_text):
+        """Refresh preview metadata and append analysis data when present."""
+        self.preview.preview_path(path_text)
+        self.append_analysis_to_preview(path_text)
+
+    def append_analysis_to_preview(self, path_text):
+        """Append saved folder-analysis rows to the preview table."""
+        if not Path(path_text).is_dir():
+            return
+
+        record = self.analysis_store.folder_summary(path_text)
+        if not record:
+            return
+
+        self.preview.append_preview_rows(
+            [
+                ("", ""),
+                ("Analysis", ""),
+                ("Analysed at", record["analysed_at"]),
+                ("Analysed root", record["root_path"]),
+                ("Total size", format_bytes(record["size_bytes"])),
+                ("Files", record["file_count"]),
+                ("Subfolders", record["folder_count"]),
+                ("Errors", record["error_count"]),
+            ],
+            value_tooltips=True,
+        )
+
+    def selected_folder_for_analysis(self):
+        """Return the selected folder, falling back to the current folder."""
+        table_index = self.ui.table_view.currentIndex()
+        if table_index.isValid():
+            table_path = self.browser.table_path(table_index)
+            if table_path and Path(table_path).is_dir():
+                return table_path
+
+        tree_index = self.ui.tree_view.currentIndex()
+        if tree_index.isValid():
+            tree_path = self.browser.tree_path(tree_index)
+            if tree_path and Path(tree_path).is_dir():
+                return tree_path
+
+        current_entry = self.history.current()
+        if current_entry["type"] == "folder":
+            return current_entry["path"]
+
+        typed_path = self.ui.navigate_bar.text().strip()
+        if typed_path and Path(typed_path).is_dir():
+            return typed_path
+
+        return ""
+
+    def analyse_selected_folder(self):
+        """Analyse selected folder sizes and persist the result table."""
+        folder_path = self.selected_folder_for_analysis()
+        if not folder_path:
+            self.browser.set_status_fields(["No folder selected for analysis."])
+            return
+
+        self.browser.set_status_fields([f"Analysing: {folder_path}"])
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+
+        try:
+            summary = self.analysis_store.analyse_and_store(folder_path)
+        except OSError as error:
+            self.browser.set_status_fields([f"Analysis failed: {error}"])
+            return
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        self.browser.set_status_fields(
+            [
+                f"Analysed folders: {summary.folder_count + 1}",
+                f"Files: {summary.file_count}",
+                f"Size: {format_bytes(summary.size_bytes)}",
+                f"Errors: {summary.error_count}",
+            ]
+        )
+        current_folder = self.browser.current_folder_path()
+        if current_folder:
+            self.update_folder_size_cache(current_folder)
+        self.preview_path_with_analysis(summary.folder_path)
 
     def update_history_buttons(self):
         """Enable or disable back/forward buttons."""
@@ -1209,11 +2022,13 @@ class FileManagerWindow:
     def go_back(self):
         """Restore the previous history state."""
         if self.history.can_go_back():
+            self.save_current_browser_position()
             self.restore_history_entry(self.history.go_back())
 
     def go_forward(self):
         """Restore the next history state."""
         if self.history.can_go_forward():
+            self.save_current_browser_position()
             self.restore_history_entry(self.history.go_forward())
 
     def go_to_typed_path(self):
@@ -1229,13 +2044,15 @@ class FileManagerWindow:
         if path.is_dir():
             self.navigate_to(path_text)
         elif path.is_file():
-            self.navigate_to(str(path.parent))
-            self.preview.preview_path(str(path))
+            self.navigate_to(str(path.parent), selected_path=str(path))
         else:
             self.search_everything(typed_path)
 
     def search_everything(self, query, add_history=True):
         """Run an Everything search and optionally add it to history."""
+        if add_history:
+            self.save_current_browser_position()
+
         paths, message = self.everything.search(query)
         total_results = self.everything.total_result_count()
         self.show_search_state(query, paths, message, total_results)
@@ -1279,7 +2096,11 @@ class FileManagerWindow:
     def restore_history_entry(self, entry):
         """Restore a folder or search history entry without pushing a duplicate."""
         if entry["type"] == "folder":
-            self.navigate_to(entry["path"], add_history=False)
+            self.navigate_to(
+                entry["path"],
+                add_history=False,
+                selected_path=entry.get("selected_path", ""),
+            )
         elif entry["type"] == "search":
             self.show_search_state(
                 entry["query"],
@@ -1288,17 +2109,23 @@ class FileManagerWindow:
                 entry["total_results"],
                 entry["result_limit"],
             )
+            self.restore_saved_table_position(entry)
             self.update_history_buttons()
 
     def show(self):
         """Show the loaded Qt window."""
         self.window.show()
 
+    def cleanup_on_exit(self):
+        """Clear the app trash when the Qt application exits."""
+        self.file_operations.clear_trash()
+
 
 def main():
     """Application entry point."""
     app = QApplication(sys.argv)
     file_manager = FileManagerWindow()
+    app.aboutToQuit.connect(file_manager.cleanup_on_exit)
     file_manager.show()
     sys.exit(app.exec())
 

@@ -2,3 +2,5 @@ AGENTS.md
 .vscode
 __pycache__
 TODO.md
+.aifm_trash
+folder_analysis.sqlite3
