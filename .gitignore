@@ -7,3 +7,5 @@ folder_analysis.sqlite3
 build
 dist
 AIFM.spec
+ai_folders.sqlite3
+AIFM.png

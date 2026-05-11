@@ -27,7 +27,7 @@
      <string>Analyse</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="createaifolder">
+   <widget class="QPushButton" name="newaifolder">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Create AIFolder</string>
+     <string>New AIFolder</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">

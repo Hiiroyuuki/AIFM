@@ -266,6 +266,22 @@ class Config:
             "everything_timeout_seconds",
             default=6,
         )
+    
+    def get_max_agent_steps(self) -> int:
+        """Return the maximum reasoning steps for agents."""
+        return self._read_int("max_agent_steps", default=4)
+
+    def get_default_arrange(self) -> str:
+        """Return the default file-browser sort mode."""
+        value = self.config.get("default_arrange")
+        preference = self.config.get("preference") or {}
+        if not value and isinstance(preference, dict):
+            value = preference.get("default_arrange")
+
+        if isinstance(value, (list, tuple, set)):
+            value = next(iter(value), "")
+
+        return self._read_string(value, "name_asc")
 
     def _read_int(self, *keys: str, default: int) -> int:
         """Read the first available integer from config.json."""

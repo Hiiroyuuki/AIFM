@@ -16,16 +16,16 @@ from mainFunctions import (
     FolderAnalysisStore,
     format_bytes,
 )
-from models import create_model_client, system_message, user_message
+from models import create_model_client, system_message, user_message, config
 
 
 JsonDict = dict[str, Any]
 ToolHandler = Callable[[JsonDict, "AgentContext"], JsonDict]
 
-DEFAULT_MAX_STEPS = 4
+DEFAULT_MAX_STEPS = config.get_max_agent_steps()
 MAX_OBSERVATIONS_IN_PROMPT = 6
-CONFIRMATION_REQUIRED_REPLY = "这些操作需要确认后才能执行。"
-MAX_STEPS_REPLY = "已达到最大工具调用轮数，请缩小任务范围后再试。"
+CONFIRMATION_REQUIRED_REPLY = "Do you confirm this action? Please reply with yes or no."
+MAX_STEPS_REPLY = "Reach the maximum reasoning steps without a final answer. Please try again later"
 FENCED_JSON_PATTERN = re.compile(
     r"```(?:json)?\s*(.*?)```",
     re.IGNORECASE | re.DOTALL,

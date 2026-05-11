@@ -6,6 +6,7 @@ widget collection, layout, browsing, preview, search display, history, and the
 top-level window controller.
 """
 
+import atexit
 import html
 import json
 import mimetypes
@@ -39,8 +40,13 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QApplication,
+    QComboBox,
+    QDialog,
+    QDialogButtonBox,
+    QFileDialog,
     QFileIconProvider,
     QFileSystemModel,
+    QFormLayout,
     QHBoxLayout,
     QHeaderView,
     QLineEdit,
@@ -59,7 +65,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from config_loader import Config
 from mainFunctions import (
+    AIFolderStore,
     EverythingSdkSearch,
     FileOperationService,
     FolderAnalysisStore,
@@ -129,6 +137,19 @@ def selected_row_style(widget_name, item_padding="1px 4px", include_tree_branch=
 """
 
     return style
+
+
+def style_preview_table(table_view):
+    """Apply the shared compact preview-table style."""
+    table_view.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+    table_view.horizontalHeader().setVisible(False)
+    table_view.horizontalHeader().setStretchLastSection(True)
+    table_view.verticalHeader().setVisible(False)
+    table_view.setShowGrid(False)
+    table_view.setWordWrap(False)
+    table_view.verticalHeader().setDefaultSectionSize(22)
+    table_view.verticalHeader().setMinimumSectionSize(18)
+    table_view.setStyleSheet(PREVIEW_TABLE_STYLE)
 
 
 def load_ui():
@@ -306,6 +327,7 @@ class FileTableModel(QFileSystemModel):
 
     MODIFIED_COLUMN = 3
     SIZE_COLUMN = 1
+    TYPE_COLUMN = 2
     MODIFIED_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
     def __init__(self, parent=None):
@@ -395,6 +417,20 @@ class FileTableModel(QFileSystemModel):
 
         return file_info.size()
 
+    def type_sort_value(self, index):
+        """Return a stable type key for sorting the Type column."""
+        name_index = index.sibling(index.row(), 0)
+        file_info = self.fileInfo(name_index)
+        if file_info.isDir():
+            return "folder"
+
+        suffix = file_info.completeSuffix() or file_info.suffix()
+        if suffix:
+            return suffix.casefold()
+
+        display_type = self.data(index, Qt.ItemDataRole.DisplayRole) or ""
+        return str(display_type).casefold()
+
     @staticmethod
     def normalized_path(path_text):
         """Normalize a path for case-insensitive table cache lookups."""
@@ -410,21 +446,88 @@ class FileSortProxyModel(QSortFilterProxyModel):
     formatted text such as MB or GB.
     """
 
+    def __init__(self, parent=None):
+        """Create a proxy that keeps folders grouped before files."""
+        super().__init__(parent)
+        self.current_sort_order = Qt.SortOrder.AscendingOrder
+
+    def sort(self, column, order=Qt.SortOrder.AscendingOrder):
+        """Remember sort order so folder grouping stays stable."""
+        self.current_sort_order = order
+        super().sort(column, order)
+
     def lessThan(self, left, right):
         """Compare two source indexes for table sorting."""
         source_model = self.sourceModel()
+        left_name_index = left.sibling(left.row(), 0)
+        right_name_index = right.sibling(right.row(), 0)
+        left_is_dir = source_model.isDir(left_name_index)
+        right_is_dir = source_model.isDir(right_name_index)
+
+        if left_is_dir != right_is_dir:
+            return self.folder_group_less_than(left_is_dir, right_is_dir)
+
         if left.column() == FileTableModel.SIZE_COLUMN:
-            return source_model.size_sort_value(left) < source_model.size_sort_value(
-                right
+            return self.compare_with_name_tiebreaker(
+                source_model.size_sort_value(left),
+                source_model.size_sort_value(right),
+                left_name_index,
+                right_name_index,
+            )
+
+        if left.column() == FileTableModel.TYPE_COLUMN:
+            return self.compare_with_name_tiebreaker(
+                source_model.type_sort_value(left),
+                source_model.type_sort_value(right),
+                left_name_index,
+                right_name_index,
             )
 
         if left.column() == FileTableModel.MODIFIED_COLUMN:
-            left_time = source_model.fileInfo(left.sibling(left.row(), 0)).lastModified()
-            right_time = source_model.fileInfo(right.sibling(right.row(), 0)).lastModified()
-            return left_time < right_time
+            left_time = source_model.fileInfo(left_name_index).lastModified()
+            right_time = source_model.fileInfo(right_name_index).lastModified()
+            return self.compare_with_name_tiebreaker(
+                left_time,
+                right_time,
+                left_name_index,
+                right_name_index,
+            )
 
         left_text = source_model.data(left, Qt.ItemDataRole.DisplayRole) or ""
         right_text = source_model.data(right, Qt.ItemDataRole.DisplayRole) or ""
+        return self.compare_with_name_tiebreaker(
+            str(left_text).casefold(),
+            str(right_text).casefold(),
+            left_name_index,
+            right_name_index,
+        )
+
+    def folder_group_less_than(self, left_is_dir, right_is_dir):
+        """Keep folders before files in both ascending and descending sorts."""
+        if self.current_sort_order == Qt.SortOrder.DescendingOrder:
+            return not left_is_dir and right_is_dir
+
+        return left_is_dir and not right_is_dir
+
+    def compare_with_name_tiebreaker(
+        self,
+        left_value,
+        right_value,
+        left_name_index,
+        right_name_index,
+    ):
+        """Compare semantic values, falling back to names when values match."""
+        if left_value == right_value:
+            return self.compare_text(
+                left_name_index.data(Qt.ItemDataRole.DisplayRole) or "",
+                right_name_index.data(Qt.ItemDataRole.DisplayRole) or "",
+            )
+
+        return left_value < right_value
+
+    @staticmethod
+    def compare_text(left_text, right_text):
+        """Compare display text case-insensitively."""
         return str(left_text).casefold() < str(right_text).casefold()
 
 
@@ -444,6 +547,7 @@ class UiElements:
     table_view: QTableView
     status_list: QListWidget
     analyse_button: QPushButton
+    new_ai_folder_button: QPushButton
     back_button: QPushButton
     forward_button: QPushButton
     undo_button: QPushButton
@@ -464,6 +568,7 @@ class UiElements:
             table_view=window.findChild(QTableView, "tableView"),
             status_list=window.findChild(QListWidget, "listWidget"),
             analyse_button=window.findChild(QPushButton, "analyse"),
+            new_ai_folder_button=window.findChild(QPushButton, "newaifolder"),
             back_button=window.findChild(QPushButton, "back"),
             forward_button=window.findChild(QPushButton, "forward"),
             undo_button=window.findChild(QPushButton, "undo"),
@@ -476,7 +581,7 @@ class UiElements:
                 window.findChild(QPushButton, object_name)
                 for object_name in (
                     "analyse",
-                    "createaifolder",
+                    "newaifolder",
                     "pushButton_3",
                     "pushButton_4",
                     "pushButton_5",
@@ -497,10 +602,11 @@ class LayoutManager:
     stretch behavior only, not browsing or search logic.
     """
 
-    SIDE_PANEL_WIDTH = 110
+    SIDE_PANEL_WIDTH = 130
     PANEL_SPACING = 6
     STATUS_ROW_HEIGHT = 24
-    STATUS_BUTTON_WIDTH = 54
+    STATUS_BUTTON_WIDTH = 70
+    TOOLBAR_BUTTON_MIN_WIDTH = 82
 
     def __init__(self, ui):
         """Store resolved UI widgets for layout composition."""
@@ -590,6 +696,17 @@ class LayoutManager:
     def apply_sizes(self, side_panel):
         """Apply minimum and fixed sizes after widgets enter splitters."""
         side_panel.setFixedWidth(self.SIDE_PANEL_WIDTH)
+        for button in self.ui.side_buttons:
+            if button is not None:
+                button.setMinimumWidth(self.SIDE_PANEL_WIDTH - 12)
+
+        for button in (
+            self.ui.back_button,
+            self.ui.forward_button,
+            self.ui.search_button,
+        ):
+            button.setMinimumWidth(self.TOOLBAR_BUTTON_MIN_WIDTH)
+
         self.ui.tree_view.setMinimumWidth(180)
         self.ui.table_view.setMinimumWidth(260)
         self.ui.status_list.setFixedHeight(self.STATUS_ROW_HEIGHT)
@@ -613,9 +730,23 @@ class FileBrowser:
     resolution, tree synchronization, and compact item-count/search status text.
     """
 
-    def __init__(self, ui):
+    ARRANGE_COLUMNS = {
+        "name": 0,
+        "filename": 0,
+        "file_name": 0,
+        "size": 1,
+        "type": 2,
+        "kind": 2,
+        "date": 3,
+        "modified": 3,
+        "date_modified": 3,
+        "time": 3,
+    }
+
+    def __init__(self, ui, default_arrange="name_asc"):
         """Create filesystem/search models used by the browser area."""
         self.ui = ui
+        self.default_arrange = default_arrange
         self.search_mode = False
         self.syncing_tree = False
         self.dir_model = QFileSystemModel(ui.window)
@@ -672,7 +803,45 @@ class FileBrowser:
             self.file_proxy_model.mapFromSource(self.file_model.index(DEFAULT_PATH))
         )
         self.connect_table_selection()
+        self.apply_default_arrange()
         self.update_folder_info(DEFAULT_PATH)
+
+    def apply_default_arrange(self):
+        """Apply the startup sort mode from config.json."""
+        column, order = self.parse_arrange(self.default_arrange)
+        self.ui.table_view.sortByColumn(column, order)
+        self.file_proxy_model.sort(column, order)
+
+    @classmethod
+    def parse_arrange(cls, arrange_text):
+        """Parse a sort mode string into a table column and Qt sort order."""
+        text = str(arrange_text or "").strip().lower().replace("-", "_")
+        if not text:
+            text = "name_asc"
+
+        order = Qt.SortOrder.AscendingOrder
+        for suffix in ("_desc", "_descending"):
+            if text.endswith(suffix):
+                order = Qt.SortOrder.DescendingOrder
+                text = text[: -len(suffix)]
+                break
+
+        for suffix in ("_asc", "_ascending"):
+            if text.endswith(suffix):
+                order = Qt.SortOrder.AscendingOrder
+                text = text[: -len(suffix)]
+                break
+
+        if text in ("latest", "newest", "recent"):
+            return FileTableModel.MODIFIED_COLUMN, Qt.SortOrder.DescendingOrder
+        if text in ("oldest",):
+            return FileTableModel.MODIFIED_COLUMN, Qt.SortOrder.AscendingOrder
+        if text in ("largest", "biggest"):
+            return FileTableModel.SIZE_COLUMN, Qt.SortOrder.DescendingOrder
+        if text in ("smallest",):
+            return FileTableModel.SIZE_COLUMN, Qt.SortOrder.AscendingOrder
+
+        return cls.ARRANGE_COLUMNS.get(text, 0), order
 
     def setup_table_view(self):
         """Configure shared behavior for folder and search tables."""
@@ -1160,42 +1329,21 @@ class FileBrowser:
 
 class PreviewPanel:
     """
-    Owns the right-side preview tables.
+    Owns the right-side file preview table.
 
     The preview table shows metadata for the current file, folder, or search.
-    The AI preview table is intentionally a placeholder for now, so the main
-    window can reserve the UI area without mixing future AI behavior into the
-    file-browser code.
     """
 
     def __init__(self, ui, file_types):
-        """Create preview models and keep file type lookup available."""
+        """Create the preview model and keep file type lookup available."""
         self.ui = ui
         self.file_types = file_types
         self.preview_model = QStandardItemModel(ui.window)
-        self.ai_model = QStandardItemModel(ui.window)
 
     def setup(self):
-        """Attach models and style preview tables."""
+        """Attach the model and style the preview table."""
         self.ui.preview_view.setModel(self.preview_model)
-        self.ui.ai_view.setModel(self.ai_model)
-
-        for table_view in (self.ui.preview_view, self.ui.ai_view):
-            table_view.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-            table_view.horizontalHeader().setStretchLastSection(True)
-
-        self.setup_preview_style()
-        self.set_ai_placeholder()
-
-    def setup_preview_style(self):
-        """Make the preview table look like a compact property list."""
-        self.ui.preview_view.horizontalHeader().setVisible(False)
-        self.ui.preview_view.verticalHeader().setVisible(False)
-        self.ui.preview_view.setShowGrid(False)
-        self.ui.preview_view.setWordWrap(False)
-        self.ui.preview_view.verticalHeader().setDefaultSectionSize(22)
-        self.ui.preview_view.verticalHeader().setMinimumSectionSize(18)
-        self.ui.preview_view.setStyleSheet(PREVIEW_TABLE_STYLE)
+        style_preview_table(self.ui.preview_view)
 
     def set_table_rows(self, model, headers, rows, value_tooltips=False):
         """Replace all rows in a preview-style table model."""
@@ -1214,14 +1362,6 @@ class PreviewPanel:
     def append_preview_rows(self, rows, value_tooltips=False):
         """Append rows to the main preview table."""
         self.append_table_rows(self.preview_model, rows, value_tooltips)
-
-    def set_ai_placeholder(self):
-        """Show a placeholder until AI preview is connected."""
-        self.set_table_rows(
-            self.ai_model,
-            ["AI Preview"],
-            [["AI preview placeholder"], ["No AI feature is connected yet."]],
-        )
 
     def preview_path(self, path_text):
         """Show metadata for a selected file or folder."""
@@ -1285,6 +1425,33 @@ class PreviewPanel:
             size /= 1024
 
         return f"{size_bytes} Byte"
+
+
+class AIPreviewPanel:
+    """
+    Owns the AI preview area.
+
+    This class is intentionally only a placeholder for now. Future AI preview
+    behavior can be added here without mixing it into the normal file preview.
+    """
+
+    def __init__(self, ui):
+        """Create the placeholder model for the AI preview view."""
+        self.ui = ui
+        self.model = QStandardItemModel(ui.window)
+
+    def setup(self):
+        """Attach the placeholder model and basic read-only table behavior."""
+        self.ui.ai_view.setModel(self.model)
+        style_preview_table(self.ui.ai_view)
+        self.set_placeholder()
+
+    def set_placeholder(self):
+        """Show static placeholder text until AI preview is implemented."""
+        self.model.clear()
+        self.model.setHorizontalHeaderLabels(["AI Preview"])
+        for text in ("AI preview placeholder", "No AI feature is connected yet."):
+            self.model.appendRow([QStandardItem(text)])
 
 
 class NavigationHistory:
@@ -1426,13 +1593,17 @@ class FileManagerWindow:
         """Load UI, create feature controllers, and show the default folder."""
         self.window = load_ui()
         self.ui = UiElements.collect(self.window)
+        self.config = Config()
         self.file_types = FileTypeRegistry(FILE_TYPE_NAMES_PATH)
         self.everything = EverythingSdkSearch()
         self.layout = LayoutManager(self.ui)
-        self.browser = FileBrowser(self.ui)
+        self.browser = FileBrowser(self.ui, self.config.get_default_arrange())
         self.preview = PreviewPanel(self.ui, self.file_types)
+        self.ai_preview = AIPreviewPanel(self.ui)
         self.history = NavigationHistory(DEFAULT_PATH)
         self.analysis_store = FolderAnalysisStore()
+        self.ai_folder_store = AIFolderStore()
+        self.ai_folder_store.cleanup_missing_records()
         self.file_operations = FileOperationService()
         self.clipboard_paths = []
         self.clipboard_move = False
@@ -1444,6 +1615,7 @@ class FileManagerWindow:
         self.layout.setup()
         self.browser.setup()
         self.preview.setup()
+        self.ai_preview.setup()
         self.everything_startup_message = self.everything.start()
         self.connect_signals()
         self.navigate_to(DEFAULT_PATH, add_history=False)
@@ -1456,6 +1628,8 @@ class FileManagerWindow:
         self.ui.table_view.doubleClicked.connect(self.open_item)
         self.ui.table_view.clicked.connect(self.preview_selected)
         self.ui.analyse_button.clicked.connect(self.analyse_selected_folder)
+        if self.ui.new_ai_folder_button is not None:
+            self.ui.new_ai_folder_button.clicked.connect(self.create_new_ai_folder)
         self.ui.back_button.clicked.connect(self.go_back)
         self.ui.forward_button.clicked.connect(self.go_forward)
         self.ui.undo_button.clicked.connect(self.undo_file_operation)
@@ -1485,10 +1659,14 @@ class FileManagerWindow:
         self.shortcuts.append(shortcut)
 
     def setup_context_menu(self):
-        """Enable the file-browser right-click menu."""
+        """Enable right-click menus for the central table and folder tree."""
         self.ui.table_view.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.ui.table_view.customContextMenuRequested.connect(
             self.show_file_context_menu
+        )
+        self.ui.tree_view.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.ui.tree_view.customContextMenuRequested.connect(
+            self.show_tree_context_menu
         )
 
     def show_startup_status(self):
@@ -1605,6 +1783,50 @@ class FileManagerWindow:
         if handler is not None:
             handler()
 
+    def show_tree_context_menu(self, position):
+        """Build and execute the context menu for one folder-tree item."""
+        index = self.ui.tree_view.indexAt(position)
+        if not index.isValid():
+            return
+
+        folder_path = self.browser.tree_path(index)
+        if not folder_path:
+            return
+
+        self.ui.tree_view.setCurrentIndex(index)
+        self.preview_path_with_analysis(folder_path)
+
+        is_drive_root = self.is_drive_root_path(folder_path)
+        menu = QMenu(self.window)
+        actions = {}
+
+        if not is_drive_root:
+            actions[menu.addAction("Open")] = lambda: self.navigate_to(folder_path)
+            menu.addSeparator()
+
+        if self.can_undo_file_operation():
+            actions[menu.addAction("Undo")] = self.undo_file_operation
+        if self.can_redo_file_operation():
+            actions[menu.addAction("Redo")] = self.redo_file_operation
+        if self.can_undo_file_operation() or self.can_redo_file_operation():
+            menu.addSeparator()
+
+        if not is_drive_root:
+            actions[menu.addAction("Copy")] = lambda: self.copy_selected_files([folder_path])
+            actions[menu.addAction("Cut")] = lambda: self.cut_selected_files([folder_path])
+            actions[menu.addAction("Delete")] = lambda: self.delete_selected_files([folder_path])
+            menu.addSeparator()
+
+            if self.can_paste_files_to(folder_path):
+                actions[menu.addAction("Paste")] = lambda: self.paste_files(folder_path)
+
+        actions[menu.addAction("Refresh")] = self.refresh_browser
+
+        action = menu.exec(self.ui.tree_view.viewport().mapToGlobal(position))
+        handler = actions.get(action)
+        if handler is not None:
+            handler()
+
     def open_selected_item(self):
         """Open the current table row from the context menu."""
         index = self.ui.table_view.currentIndex()
@@ -1621,9 +1843,9 @@ class FileManagerWindow:
 
         return list(dict.fromkeys(paths))
 
-    def copy_selected_files(self):
+    def copy_selected_files(self, paths=None):
         """Copy selected paths into the app and system clipboard."""
-        paths = self.selected_paths_for_shortcut()
+        paths = list(paths) if paths is not None else self.selected_paths_for_shortcut()
         if not paths:
             self.show_temporary_status(["No files selected to copy."])
             return
@@ -1631,9 +1853,9 @@ class FileManagerWindow:
         self.set_file_clipboard(paths, move=False)
         self.show_temporary_status([f"Copied to clipboard: {len(paths)}"])
 
-    def cut_selected_files(self):
+    def cut_selected_files(self, paths=None):
         """Mark selected paths for move paste."""
-        paths = self.selected_paths_for_shortcut()
+        paths = list(paths) if paths is not None else self.selected_paths_for_shortcut()
         if not paths:
             self.show_temporary_status(["No files selected to cut."])
             return
@@ -1641,9 +1863,9 @@ class FileManagerWindow:
         self.set_file_clipboard(paths, move=True)
         self.show_temporary_status([f"Cut to clipboard: {len(paths)}"])
 
-    def paste_files(self):
+    def paste_files(self, destination=None):
         """Paste copied or cut paths into the current folder."""
-        destination = self.current_paste_destination()
+        destination = destination or self.current_paste_destination()
         if not destination:
             self.show_temporary_status(["Paste is only available in a folder."])
             return
@@ -1672,11 +1894,16 @@ class FileManagerWindow:
         """Select all rows in the active table."""
         self.browser.select_all_rows()
 
-    def delete_selected_files(self):
+    def delete_selected_files(self, paths=None):
         """Move selected paths to the app trash so the action can be undone."""
-        paths = self.selected_paths_for_shortcut()
+        paths = list(paths) if paths is not None else self.selected_paths_for_shortcut()
         if not paths:
             self.show_temporary_status(["No files selected to delete."])
+            return
+
+        paths = [path for path in paths if not self.is_drive_root_path(path)]
+        if not paths:
+            self.show_temporary_status(["Drive roots cannot be deleted."])
             return
 
         if not self.confirm_delete(paths):
@@ -1689,6 +1916,9 @@ class FileManagerWindow:
         finally:
             QApplication.restoreOverrideCursor()
 
+        result["ai_folder_records"] = self.ai_folder_store.delete_records_for_paths(
+            result["done"]
+        )
         self.remove_deleted_clipboard_paths(result["done"])
         self.record_file_operation("delete", result)
         self.refresh_browser()
@@ -1718,6 +1948,7 @@ class FileManagerWindow:
             {
                 "action": action,
                 "operations": operations,
+                "ai_folder_records": result.get("ai_folder_records", []),
             }
         )
         self.redo_stack.clear()
@@ -1740,6 +1971,7 @@ class FileManagerWindow:
         if result["errors"]:
             self.undo_stack.append(entry)
         else:
+            self.restore_ai_folder_records_for_undo(entry)
             self.redo_stack.append(entry)
 
         self.refresh_browser()
@@ -1763,11 +1995,30 @@ class FileManagerWindow:
         if result["errors"]:
             self.redo_stack.append(entry)
         else:
+            self.remove_ai_folder_records_for_redo(entry)
             self.undo_stack.append(entry)
 
         self.refresh_browser()
         self.update_operation_buttons()
         self.show_operation_result("Redo", result)
+
+    def restore_ai_folder_records_for_undo(self, entry):
+        """Restore AI-folder database rows after undoing a delete."""
+        if entry.get("action") != "delete":
+            return
+
+        self.ai_folder_store.restore_records(entry.get("ai_folder_records", []))
+
+    def remove_ai_folder_records_for_redo(self, entry):
+        """Remove AI-folder database rows after redoing a delete."""
+        if entry.get("action") != "delete":
+            return
+
+        records = entry.get("ai_folder_records", [])
+        self.ai_folder_store.delete_records_for_paths(
+            record["folder_path"]
+            for record in records
+        )
 
     def can_undo_file_operation(self):
         """Return whether undo is currently available."""
@@ -1806,8 +2057,20 @@ class FileManagerWindow:
 
     def can_paste_files(self):
         """Return whether paste can run in the current browser state."""
+        return self.can_paste_files_to(
+            self.current_paste_destination(),
+            allow_drive_root=True,
+        )
+
+    def can_paste_files_to(self, destination, allow_drive_root=False):
+        """Return whether files can be pasted into the given folder."""
         paths, _move = self.file_clipboard_contents()
-        return bool(paths) and bool(self.current_paste_destination())
+        return (
+            bool(paths)
+            and bool(destination)
+            and Path(destination).is_dir()
+            and (allow_drive_root or not self.is_drive_root_path(destination))
+        )
 
     def current_paste_destination(self):
         """Return the folder that should receive pasted files."""
@@ -1820,6 +2083,21 @@ class FileManagerWindow:
             return str(Path(typed_path))
 
         return ""
+
+    @staticmethod
+    def is_drive_root_path(path_text):
+        """Return whether a path is a Windows drive root such as C:/ or D:/."""
+        if not path_text:
+            return False
+
+        path = Path(path_text)
+        anchor = path.anchor
+        if not anchor:
+            return False
+
+        clean_path = QDir.cleanPath(str(path_text)).rstrip("/\\").casefold()
+        clean_anchor = QDir.cleanPath(anchor).rstrip("/\\").casefold()
+        return clean_path == clean_anchor
 
     def show_paste_result(self, result, move):
         """Show a temporary status message for paste results."""
@@ -1982,6 +2260,142 @@ class FileManagerWindow:
 
         return ""
 
+    def create_new_ai_folder(self):
+        """Create an AI-managed folder in the current browser folder."""
+        default_parent = self.current_ai_folder_parent()
+        if not default_parent:
+            self.show_temporary_status(["No folder selected for New AIFolder."])
+            return
+
+        options = self.ask_new_ai_folder_options(default_parent)
+        if not options:
+            return
+
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QApplication.processEvents()
+        try:
+            record = self.ai_folder_store.create_ai_folder(
+                parent_path=options["parent_path"],
+                name=options["folder_name"],
+                authorization_mode=options["authorization_mode"],
+                aifm_params={
+                    "created_by": "frontend",
+                    "visible_in_browser": True,
+                },
+            )
+        except OSError as error:
+            self.show_temporary_status([f"New AIFolder failed: {error}"])
+            return
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        self.navigate_to(
+            options["parent_path"],
+            add_history=False,
+            selected_path=record.folder_path,
+        )
+        self.preview_path_with_analysis(record.folder_path)
+        self.show_temporary_status(
+            [
+                f"New AIFolder: {record.name}",
+                f"Auth: {record.authorization_mode}",
+            ]
+        )
+
+    def current_ai_folder_parent(self):
+        """Return the folder where New AIFolder should be created."""
+        folder_path = self.browser.current_folder_path()
+        if folder_path and Path(folder_path).is_dir():
+            return folder_path
+
+        tree_index = self.ui.tree_view.currentIndex()
+        if tree_index.isValid():
+            tree_path = self.browser.tree_path(tree_index)
+            if tree_path and Path(tree_path).is_dir():
+                return tree_path
+
+        typed_path = self.ui.navigate_bar.text().strip()
+        if typed_path and Path(typed_path).is_dir():
+            return typed_path
+
+        return ""
+
+    def ask_new_ai_folder_options(self, default_parent):
+        dialog = QDialog(self.window)
+        dialog.setWindowTitle("New AIFolder")
+
+        parent_edit = QLineEdit(default_parent)
+        name_edit = QLineEdit("New AIFolder")
+        mode_combo = QComboBox(dialog)
+        mode_combo.addItem("User Required", AIFolderStore.AUTH_USER_REQUIRED)
+        mode_combo.addItem("AI Decides", AIFolderStore.AUTH_AI_DECIDES)
+        mode_combo.addItem("Always Allowed", AIFolderStore.AUTH_ALWAYS_ALLOWED)
+
+        browse_button = QPushButton("Browse", dialog)
+        path_row = QWidget(dialog)
+        path_layout = QHBoxLayout(path_row)
+        path_layout.setContentsMargins(0, 0, 0, 0)
+        path_layout.addWidget(parent_edit, 1)
+        path_layout.addWidget(browse_button)
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Parent folder", path_row)
+        form_layout.addRow("Folder name", name_edit)
+        form_layout.addRow("Authorization", mode_combo)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok
+            | QDialogButtonBox.StandardButton.Cancel,
+            dialog,
+        )
+
+        layout = QVBoxLayout(dialog)
+        layout.addLayout(form_layout)
+        layout.addWidget(buttons)
+
+        def choose_parent():
+            folder = QFileDialog.getExistingDirectory(
+                self.window,
+                "Choose Parent Folder",
+                parent_edit.text().strip() or default_parent,
+            )
+            if folder:
+                parent_edit.setText(QDir.cleanPath(folder))
+
+        def accept_if_valid():
+            parent_path = QDir.cleanPath(parent_edit.text().strip())
+            folder_name = name_edit.text().strip()
+            if not parent_path or not Path(parent_path).is_dir():
+                QMessageBox.warning(
+                    dialog,
+                    "New AIFolder",
+                    "Parent folder does not exist.",
+                )
+                return
+            if not folder_name:
+                QMessageBox.warning(
+                    dialog,
+                    "New AIFolder",
+                    "Folder name cannot be empty.",
+                )
+                return
+
+            dialog.options = {
+                "parent_path": parent_path,
+                "folder_name": folder_name,
+                "authorization_mode": mode_combo.currentData(),
+            }
+            dialog.accept()
+
+        browse_button.clicked.connect(choose_parent)
+        buttons.accepted.connect(accept_if_valid)
+        buttons.rejected.connect(dialog.reject)
+
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            return dialog.options
+
+        return None
+
     def analyse_selected_folder(self):
         """Analyse selected folder sizes and persist the result table."""
         folder_path = self.selected_folder_for_analysis()
@@ -2126,6 +2540,7 @@ def main():
     app = QApplication(sys.argv)
     file_manager = FileManagerWindow()
     app.aboutToQuit.connect(file_manager.cleanup_on_exit)
+    atexit.register(file_manager.cleanup_on_exit)
     file_manager.show()
     sys.exit(app.exec())
 
