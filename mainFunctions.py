@@ -11,13 +11,16 @@ from ctypes import wintypes
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
+from config_loader import Config
 
+config = Config()
+CONFIG = config.get_config()
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_ANALYSIS_DB = BASE_DIR / "folder_analysis.sqlite3"
-EVERYTHING_RESULT_LIMIT = 1000
+DEFAULT_ANALYSIS_DB = config.get_default_analysis_db()
+EVERYTHING_RESULT_LIMIT = config.get_everything_limit()
 EVERYTHING_SDK_DLL_PATH = BASE_DIR / "Everything-SDK" / "dll" / "Everything64.dll"
-EVERYTHING_START_TIMEOUT_SECONDS = 6
+EVERYTHING_START_TIMEOUT_SECONDS = config.get_everything_timeout()
 
 
 class FileOperationService:
@@ -414,7 +417,8 @@ class EverythingSdkSearch:
 
         self.dll.Everything_Reset()
         self.dll.Everything_SetSearchW(query)
-        self.dll.Everything_SetMax(self.result_limit)
+        if self.result_limit > 0:
+            self.dll.Everything_SetMax(self.result_limit)
         self.dll.Everything_SetRequestFlags(self.REQUEST_FILE_NAME | self.REQUEST_PATH)
         self.dll.Everything_SetSort(self.SORT_PATH_ASCENDING)
 

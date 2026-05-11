@@ -1,0 +1,26 @@
+{
+    "models": {
+        "minimax": {
+            "aliases": ["minimax", "minmax"],
+            "base_url": "https://api.minimaxi.com/v1",
+            "api_key_envs": [],
+            "model_envs": [],
+            "default_model": "MiniMax-M2.7"
+        },
+        "kimi": {
+            "aliases": ["kimi", "moonshot"],
+            "base_url": "https://api.kimi.com/v1",
+            "api_key_envs": [],
+            "model_envs": [],
+            "default_model": "Kimi-3.5"
+        }
+    },
+    "system_prompt": "You are a File Manager assistant. You should help users manage their files and folders. ",
+    "preference": {
+        "color": "xxx"
+    },
+    "everything_result_limit": 5000,
+    "everything_timeout": 6,
+    "default_analysis_db": "folder_analysis.sqlite3"
+
+}

@@ -4,3 +4,6 @@ __pycache__
 TODO.md
 .aifm_trash
 folder_analysis.sqlite3
+build
+dist
+AIFM.spec
