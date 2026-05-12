@@ -39,22 +39,17 @@ class ProviderSpec:
     """
     Normalized connection settings for one model provider.
 
-    Config accepts both the current field names used by this project
-    (`api_key_envs`, `model_envs`) and clearer future names (`api_keys`,
-    `models`). Values may be direct strings or environment variable names.
+    Config stores one API key string per model provider. Model names may still
+    be provided as a string or list, and may be direct values or environment
+    variable names.
     """
 
     name: str
     aliases: tuple[str, ...]
     base_url: str
-    api_keys: tuple[str, ...]
+    api_key: str
     models: tuple[str, ...]
     default_model: str
-
-    @property
-    def default_api_key(self) -> str:
-        """Return the first configured API key, or an empty string."""
-        return self.api_keys[0] if self.api_keys else ""
 
     @property
     def default_or_first_model(self) -> str:
@@ -110,10 +105,7 @@ class Config:
                     name=canonical_name,
                     aliases=self._read_values(values, "aliases", normalize=True),
                     base_url=self._read_string(values.get("base_url")),
-                    api_keys=self._unique_values(
-                        self._read_values(values, "api_keys")
-                        + self._read_values(values, "api_key_envs", resolve_env=True)
-                    ),
+                    api_key=self._read_api_key(values),
                     models=self._unique_values(
                         self._read_values(values, "models")
                         + self._read_values(values, "model_envs", resolve_env=True)
@@ -123,6 +115,11 @@ class Config:
             )
 
         return tuple(specs)
+
+    @classmethod
+    def _read_api_key(cls, source: JsonDict) -> str:
+        """Read the configured API key string for one provider."""
+        return cls._read_string(source.get("api_key"))
 
     @classmethod
     def _build_provider_alias_map(

@@ -227,7 +227,7 @@ def create_model_client(
     """Create a model client from config.json with optional runtime overrides."""
     active_config = runtime_config or DEFAULT_CONFIG
     spec = active_config.get_provider_spec(provider)
-    resolved_api_key = api_key or spec.default_api_key
+    resolved_api_key = api_key or spec.api_key
     resolved_model = model or spec.default_or_first_model
 
     if not resolved_api_key:

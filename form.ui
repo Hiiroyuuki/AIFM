@@ -92,18 +92,124 @@
      <string>PushButton</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="llmsettings">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>430</y>
-      <width>101</width>
+      <y>424</y>
+      <width>151</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>LLM settings</string>
     </property>
+   </widget>
+   <widget class="QFrame" name="llmInfoPanel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>461</y>
+      <width>151</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#llmInfoPanel {
+    background-color: #f8fafc;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+}
+
+QLabel#llmInfoTitle {
+    color: #111111;
+}
+
+QLabel#llmSelectionPlaceholderLabel {
+    color: #666666;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <layout class="QVBoxLayout" name="llmInfoLayout">
+     <property name="leftMargin">
+      <number>8</number>
+     </property>
+     <property name="topMargin">
+      <number>8</number>
+     </property>
+     <property name="rightMargin">
+      <number>8</number>
+     </property>
+     <property name="bottomMargin">
+      <number>8</number>
+     </property>
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="llmInfoTitle">
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Current LLM</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+     <widget class="QLabel" name="llmProviderLabel">
+      <property name="text">
+       <string>Provider
+--</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+     <widget class="QLabel" name="llmModelLabel">
+      <property name="text">
+       <string>Model</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="llmModelComboBox"/>
+     </item>
+     <item>
+     <widget class="QLabel" name="llmApiKeyLabel">
+      <property name="text">
+       <string>API key
+--</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+     <widget class="QLabel" name="llmSelectionPlaceholderLabel">
+     <property name="text">
+       <string>Saved models
+0</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QTreeView" name="treeView">
     <property name="geometry">

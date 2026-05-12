@@ -7,6 +7,7 @@ top-level window controller.
 """
 
 import atexit
+import copy
 import html
 import json
 import mimetypes
@@ -15,6 +16,8 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+
+import requests
 
 from PySide6.QtCore import (
     QDir,
@@ -49,8 +52,10 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QHBoxLayout,
     QHeaderView,
+    QLabel,
     QLineEdit,
     QListWidget,
+    QListWidgetItem,
     QMenu,
     QMessageBox,
     QPushButton,
@@ -65,7 +70,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from config_loader import Config
+from config_loader import Config, ConfigError
 from mainFunctions import (
     AIFolderStore,
     EverythingSdkSearch,
@@ -81,6 +86,21 @@ FILE_TYPE_NAMES_PATH = BASE_DIR / "file_type_names.json"
 UI_PATH = BASE_DIR / "form.ui"
 FOLDER_COLUMN_WIDTHS = (220, 90, 140, 160)
 SEARCH_NAME_COLUMN_WIDTH = 180
+LLM_NICKNAME_CONFIG_KEY = "nickname"
+LLM_API_KEY_CONFIG_KEY = "api_key"
+LLM_PROVIDER_OPTIONS = (
+    ("moonshot", "Moonshot"),
+    ("chatgpt", "ChatGPT"),
+    ("deepseek", "DeepSeek"),
+    ("minimax", "MiniMax"),
+)
+LLM_PROVIDER_LABELS = dict(LLM_PROVIDER_OPTIONS)
+LLM_PROVIDER_DEFAULT_BASE_URLS = {
+    "moonshot": "https://api.kimi.com/v1",
+    "chatgpt": "https://api.openai.com/v1",
+    "deepseek": "https://api.deepseek.com/v1",
+    "minimax": "https://api.minimaxi.com/v1",
+}
 
 SELECTED_ROW_BACKGROUND = "#e8f1ff"
 SELECTED_ROW_TEXT = "#111111"
@@ -556,6 +576,13 @@ class UiElements:
     search_button: QPushButton
     preview_view: QTableView
     ai_view: QTableView
+    llm_settings_button: QPushButton
+    llm_info_panel: QWidget
+    llm_provider_label: QLabel
+    llm_model_label: QLabel
+    llm_model_combo_box: QComboBox
+    llm_api_key_label: QLabel
+    llm_selection_placeholder_label: QLabel
     side_buttons: list[QPushButton]
 
     @classmethod
@@ -577,6 +604,16 @@ class UiElements:
             search_button=window.findChild(QPushButton, "search"),
             preview_view=window.findChild(QTableView, "preview"),
             ai_view=window.findChild(QTableView, "AIview"),
+            llm_settings_button=window.findChild(QPushButton, "llmsettings"),
+            llm_info_panel=window.findChild(QWidget, "llmInfoPanel"),
+            llm_provider_label=window.findChild(QLabel, "llmProviderLabel"),
+            llm_model_label=window.findChild(QLabel, "llmModelLabel"),
+            llm_model_combo_box=window.findChild(QComboBox, "llmModelComboBox"),
+            llm_api_key_label=window.findChild(QLabel, "llmApiKeyLabel"),
+            llm_selection_placeholder_label=window.findChild(
+                QLabel,
+                "llmSelectionPlaceholderLabel",
+            ),
             side_buttons=[
                 window.findChild(QPushButton, object_name)
                 for object_name in (
@@ -586,7 +623,6 @@ class UiElements:
                     "pushButton_4",
                     "pushButton_5",
                     "pushButton_6",
-                    "pushButton_7",
                 )
             ],
         )
@@ -602,7 +638,7 @@ class LayoutManager:
     stretch behavior only, not browsing or search logic.
     """
 
-    SIDE_PANEL_WIDTH = 130
+    SIDE_PANEL_WIDTH = 170
     PANEL_SPACING = 6
     STATUS_ROW_HEIGHT = 24
     STATUS_BUTTON_WIDTH = 70
@@ -643,10 +679,16 @@ class LayoutManager:
         """Create the fixed-width left action button column."""
         side_panel = QWidget(self.ui.central_widget)
         side_layout = QVBoxLayout(side_panel)
+        side_layout.setContentsMargins(0, 0, 0, 0)
+        side_layout.setSpacing(self.PANEL_SPACING)
         for button in self.ui.side_buttons:
             if button is not None:
                 side_layout.addWidget(button)
         side_layout.addStretch()
+        if self.ui.llm_settings_button is not None:
+            side_layout.addWidget(self.ui.llm_settings_button)
+        if self.ui.llm_info_panel is not None:
+            side_layout.addWidget(self.ui.llm_info_panel)
         return side_panel
 
     def create_content_splitter(self):
@@ -699,6 +741,15 @@ class LayoutManager:
         for button in self.ui.side_buttons:
             if button is not None:
                 button.setMinimumWidth(self.SIDE_PANEL_WIDTH - 12)
+        if self.ui.llm_settings_button is not None:
+            self.ui.llm_settings_button.setMinimumWidth(self.SIDE_PANEL_WIDTH - 12)
+        if self.ui.llm_info_panel is not None:
+            self.ui.llm_info_panel.setMinimumWidth(self.SIDE_PANEL_WIDTH - 12)
+            self.ui.llm_info_panel.setMinimumHeight(200)
+            self.ui.llm_info_panel.setSizePolicy(
+                QSizePolicy.Expanding,
+                QSizePolicy.Fixed,
+            )
 
         for button in (
             self.ui.back_button,
@@ -718,6 +769,15 @@ class LayoutManager:
         self.ui.ai_view.setMinimumWidth(220)
         self.ui.tree_view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.ui.table_view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        for label in (
+            self.ui.llm_provider_label,
+            self.ui.llm_model_label,
+            self.ui.llm_api_key_label,
+            self.ui.llm_selection_placeholder_label,
+        ):
+            if label is not None:
+                label.setWordWrap(True)
 
 
 class FileBrowser:
@@ -1613,6 +1673,7 @@ class FileManagerWindow:
         self.status_restore_token = 0
 
         self.layout.setup()
+        self.setup_llm_info()
         self.browser.setup()
         self.preview.setup()
         self.ai_preview.setup()
@@ -1621,6 +1682,724 @@ class FileManagerWindow:
         self.navigate_to(DEFAULT_PATH, add_history=False)
         self.update_operation_buttons()
         self.show_startup_status()
+
+    def setup_llm_info(self):
+        """Display the currently configured LLM without exposing secrets."""
+        if self.ui.llm_info_panel is None:
+            return
+
+        try:
+            spec = self.config.get_provider_spec()
+        except ConfigError as error:
+            provider_value = "Not configured"
+            api_key_value = "--"
+            tooltip = str(error)
+            current_model = ""
+            current_provider = ""
+        else:
+            provider_value = spec.name
+            api_key_value = "Configured" if spec.api_key else "Missing"
+            tooltip = f"Endpoint: {spec.base_url or '--'}"
+            current_model = spec.default_or_first_model or ""
+            current_provider = spec.name
+
+        self.set_llm_info_label(self.ui.llm_provider_label, "Provider", provider_value)
+        self.set_llm_info_title(self.ui.llm_model_label, "Model")
+        self.populate_llm_model_combo(current_provider, current_model)
+        self.set_llm_info_label(self.ui.llm_api_key_label, "API key", api_key_value)
+        self.set_llm_info_label(
+            self.ui.llm_selection_placeholder_label,
+            "Saved models",
+            str(len(self.load_llm_profiles())),
+        )
+
+        self.ui.llm_info_panel.setToolTip(tooltip)
+
+    def populate_llm_model_combo(self, provider, current_model):
+        """Fill the side-panel model dropdown for the active provider."""
+        combo = self.ui.llm_model_combo_box
+        if combo is None:
+            return
+
+        combo.blockSignals(True)
+        combo.clear()
+
+        provider_name = str(provider or "").strip().lower()
+        model_names = self.configured_llm_models_for_provider(provider_name)
+        if current_model and current_model not in model_names:
+            model_names.insert(0, current_model)
+
+        for model_name in model_names:
+            combo.addItem(model_name, model_name)
+
+        if current_model:
+            combo.setCurrentText(current_model)
+
+        combo.setEnabled(bool(model_names and provider_name))
+        combo.blockSignals(False)
+
+    @staticmethod
+    def set_llm_info_label(label, title, value):
+        """Render one readable LLM info field in the narrow side panel."""
+        if label is None:
+            return
+
+        label.setTextFormat(Qt.TextFormat.RichText)
+        label.setText(
+            '<span style="color:#5f6368; font-size:8pt;">'
+            f"{html.escape(title)}"
+            "</span><br>"
+            '<span style="font-weight:600; color:#111111;">'
+            f"{html.escape(value)}"
+            "</span>"
+        )
+
+    @staticmethod
+    def set_llm_info_title(label, title):
+        """Render a compact side-panel field title."""
+        if label is None:
+            return
+
+        label.setTextFormat(Qt.TextFormat.RichText)
+        label.setText(
+            '<span style="color:#5f6368; font-size:8pt;">'
+            f"{html.escape(title)}"
+            "</span>"
+        )
+
+    def open_llm_settings(self):
+        """Open the LLM profile manager window."""
+        dialog = QDialog(self.window)
+        dialog.setWindowTitle("LLM Settings")
+        dialog.resize(460, 360)
+
+        title_label = QLabel("Models", dialog)
+        title_label.setStyleSheet("font-weight: 600;")
+
+        add_button = QPushButton("+", dialog)
+        add_button.setFixedSize(32, 28)
+        add_button.setToolTip("Add LLM model")
+
+        edit_button = QPushButton("Edit", dialog)
+        edit_button.setToolTip("Edit selected LLM model")
+
+        header_layout = QHBoxLayout()
+        header_layout.addWidget(title_label)
+        header_layout.addStretch()
+        header_layout.addWidget(edit_button)
+        header_layout.addWidget(add_button)
+
+        model_list = QListWidget(dialog)
+        model_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok
+            | QDialogButtonBox.StandardButton.Cancel,
+            dialog,
+        )
+
+        layout = QVBoxLayout(dialog)
+        layout.addLayout(header_layout)
+        layout.addWidget(model_list, 1)
+        layout.addWidget(buttons)
+
+        def refresh_profiles(selected_provider=None):
+            self.populate_llm_profile_list(model_list, selected_provider)
+
+        def add_profile():
+            existing_profiles = self.load_llm_profiles()
+            profile = self.ask_new_llm_profile(dialog, existing_profiles)
+            if profile is None:
+                return
+
+            if self.save_llm_profiles([*existing_profiles, profile], dialog):
+                refresh_profiles(profile["provider"])
+
+        def edit_profile():
+            item = model_list.currentItem()
+            profile = item.data(Qt.ItemDataRole.UserRole) if item is not None else None
+            if not profile:
+                QMessageBox.warning(
+                    dialog,
+                    "LLM Settings",
+                    "Please select a model first.",
+                )
+                return
+
+            existing_profiles = self.load_llm_profiles()
+            edited_profile = self.ask_new_llm_profile(
+                dialog,
+                existing_profiles,
+                profile,
+            )
+            if edited_profile is None:
+                return
+
+            updated_profiles = [
+                edited_profile if item["provider"] == profile["provider"] else item
+                for item in existing_profiles
+            ]
+            if self.save_llm_profiles(updated_profiles, dialog):
+                refresh_profiles(edited_profile["provider"])
+
+        def switch_to_selected_profile():
+            item = model_list.currentItem()
+            profile = item.data(Qt.ItemDataRole.UserRole) if item is not None else None
+            if not profile:
+                QMessageBox.warning(
+                    dialog,
+                    "LLM Settings",
+                    "Please select a model first.",
+                )
+                return
+
+            if self.save_active_llm_provider(profile["provider"], dialog):
+                dialog.accept()
+
+        add_button.clicked.connect(add_profile)
+        edit_button.clicked.connect(edit_profile)
+        buttons.rejected.connect(dialog.reject)
+        buttons.accepted.connect(switch_to_selected_profile)
+
+        refresh_profiles()
+        dialog.exec()
+
+    def populate_llm_profile_list(self, model_list, selected_provider=None):
+        """Fill the LLM settings list with user-added model profiles."""
+        model_list.clear()
+        profiles = self.load_llm_profiles()
+        if not profiles:
+            item = QListWidgetItem("No LLM models added yet.\nClick + to add one.")
+            item.setFlags(Qt.ItemFlag.NoItemFlags)
+            model_list.addItem(item)
+            return
+
+        for profile in profiles:
+            provider = profile["provider"]
+            provider_label = LLM_PROVIDER_LABELS.get(provider, provider)
+            model = profile.get("model") or "--"
+            item = QListWidgetItem(
+                f"{profile['nickname']}\n"
+                f"Provider: {provider_label} | Model: {model} | API key: configured"
+            )
+            item.setData(Qt.ItemDataRole.UserRole, profile)
+            model_list.addItem(item)
+            target_provider = selected_provider or self.current_llm_provider_name()
+            if provider == target_provider:
+                model_list.setCurrentItem(item)
+
+    def current_llm_provider_name(self):
+        """Return the currently selected LLM provider name, if configured."""
+        try:
+            return self.config.get_provider_spec().name
+        except ConfigError:
+            return ""
+
+    def ask_new_llm_profile(self, parent, existing_profiles, profile=None):
+        """Ask the user for one new or edited LLM profile."""
+        editing = profile is not None
+        dialog = QDialog(parent)
+        dialog.setWindowTitle("Edit LLM Model" if editing else "Add LLM Model")
+
+        nickname_edit = QLineEdit(dialog)
+        api_key_edit = QLineEdit(dialog)
+        api_key_edit.setEchoMode(QLineEdit.EchoMode.Password)
+        model_combo = QComboBox(dialog)
+        model_combo.setEditable(True)
+        fetch_models_button = QPushButton("Fetch models", dialog)
+
+        provider_combo = QComboBox(dialog)
+        for provider, label in LLM_PROVIDER_OPTIONS:
+            provider_combo.addItem(label, provider)
+
+        if editing:
+            nickname_edit.setText(profile["nickname"])
+            api_key_edit.setText(profile["api_key"])
+            provider_index = provider_combo.findData(profile["provider"])
+            if provider_index >= 0:
+                provider_combo.setCurrentIndex(provider_index)
+            provider_combo.setEnabled(False)
+
+        model_row = QWidget(dialog)
+        model_layout = QHBoxLayout(model_row)
+        model_layout.setContentsMargins(0, 0, 0, 0)
+        model_layout.addWidget(model_combo, 1)
+        model_layout.addWidget(fetch_models_button)
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Nickname", nickname_edit)
+        form_layout.addRow("API key", api_key_edit)
+        form_layout.addRow("API provider", provider_combo)
+        form_layout.addRow("Model", model_row)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok
+            | QDialogButtonBox.StandardButton.Cancel,
+            dialog,
+        )
+
+        layout = QVBoxLayout(dialog)
+        layout.addLayout(form_layout)
+        layout.addWidget(buttons)
+
+        def set_model_choices(models, selected_model=""):
+            current_model = selected_model or model_combo.currentText().strip()
+            model_combo.clear()
+            for model_name in models:
+                model_combo.addItem(model_name)
+            if current_model:
+                if model_combo.findText(current_model) < 0:
+                    model_combo.insertItem(0, current_model)
+                model_combo.setCurrentText(current_model)
+            elif model_combo.count():
+                model_combo.setCurrentIndex(0)
+
+        def refresh_configured_models():
+            provider = provider_combo.currentData()
+            selected_model = profile.get("model", "") if editing else ""
+            if not selected_model:
+                selected_model = self.default_llm_model_for_provider(provider)
+            set_model_choices(
+                self.configured_llm_models_for_provider(provider),
+                selected_model,
+            )
+
+        def fetch_models():
+            provider = provider_combo.currentData()
+            api_key = api_key_edit.text().strip()
+            if not api_key:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "API key cannot be empty.",
+                )
+                return
+
+            base_url = self.llm_base_url_for_provider(provider)
+            if not base_url:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "No base URL is configured for this provider.",
+                )
+                return
+
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            try:
+                models = self.fetch_llm_models(base_url, api_key)
+            except (requests.RequestException, ValueError) as error:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    f"Could not fetch models: {error}",
+                )
+                return
+            finally:
+                QApplication.restoreOverrideCursor()
+
+            if not models:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "No models were returned by this provider.",
+                )
+                return
+
+            set_model_choices(models, models[0])
+
+        def accept_if_valid():
+            nickname = nickname_edit.text().strip()
+            api_key = api_key_edit.text().strip()
+            provider = provider_combo.currentData()
+            model = model_combo.currentText().strip()
+
+            if not nickname:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "Nickname cannot be empty.",
+                )
+                return
+            if self.llm_profile_nickname_exists(nickname, existing_profiles, provider):
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "Nickname already exists.",
+                )
+                return
+            if not api_key:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "API key cannot be empty.",
+                )
+                return
+            if not model:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "Model cannot be empty.",
+                )
+                return
+            if provider not in LLM_PROVIDER_LABELS:
+                QMessageBox.warning(
+                    dialog,
+                    dialog.windowTitle(),
+                    "Please choose a supported API provider.",
+                )
+                return
+
+            dialog.profile = {
+                "nickname": nickname,
+                "provider": provider,
+                "api_key": api_key,
+                "model": model,
+            }
+            dialog.accept()
+
+        provider_combo.currentIndexChanged.connect(
+            lambda _index: refresh_configured_models()
+        )
+        fetch_models_button.clicked.connect(fetch_models)
+        buttons.accepted.connect(accept_if_valid)
+        buttons.rejected.connect(dialog.reject)
+        refresh_configured_models()
+
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            return dialog.profile
+
+        return None
+
+    def configured_llm_models_for_provider(self, provider):
+        """Return models already stored for one provider in config.json."""
+        provider_config = self.llm_provider_config(provider)
+        models = []
+        default_model = str(provider_config.get("default_model") or "").strip()
+        if default_model:
+            models.append(default_model)
+        models.extend(self.config_value_strings(provider_config.get("model_envs")))
+        models.extend(self.config_value_strings(provider_config.get("models")))
+        return self.unique_strings(models)
+
+    def default_llm_model_for_provider(self, provider):
+        """Return the configured default model for one provider, if any."""
+        provider_config = self.llm_provider_config(provider)
+        default_model = str(provider_config.get("default_model") or "").strip()
+        if default_model:
+            return default_model
+
+        models = self.configured_llm_models_for_provider(provider)
+        return models[0] if models else ""
+
+    def llm_base_url_for_provider(self, provider):
+        """Return configured or built-in base URL for one provider."""
+        provider_name = str(provider or "").strip().lower()
+        provider_config = self.llm_provider_config(provider_name)
+        base_url = str(provider_config.get("base_url") or "").strip()
+        return base_url or LLM_PROVIDER_DEFAULT_BASE_URLS.get(provider_name, "")
+
+    def llm_provider_config(self, provider):
+        """Return the raw config dictionary for one LLM provider."""
+        model_configs = self.config.get_config().get("models") or {}
+        if not isinstance(model_configs, dict):
+            return {}
+
+        provider_config = model_configs.get(str(provider or "").strip().lower())
+        return provider_config if isinstance(provider_config, dict) else {}
+
+    @staticmethod
+    def config_value_strings(value):
+        """Return non-empty strings from a scalar or list config value."""
+        if value is None:
+            return []
+        if isinstance(value, (list, tuple)):
+            values = value
+        else:
+            values = (value,)
+
+        return [str(item).strip() for item in values if str(item).strip()]
+
+    @staticmethod
+    def unique_strings(values):
+        """Return unique strings while preserving order."""
+        result = []
+        seen = set()
+        for value in values:
+            text = str(value).strip()
+            if text and text not in seen:
+                result.append(text)
+                seen.add(text)
+        return result
+
+    def fetch_llm_models(self, base_url, api_key):
+        """Fetch OpenAI-compatible model IDs from a provider /models endpoint."""
+        url = f"{base_url.rstrip('/')}/models"
+        response = requests.get(
+            url,
+            headers={"Authorization": f"Bearer {api_key}"},
+            timeout=20,
+        )
+        if response.status_code >= 400:
+            raise ValueError(f"HTTP {response.status_code}: {response.text[:200]}")
+
+        try:
+            payload = response.json()
+        except ValueError as error:
+            raise ValueError("Provider returned non-JSON model data.") from error
+
+        return self.extract_llm_model_names(payload)
+
+    def extract_llm_model_names(self, payload):
+        """Extract model names from common provider /models response shapes."""
+        if isinstance(payload, dict):
+            raw_items = (
+                payload.get("data")
+                or payload.get("models")
+                or payload.get("items")
+                or []
+            )
+        elif isinstance(payload, list):
+            raw_items = payload
+        else:
+            raw_items = []
+
+        names = []
+        for item in raw_items:
+            if isinstance(item, str):
+                names.append(item)
+                continue
+            if not isinstance(item, dict):
+                continue
+
+            for key in ("id", "name", "model"):
+                value = str(item.get(key) or "").strip()
+                if value:
+                    names.append(value)
+                    break
+
+        return sorted(self.unique_strings(names), key=str.casefold)
+
+    def load_llm_profiles(self):
+        """Return user-added LLM records stored directly under models."""
+        model_configs = self.config.get_config().get("models") or {}
+        if not isinstance(model_configs, dict):
+            return []
+
+        profiles = []
+        for provider in LLM_PROVIDER_LABELS:
+            provider_config = model_configs.get(provider)
+            if not isinstance(provider_config, dict):
+                continue
+
+            profile = self.normalize_llm_profile(provider_config, provider)
+            if profile is not None:
+                profiles.append(profile)
+        return profiles
+
+    @classmethod
+    def normalize_llm_profile(cls, raw_profile, provider=None):
+        """Read one provider config as an LLM settings list item."""
+        if not isinstance(raw_profile, dict):
+            return None
+
+        provider_name = str(
+            provider
+            or raw_profile.get("provider")
+            or raw_profile.get("api_provider")
+            or ""
+        ).strip().lower()
+        if provider_name not in LLM_PROVIDER_LABELS:
+            return None
+
+        nickname = str(raw_profile.get(LLM_NICKNAME_CONFIG_KEY) or "").strip()
+        if not nickname:
+            return None
+
+        api_key = str(raw_profile.get(LLM_API_KEY_CONFIG_KEY) or "").strip()
+        model = str(raw_profile.get("default_model") or "").strip()
+        if not model:
+            models = cls.config_value_strings(raw_profile.get("model_envs"))
+            if not models:
+                models = cls.config_value_strings(raw_profile.get("models"))
+            model = models[0] if models else ""
+
+        return {
+            "nickname": nickname,
+            "provider": provider_name,
+            "api_key": api_key,
+            "model": model,
+        }
+
+    @staticmethod
+    def llm_profile_nickname_exists(nickname, profiles, provider=None):
+        """Return whether an LLM nickname is already used by another provider."""
+        normalized = nickname.casefold()
+        provider_name = str(provider or "").strip().lower()
+        for profile in profiles:
+            if profile["provider"] == provider_name:
+                continue
+            if profile["nickname"].casefold() == normalized:
+                return True
+        return False
+
+    def save_llm_profiles(self, profiles, parent):
+        """Persist LLM records directly under config.json models providers."""
+        config_data = copy.deepcopy(self.config.get_config())
+        model_configs = config_data.setdefault("models", {})
+        if not isinstance(model_configs, dict):
+            QMessageBox.warning(
+                parent,
+                "LLM Settings",
+                "config.json models must be an object.",
+            )
+            return False
+
+        for raw_profile in profiles:
+            provider = str(raw_profile.get("provider") or "").strip().lower()
+            nickname = str(raw_profile.get("nickname") or "").strip()
+            api_key = str(raw_profile.get("api_key") or "").strip()
+            model = str(raw_profile.get("model") or "").strip()
+            if provider not in LLM_PROVIDER_LABELS or not nickname or not api_key:
+                continue
+
+            provider_config = model_configs.get(provider)
+            if provider_config is None:
+                provider_config = {}
+                model_configs[provider] = provider_config
+
+            if not isinstance(provider_config, dict):
+                QMessageBox.warning(
+                    parent,
+                    "LLM Settings",
+                    f"config.json models.{provider} must be an object.",
+                )
+                return False
+
+            provider_config[LLM_NICKNAME_CONFIG_KEY] = nickname
+            provider_config[LLM_API_KEY_CONFIG_KEY] = api_key
+            if not provider_config.get("base_url"):
+                base_url = LLM_PROVIDER_DEFAULT_BASE_URLS.get(provider, "")
+                if base_url:
+                    provider_config["base_url"] = base_url
+
+            if model:
+                provider_config["default_model"] = model
+                model_envs = self.unique_strings(
+                    [
+                        *self.config_value_strings(provider_config.get("model_envs")),
+                        model,
+                    ]
+                )
+                provider_config["model_envs"] = model_envs
+
+        try:
+            with self.config.path.open("w", encoding="utf-8") as file:
+                json.dump(config_data, file, ensure_ascii=False, indent=4)
+                file.write("\n")
+        except OSError as error:
+            QMessageBox.warning(
+                parent,
+                "LLM Settings",
+                f"Could not save config.json: {error}",
+            )
+            return False
+
+        self.config = Config(self.config.path)
+        self.setup_llm_info()
+        return True
+
+    def save_active_llm_provider(self, provider, parent):
+        """Persist the selected LLM provider as the active model."""
+        provider_name = str(provider or "").strip().lower()
+        if provider_name not in LLM_PROVIDER_LABELS:
+            QMessageBox.warning(
+                parent,
+                "LLM Settings",
+                "Please choose a supported model.",
+            )
+            return False
+
+        config_data = copy.deepcopy(self.config.get_config())
+        config_data["provider"] = provider_name
+
+        try:
+            with self.config.path.open("w", encoding="utf-8") as file:
+                json.dump(config_data, file, ensure_ascii=False, indent=4)
+                file.write("\n")
+        except OSError as error:
+            QMessageBox.warning(
+                parent,
+                "LLM Settings",
+                f"Could not save config.json: {error}",
+            )
+            return False
+
+        self.config = Config(self.config.path)
+        self.setup_llm_info()
+        return True
+
+    def change_current_llm_model(self):
+        """Persist the model selected from the side-panel dropdown."""
+        combo = self.ui.llm_model_combo_box
+        if combo is None:
+            return
+
+        model = str(combo.currentData() or combo.currentText() or "").strip()
+        provider = self.current_llm_provider_name()
+        if not provider or not model:
+            return
+
+        self.save_current_llm_model(provider, model, self.window)
+
+    def save_current_llm_model(self, provider, model, parent):
+        """Persist default_model for the current LLM provider."""
+        provider_name = str(provider or "").strip().lower()
+        model_name = str(model or "").strip()
+        if provider_name not in LLM_PROVIDER_LABELS or not model_name:
+            return False
+
+        config_data = copy.deepcopy(self.config.get_config())
+        model_configs = config_data.get("models")
+        if not isinstance(model_configs, dict):
+            QMessageBox.warning(
+                parent,
+                "LLM Model",
+                "config.json models must be an object.",
+            )
+            return False
+
+        provider_config = model_configs.get(provider_name)
+        if not isinstance(provider_config, dict):
+            QMessageBox.warning(
+                parent,
+                "LLM Model",
+                f"config.json models.{provider_name} must be an object.",
+            )
+            return False
+
+        provider_config["default_model"] = model_name
+        provider_config["model_envs"] = self.unique_strings(
+            [
+                *self.config_value_strings(provider_config.get("model_envs")),
+                model_name,
+            ]
+        )
+
+        try:
+            with self.config.path.open("w", encoding="utf-8") as file:
+                json.dump(config_data, file, ensure_ascii=False, indent=4)
+                file.write("\n")
+        except OSError as error:
+            QMessageBox.warning(
+                parent,
+                "LLM Model",
+                f"Could not save config.json: {error}",
+            )
+            return False
+
+        self.config = Config(self.config.path)
+        self.setup_llm_info()
+        return True
 
     def connect_signals(self):
         """Connect Qt signals to controller methods."""
@@ -1634,6 +2413,12 @@ class FileManagerWindow:
         self.ui.forward_button.clicked.connect(self.go_forward)
         self.ui.undo_button.clicked.connect(self.undo_file_operation)
         self.ui.redo_button.clicked.connect(self.redo_file_operation)
+        if self.ui.llm_settings_button is not None:
+            self.ui.llm_settings_button.clicked.connect(self.open_llm_settings)
+        if self.ui.llm_model_combo_box is not None:
+            self.ui.llm_model_combo_box.activated.connect(
+                lambda _index: self.change_current_llm_model()
+            )
         self.ui.search_button.clicked.connect(self.go_to_typed_path)
         self.ui.navigate_bar.returnPressed.connect(self.go_to_typed_path)
         self.ui.navigate_bar.editingFinished.connect(self.go_to_typed_path)

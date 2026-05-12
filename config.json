@@ -1,30 +1,45 @@
 {
     "models": {
         "minimax": {
-            "aliases": ["minimax", "minmax"],
-            "base_url": "https://api.minimaxi.com/v1",
-            "api_key_envs": [
-                "sk-cp-AkVyJ2Uwi-Cijxr892Xj5b2dFA1li9BfBadG1lQnhp6FEFECeHzi9Oy8ba_SS0jALHrYRodolhZPzv7TYiu5U6l6cGe2YGx41un3Zk_QagbcrTvrX9FWg3A"
+            "aliases": [
+                "minimax",
+                "minmax"
             ],
-            "model_envs": ["MiniMax-M2.7", "MiniMax-M2.6"],
-            "default_model": "MiniMax-M2.7"
+            "base_url": "https://api.minimaxi.com/v1",
+            "api_key": "sk-cp-AkVyJ2Uwi-Cijxr892Xj5b2dFA1li9BfBadG1lQnhp6FEFECeHzi9Oy8ba_SS0jALHrYRodolhZPzv7TYiu5U6l6cGe2YGx41un3Zk_QagbcrTvrX9FWg3A",
+            "model_envs": [
+                "MiniMax-M2.7",
+                "MiniMax-M2.6",
+                "MiniMax-M2",
+                "MiniMax-M2.7-highspeed"
+            ],
+            "default_model": "MiniMax-M2.7-highspeed",
+            "nickname": "MiniMax"
         },
-        "kimi": {
-            "aliases": ["kimi", "moonshot"],
+        "moonshot": {
+            "aliases": [
+                "moonshot",
+                "kimi"
+            ],
             "base_url": "https://api.kimi.com/v1",
-            "api_key_envs": [],
-            "model_envs": [],
-            "default_model": "Kimi-3.5"
+            "api_key": "None",
+            "model_envs": [
+                "Kimi-3.5"
+            ],
+            "default_model": "Kimi-3.5",
+            "nickname": "Moonshot"
         }
     },
     "max_agent_steps": 10,
     "system_prompt": "You are a File Manager assistant. You should help users manage their files and folders. ",
     "preference": {
-        "default_arrange": ["name_asc"],
+        "default_arrange": [
+            "name_asc"
+        ],
         "color": "xxx"
     },
     "everything_result_limit": 5000,
     "everything_timeout": 6,
-    "default_analysis_db": "folder_analysis.sqlite3"
-
+    "default_analysis_db": "folder_analysis.sqlite3",
+    "provider": "minimax"
 }
