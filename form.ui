@@ -155,11 +155,26 @@ QLabel#llmSelectionPlaceholderLabel {
       <widget class="QLabel" name="llmInfoTitle">
        <property name="font">
         <font>
+         <pointsize>12</pointsize>
          <bold>true</bold>
         </font>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="text">
-        <string>Current LLM</string>
+       <string>Current LLM</string>
+      </property>
+     </widget>
+    </item>
+     <item>
+     <widget class="QLabel" name="llmSelectionPlaceholderLabel">
+     <property name="text">
+       <string>Nickname
+--</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -192,17 +207,6 @@ QLabel#llmSelectionPlaceholderLabel {
       <property name="text">
        <string>API key
 --</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-     <widget class="QLabel" name="llmSelectionPlaceholderLabel">
-     <property name="text">
-       <string>Saved models
-0</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
