@@ -280,6 +280,21 @@ class Config:
 
         return self._read_string(value, "name_asc")
 
+    def get_file_type_names(self) -> dict[str, str]:
+        """Return configured extension display names."""
+        values = self.config.get("file_type_names") or self.config.get("file_type_name")
+        if not isinstance(values, dict):
+            return {}
+
+        result = {}
+        for extension, name in values.items():
+            extension_text = self._read_string(extension).lower()
+            if not extension_text.startswith(".") or not isinstance(name, str):
+                continue
+            result[extension_text] = name
+
+        return result
+
     def _read_int(self, *keys: str, default: int) -> int:
         """Read the first available integer from config.json."""
         for key in keys:

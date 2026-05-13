@@ -216,7 +216,35 @@ class FileOperationService:
             raise FileExistsError(str(target))
 
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(source), str(target))
+        try:
+            source.rename(target)
+            return
+        except OSError:
+            pass
+
+        try:
+            self.copy_existing(source, target)
+            self.remove_existing(source)
+        except (OSError, shutil.Error):
+            if target.exists():
+                self.remove_existing(target)
+            raise
+
+    def copy_existing(self, source, target):
+        if source.is_dir():
+            shutil.copytree(source, target, copy_function=shutil.copy2)
+            return
+
+        shutil.copy2(source, target)
+
+    def remove_existing(self, path):
+        if path.is_dir():
+            self.prepare_for_delete(path)
+            shutil.rmtree(path, onerror=self.handle_rmtree_error)
+            return
+
+        self.set_windows_attributes(path, FILE_ATTRIBUTE_NORMAL, replace=True)
+        path.unlink()
 
     def trash_path(self, source):
         """Return a unique app-trash path for a source item."""
@@ -632,6 +660,18 @@ class FolderAnalysisStore:
                 ON {self.TABLE_NAME} (folder_path)
                 """
             )
+            connection.execute(
+                f"""
+                CREATE INDEX IF NOT EXISTS idx_{self.TABLE_NAME}_parent
+                ON {self.TABLE_NAME} (parent_path, analysed_at DESC)
+                """
+            )
+            connection.execute(
+                f"""
+                CREATE INDEX IF NOT EXISTS idx_{self.TABLE_NAME}_parent_folder
+                ON {self.TABLE_NAME} (parent_path, folder_path)
+                """
+            )
 
     def drop_removed_columns(self, connection):
         """Remove obsolete analysis columns from existing SQLite databases."""
@@ -804,7 +844,8 @@ class FolderAnalysisStore:
     def child_folder_size_map(self, parent_path):
         """Return analysed folder sizes for direct children of parent_path."""
         parent = Path(self.normalized_path(parent_path))
-        candidates = []
+        child_prefix = self.child_path_prefix(parent)
+        child_prefix_upper = self.path_prefix_upper_bound(child_prefix)
 
         with self.connect() as connection:
             connection.row_factory = sqlite3.Row
@@ -812,16 +853,24 @@ class FolderAnalysisStore:
                 f"""
                 SELECT folder_path, parent_path, root_path, size_bytes, analysed_at
                 FROM {self.TABLE_NAME}
-                WHERE parent_path = ? OR folder_path = root_path
+                WHERE parent_path = ?
+                UNION ALL
+                SELECT folder_path, parent_path, root_path, size_bytes, analysed_at
+                FROM {self.TABLE_NAME}
+                WHERE parent_path = ''
+                  AND folder_path >= ?
+                  AND folder_path < ?
                 ORDER BY analysed_at DESC
                 """,
-                (str(parent),),
+                (str(parent), child_prefix, child_prefix_upper),
             )
             candidates = [dict(row) for row in cursor]
 
         sizes = {}
         for row in candidates:
             folder_path = Path(row["folder_path"])
+            if self.same_path(folder_path, parent):
+                continue
             if not self.same_path(folder_path.parent, parent):
                 continue
 
@@ -830,6 +879,20 @@ class FolderAnalysisStore:
                 sizes[key] = row["size_bytes"]
 
         return sizes
+
+    @staticmethod
+    def child_path_prefix(folder_path):
+        """Return the path prefix shared by descendants of folder_path."""
+        path_text = str(folder_path)
+        if path_text.endswith(("\\", "/")):
+            return path_text
+
+        return path_text + os.sep
+
+    @staticmethod
+    def path_prefix_upper_bound(prefix):
+        """Return an exclusive upper bound for a string prefix range."""
+        return prefix + "\uffff"
 
     @staticmethod
     def normalized_path(folder_path):
