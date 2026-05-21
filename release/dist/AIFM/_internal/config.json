@@ -1,0 +1,96 @@
+{
+    "models": {
+        "minimax": {
+            "aliases": [
+                "minimax",
+                "minmax"
+            ],
+            "base_url": "https://api.minimaxi.com/v1",
+            "api_key": "sk-cp-AkVyJ2Uwi-Cijxr892Xj5b2dFA1li9BfBadG1lQnhp6FEFECeHzi9Oy8ba_SS0jALHrYRodolhZPzv7TYiu5U6l6cGe2YGx41un3Zk_QagbcrTvrX9FWg3A",
+            "model_envs": [
+                "MiniMax-M2.7",
+                "MiniMax-M2.6",
+                "MiniMax-M2",
+                "MiniMax-M2.7-highspeed"
+            ],
+            "default_model": "MiniMax-M2.7-highspeed",
+            "nickname": "MiniMax"
+        },
+        "moonshot": {
+            "aliases": [
+                "moonshot",
+                "kimi"
+            ],
+            "base_url": "https://api.kimi.com/v1",
+            "api_key": "None",
+            "model_envs": [
+                "Kimi-3.5"
+            ],
+            "default_model": "Kimi-3.5",
+            "nickname": "Moonshot"
+        }
+    },
+    "max_agent_steps": 10,
+    "system_prompt": "You are a File Manager assistant. You should help users manage their files and folders. ",
+    "preference": {
+        "default_arrange": [
+            "name_asc"
+        ],
+        "color": "xxx"
+    },
+    "everything_result_limit": 5000,
+    "everything_timeout": 6,
+    "default_analysis_db": "folder_analysis.sqlite3",
+    "provider": "minimax",
+    "file_type_names": {
+        ".7z": "7-Zip archive",
+        ".avi": "AVI video",
+        ".bat": "Windows batch script",
+        ".bmp": "Bitmap image",
+        ".cfg": "Config",
+        ".cmd": "Windows command script",
+        ".css": "CSS",
+        ".csv": "CSV",
+        ".doc": "Word document",
+        ".docx": "Word document",
+        ".exe": "Windows executable",
+        ".gif": "GIF image",
+        ".gz": "GZip archive",
+        ".htm": "HTML",
+        ".html": "HTML",
+        ".ini": "INI config",
+        ".ipynb": "Jupyter Notebook",
+        ".jpeg": "JPEG image",
+        ".jpg": "JPEG image",
+        ".js": "JavaScript",
+        ".json": "JSON",
+        ".jsonl": "JSON Lines",
+        ".markdown": "Markdown",
+        ".md": "Markdown",
+        ".mov": "QuickTime video",
+        ".mp3": "MP3 audio",
+        ".mp4": "MP4 video",
+        ".pdf": "PDF",
+        ".png": "PNG image",
+        ".ppt": "PowerPoint presentation",
+        ".pptx": "PowerPoint presentation",
+        ".ps1": "PowerShell script",
+        ".py": "Python",
+        ".pyw": "Python",
+        ".rar": "RAR archive",
+        ".svg": "SVG image",
+        ".tar": "TAR archive",
+        ".toml": "TOML",
+        ".ts": "TypeScript",
+        ".txt": "Text",
+        ".ui": "Qt Designer UI",
+        ".wav": "WAV audio",
+        ".webp": "WebP image",
+        ".xls": "Excel spreadsheet",
+        ".xlsx": "Excel spreadsheet",
+        ".xml": "XML",
+        ".yaml": "YAML",
+        ".yml": "YAML",
+        ".zip": "ZIP archive"
+    }
+}
