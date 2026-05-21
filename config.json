@@ -6,7 +6,7 @@
                 "minmax"
             ],
             "base_url": "https://api.minimaxi.com/v1",
-            "api_key": "sk-cp-AkVyJ2Uwi-Cijxr892Xj5b2dFA1li9BfBadG1lQnhp6FEFECeHzi9Oy8ba_SS0jALHrYRodolhZPzv7TYiu5U6l6cGe2YGx41un3Zk_QagbcrTvrX9FWg3A",
+            "api_key": "",
             "model_envs": [
                 "MiniMax-M2.7",
                 "MiniMax-M2.6",
