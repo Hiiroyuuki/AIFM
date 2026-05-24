@@ -9,7 +9,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
 
-from transformer import FileStructureTransformer, PathStructureTokenizer
+from folderClassifier.encoder.transformer import FileStructureTransformer, PathStructureTokenizer
 
 
 class FolderStructureDataset(Dataset):
