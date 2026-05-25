@@ -25,12 +25,14 @@ from PySide6.QtCore import (
     QFileInfo,
     QItemSelectionModel,
     QMimeData,
+    QSize,
     Qt,
     QSortFilterProxyModel,
     QTimer,
     QUrl,
 )
 from PySide6.QtGui import (
+    QCursor,
     QDesktopServices,
     QKeySequence,
     QShortcut,
@@ -52,6 +54,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QHBoxLayout,
     QHeaderView,
+    QInputDialog,
     QLabel,
     QLineEdit,
     QListWidget,
@@ -61,9 +64,11 @@ from PySide6.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSplitter,
+    QStackedWidget,
     QStyle,
     QStyledItemDelegate,
     QStyleOptionViewItem,
+    QTabBar,
     QTableView,
     QTreeView,
     QVBoxLayout,
@@ -641,12 +646,20 @@ class LayoutManager:
     STATUS_BUTTON_WIDTH = 70
     TOOLBAR_BUTTON_MIN_WIDTH = 82
 
-    def __init__(self, ui):
+    def __init__(self, ui, tab_manager: "TabManager | None" = None):
         """Store resolved UI widgets for layout composition."""
         self.ui = ui
+        self._tab_manager = tab_manager
+
+    @property
+    def tab_manager(self):
+        return self._tab_manager
 
     def setup(self):
-        """Compose toolbar, side buttons, file table, and preview panes."""
+        """Compose toolbar, tab bar, and stacked body pages."""
+        if self._tab_manager is None:
+            self._tab_manager = TabManager(self.ui.central_widget)
+
         toolbar_layout = self.create_toolbar()
         side_panel = self.create_side_panel()
         content_splitter = self.create_content_splitter()
@@ -656,11 +669,57 @@ class LayoutManager:
         body_layout.addWidget(side_panel)
         body_layout.addWidget(content_splitter, 1)
 
+        file_manager_page = QWidget(self.ui.central_widget)
+        file_manager_page.setLayout(body_layout)
+
+        self._tab_manager.add_tab("Files", file_manager_page, closable=False)
+
+        tab_bar_row = QHBoxLayout()
+        tab_bar_row.setContentsMargins(0, 0, 0, 0)
+        tab_bar_row.setSpacing(0)
+        tab_bar_row.addWidget(self._tab_manager.tab_bar, 1)
+
+        new_tab_btn = QPushButton("+")
+        new_tab_btn.setFixedSize(28, 28)
+        new_tab_btn.setToolTip("New tab")
+        new_tab_btn.setFlat(True)
+        new_tab_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 16px;
+                font-weight: bold;
+                color: #555;
+                border: none;
+                border-radius: 4px;
+                background: transparent;
+            }
+            QPushButton:hover {
+                background: #d8dce2;
+                color: #111;
+            }
+        """)
+        new_tab_btn.clicked.connect(self._on_new_tab_requested)
+        tab_bar_row.addWidget(new_tab_btn)
+
         main_layout = QVBoxLayout(self.ui.central_widget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+        main_layout.addLayout(tab_bar_row)
         main_layout.addLayout(toolbar_layout)
-        main_layout.addLayout(body_layout, 1)
+        main_layout.addWidget(self._tab_manager.tab_stack, 1)
 
         self.apply_sizes(side_panel)
+
+    def _on_new_tab_requested(self):
+        """Show a menu for creating new tabs."""
+        menu = QMenu(self.ui.central_widget)
+        installed_apps_action = menu.addAction("Installed Apps")
+        menu.addSeparator()
+        menu.addAction("Cancel")
+        action = menu.exec(QCursor.pos())
+        if action and action.text() == "Installed Apps":
+            callback = getattr(self, "_new_tab_callback", None)
+            if callback:
+                callback("installed_apps")
 
     def create_toolbar(self):
         """Create the top navigation row."""
@@ -782,6 +841,106 @@ class LayoutManager:
         ):
             if label is not None:
                 label.setWordWrap(True)
+
+
+class TabManager:
+    """Browser-style tab bar + stacked widget for page switching."""
+
+    def __init__(self, parent: QWidget):
+        self._parent = parent
+        self._tab_bar = QTabBar(parent)
+        self._tab_stack = QStackedWidget(parent)
+        self._tabs: list[dict] = []
+
+        self._tab_bar.setExpanding(False)
+        self._tab_bar.setDocumentMode(True)
+        self._tab_bar.setTabsClosable(True)
+        self._tab_bar.setMovable(True)
+
+        self._tab_bar.currentChanged.connect(self._on_tab_changed)
+        self._tab_bar.tabCloseRequested.connect(self._on_tab_close_requested)
+
+        self._style_tab_bar()
+
+    @property
+    def tab_bar(self) -> QTabBar:
+        return self._tab_bar
+
+    @property
+    def tab_stack(self) -> QStackedWidget:
+        return self._tab_stack
+
+    @property
+    def current_widget(self) -> QWidget | None:
+        return self._tab_stack.currentWidget()
+
+    @property
+    def current_index(self) -> int:
+        return self._tab_stack.currentIndex()
+
+    def add_tab(self, name: str, widget: QWidget, closable: bool = True) -> int:
+        index = self._tab_bar.addTab(name)
+        self._tab_stack.addWidget(widget)
+        self._tabs.append({"name": name, "widget": widget, "closable": closable})
+
+        if not closable:
+            self._tab_bar.setTabButton(index, QTabBar.ButtonPosition.RightSide, None)
+
+        return index
+
+    def remove_tab(self, index: int) -> bool:
+        if index < 0 or index >= len(self._tabs):
+            return False
+        if not self._tabs[index]["closable"]:
+            return False
+
+        widget = self._tabs[index]["widget"]
+        self._tab_bar.removeTab(index)
+        self._tab_stack.removeWidget(widget)
+        widget.deleteLater()
+        del self._tabs[index]
+        return True
+
+    # --- Signal handlers ---
+
+    def _on_tab_changed(self, index: int) -> None:
+        if 0 <= index < self._tab_stack.count():
+            self._tab_stack.setCurrentIndex(index)
+
+    def _on_tab_close_requested(self, index: int) -> None:
+        self.remove_tab(index)
+
+    def _style_tab_bar(self) -> None:
+        self._tab_bar.setStyleSheet("""
+            QTabBar {
+                background: #f0f2f5;
+                border-bottom: 1px solid #d0d7de;
+                padding-left: 4px;
+            }
+            QTabBar::tab {
+                background: #e4e7eb;
+                border: 1px solid #d0d7de;
+                border-bottom: none;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                padding: 6px 16px;
+                margin-right: 2px;
+                color: #555;
+            }
+            QTabBar::tab:selected {
+                background: #ffffff;
+                border-bottom: 2px solid #0969da;
+                color: #111;
+                font-weight: bold;
+            }
+            QTabBar::tab:hover:!selected {
+                background: #d8dce2;
+            }
+            QTabBar::close-button {
+                subcontrol-position: right;
+                margin-left: 6px;
+            }
+        """)
 
 
 class FileBrowser:
@@ -2410,7 +2569,8 @@ class FileManagerWindow:
         self.config = Config()
         self.file_types = FileTypeRegistry(self.config.get_file_type_names())
         self.everything = EverythingSdkSearch()
-        self.layout = LayoutManager(self.ui)
+        self.tab_manager = TabManager(self.window)
+        self.layout = LayoutManager(self.ui, self.tab_manager)
         self.browser = FileBrowser(self.ui, self.config.get_default_arrange())
         self.preview = PreviewPanel(self.ui, self.file_types)
         self.ai_preview = AIPreviewPanel(self.ui)
@@ -2433,12 +2593,15 @@ class FileManagerWindow:
         self.status_restore_token = 0
 
         self.layout.setup()
+        self.layout._new_tab_callback = self._on_new_tab_type
+        self._setup_installed_apps_tab()
         self.ai_info_panel.setup()
         self.browser.setup()
         self.preview.setup()
         self.ai_preview.setup()
         self.everything_startup_message = self.everything.start()
         self.connect_signals()
+        self.tab_manager.tab_bar.setCurrentIndex(0)
         self.navigate_to(DEFAULT_PATH, add_history=False)
         self.update_operation_buttons()
         self.show_startup_status()
@@ -2466,6 +2629,7 @@ class FileManagerWindow:
         self.ui.navigate_bar.editingFinished.connect(self.go_to_typed_path)
         self.setup_shortcuts()
         self.setup_context_menu()
+        self.tab_manager.tab_bar.currentChanged.connect(self._adapt_for_tab)
 
     def setup_shortcuts(self):
         """Install keyboard shortcuts for common file-browser actions."""
@@ -3428,6 +3592,122 @@ class FileManagerWindow:
     def show(self):
         """Show the loaded Qt window."""
         self.window.show()
+
+    def _adapt_for_tab(self, index: int) -> None:
+        """Adapt toolbar visibility per active tab."""
+        file_tab = index == 0
+        self.ui.back_button.setVisible(file_tab)
+        self.ui.forward_button.setVisible(file_tab)
+        self.ui.navigate_bar.setVisible(file_tab)
+        self.ui.search_button.setVisible(file_tab)
+
+    def _on_new_tab_type(self, tab_type: str) -> None:
+        """Handle new-tab requests from the '+' button menu."""
+        if tab_type == "installed_apps":
+            self._setup_installed_apps_tab()
+
+    def _setup_installed_apps_tab(self) -> None:
+        """Create the Installed Apps tab page with a grid icon view."""
+        from installed_apps import get_installed_apps, resolve_icon_path, is_system_component
+
+        page = QWidget(self.window)
+        page_layout = QVBoxLayout(page)
+        page_layout.setContentsMargins(16, 16, 16, 16)
+
+        header = QLabel("Installed Applications", page)
+        header_font = header.font()
+        header_font.setPointSize(16)
+        header_font.setBold(True)
+        header.setFont(header_font)
+
+        filter_input = QLineEdit(page)
+        filter_input.setPlaceholderText("Filter by name...")
+        filter_input.setClearButtonEnabled(True)
+
+        count_label = QLabel(page)
+        count_label.setStyleSheet("color: #666; font-size: 12px;")
+
+        app_list = QListWidget(page)
+        app_list.setViewMode(QListWidget.ViewMode.IconMode)
+        app_list.setIconSize(QSize(48, 48))
+        app_list.setGridSize(QSize(140, 86))
+        app_list.setResizeMode(QListWidget.ResizeMode.Adjust)
+        app_list.setMovement(QListWidget.Movement.Static)
+        app_list.setWordWrap(False)
+        app_list.setTextElideMode(Qt.TextElideMode.ElideRight)
+        app_list.setSpacing(8)
+        app_list.setUniformItemSizes(True)
+        app_list.setStyleSheet("""
+            QListWidget {
+                border: none;
+                background: transparent;
+            }
+            QListWidget::item {
+                font-size: 10px;
+                color: #444;
+            }
+        """)
+
+        apps = [a for a in get_installed_apps() if not is_system_component(a)]
+        count_label.setText(f"{len(apps)} applications")
+
+        provider = QFileIconProvider()
+        added = 0
+
+        for app in apps:
+            icon_path = resolve_icon_path(app)
+            if not icon_path:
+                continue
+            icon = provider.icon(QFileInfo(icon_path))
+            if icon.isNull():
+                continue
+
+            item = QListWidgetItem(app.name)
+            item.setData(Qt.ItemDataRole.UserRole, app)
+            item.setToolTip(
+                f"{app.name}\n{app.version or '—'}\n{app.install_location or app.uninstall_string or ''}"
+            )
+            item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
+            item.setIcon(icon)
+            app_list.addItem(item)
+            added += 1
+
+        count_label.setText(f"{added} applications")
+
+        def on_double_click(index: object) -> None:
+            item = app_list.currentItem()
+            if item is None:
+                return
+            app_data = item.data(Qt.ItemDataRole.UserRole)
+            if app_data is None:
+                return
+            loc = app_data.install_location
+            if loc and QFileInfo(loc).isDir():
+                QDesktopServices.openUrl(QUrl.fromLocalFile(loc))
+
+        app_list.doubleClicked.connect(on_double_click)
+
+        def on_filter_changed(text: str) -> None:
+            text_lower = text.lower()
+            for i in range(app_list.count()):
+                item = app_list.item(i)
+                if item is None:
+                    continue
+                item.setHidden(bool(text_lower and text_lower not in item.text().lower()))
+            visible = sum(1 for i in range(app_list.count())
+                          if not app_list.item(i).isHidden())
+            count_label.setText(f"{visible} / {app_list.count()} shown")
+
+        filter_input.textChanged.connect(on_filter_changed)
+
+        page_layout.addWidget(header)
+        page_layout.addWidget(filter_input)
+        page_layout.addWidget(count_label)
+        page_layout.addWidget(app_list, 1)
+
+        self._installed_apps_list = app_list
+        self._installed_apps_filter = filter_input
+        self.tab_manager.add_tab("Apps", page, closable=True)
 
     def cleanup_on_exit(self):
         """Clear the app trash when the Qt application exits."""
