@@ -1,0 +1,15 @@
+{
+  "document": [
+    ".csv", ".doc", ".docx", ".htm", ".html", ".json", ".jsonl",
+    ".markdown", ".md", ".pdf", ".ppt", ".pptx", ".rtf", ".tex",
+    ".txt", ".xls", ".xlsx", ".xml", ".yaml", ".yml"
+  ],
+  "image": [
+    ".bmp", ".gif", ".heic", ".ico", ".jpeg", ".jpg", ".png",
+    ".psd", ".raw", ".svg", ".tif", ".tiff", ".webp"
+  ],
+  "video": [
+    ".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mov", ".mp4",
+    ".mpeg", ".mpg", ".rmvb", ".ts", ".webm", ".wmv"
+  ]
+}

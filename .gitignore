@@ -9,3 +9,5 @@ AIFM.spec
 ai_folders.sqlite3
 AIFM.png
 checkpoints
+test.py
+demo_filter.py
