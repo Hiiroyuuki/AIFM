@@ -1,0 +1,2109 @@
+[
+    {
+        "path": "d:/",
+        "labels": [
+            "app",
+            "user_data",
+            "media",
+            "document",
+            "db",
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/aclos",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/aidenoise",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/amd",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/arknights endfield bilibili",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdisk",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/.minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/acrobat pro dc 2023",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/lr cc2025（支持64位win10及以上系统）",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/advancements",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/customnpcs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/data",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/datapacks",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/deaths",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/dim-1",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/dim1",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/entities",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/ftbchunks",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/ftbquests",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/ftbteams",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/playerdata",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/poi",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/region",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/sdmeconomy",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/serverconfig",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/§4作者：§3乐奇喵/§4作者：§3乐奇喵/stats",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidunetdiskdownload/夜喵瓦基整合",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/baidusyncdisk",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/bilibili",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/biligame",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/citi2essky2linesi-update1.2.0.f1-elamigos",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/cities skylines ii",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/clash verge",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/cloudmusic",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/content",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/crystaldiskmark00248b28",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/davinci",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/deepl",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/deskdock",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "d:/documents/1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/1/.qtcreator",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/2/.qtcreator",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/3",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/3/.qtcreator",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/3dmark",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/3dmark/log",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/3dmark/shaders",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/3dmark/steelnomad",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/3dmark/steelnomadstresstest",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/aifm",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/arduino",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp/baiduyunguanjia",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp/baiduyunguanjia/baidu",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp/baiduyunguanjia/onlinedit",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp/baiduyunguanjia/shellmark",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/baidunetdisktmp/baiduyunguanjia/vad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/blackmagic design",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/boomerangfureplays",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/death stranding 2 - on the beach",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/formatfactory",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/kook",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/kook/3657261477",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/kook/global",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/league of legends",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/leidian9",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/my games",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/ocean",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/onenote 笔记本",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/documents/powershell",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/powertoys",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/python scripts",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/quicker",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/sunlogin files",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/tencent files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/tencent files/1548316167/nt_qq",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/tencent files/2678073616/nt_qq",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/tencent files/nt_qq/global",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/voicemeeter",
+        "labels": [
+            "app",
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/all users/config",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/publiclib",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/publictestlib",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wx0d87bfbf7254037a",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wx141bfb9b73c970a9",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wx7095f7fa398a2f30",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wx7c86e0c731b9b8ef",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wxaed5ace05d92b218",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/applet/wxfc1254bf707dbf1a",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wmpf/applet",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wmpf/mpfastload",
+        "labels": [
+            "cache",
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wmpf/music",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_2rc5iht7kfhp22/filestorage",
+        "labels": [
+            "user_data",
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_2rc5iht7kfhp22/msg",
+        "labels": [
+            "user_data",
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_2rc5iht7kfhp22/resupdatev2",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_awu1mjf2u89u22/applet",
+        "labels": [
+            "user_data",
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_cfgy367nce5322/config",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_cfgy367nce5322/filestorage",
+        "labels": [
+            "cache",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_cfgy367nce5322/msg",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_cfgy367nce5322/resupdatev2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_j45hzffs1zf322/applet",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_j45hzffs1zf322/config",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_j45hzffs1zf322/filestorage",
+        "labels": [
+            "cache",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_j45hzffs1zf322/msg",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wechat files/wxid_j45hzffs1zf322/resupdatev2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/windowspowershell",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/avator",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/cachemapping",
+        "labels": [
+            "cache",
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/data",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/emotion",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/index",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/1688857843815844/wxworkcefcache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/cdn",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/cdncdn",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/cefcache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/image",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/statistic",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/global/tempfile",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/profiles/748a0a57e3c1d197d0796cfd7cd507bc",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/databases",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/indexeddb",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/local storage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/network",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/service worker",
+        "labels": [
+            "cache",
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/session storage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/wxwork/qtcef/webstorage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/xiaoye97",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/all_users/config",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/temp",
+        "labels": [
+            "cache",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/documents/自定义 office 模板",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/download",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/adobegenp_2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/bepinex-bepinexpack_peak-5.4.75301",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/blynk_release_v1.3.2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/cp210x_universal_windows_driver",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/davinci_resolve_20.0b4_windows",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/dominik0207-peak_checkpoint_save-0.4.7",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/frp_0.68.1_windows_amd64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/compressed/idm_6.4x_crack_v20.4",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/documents",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/download/files",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/music",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/download/pictures",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/download/pictures/你的电子女友",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/download/pictures/新建文件夹",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/download/pictures/童年回忆/童年回忆",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/download/programs",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/download/video/bitcomet",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/everything",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/ffoutput",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/formatfactory",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/frp_0.68.1_windows_amd64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/git",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/gpu-z",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/jetbra",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/kook",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/leidian",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lightroom",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/livehime",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/advanced machine learning",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/computer architecture",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/computer network",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/computer network/assignment 1",
+        "labels": [
+            "user_data",
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/computer network/assignment 2",
+        "labels": [
+            "user_data",
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/fzt",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/fzt/ait2209071",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/fzt/ait2209071_2",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/numerical method",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/numerical method/geogebra",
+        "labels": [
+            "user_data",
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/numerical method/hw1",
+        "labels": [
+            "user_data",
+            "document",
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/numerical method/hw2",
+        "labels": [
+            "user_data",
+            "document",
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/numerical method/hw3",
+        "labels": [
+            "user_data",
+            "document",
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/principles of aritifical intelligence",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2409/statistical learning",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2502",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2502/小说",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2502/小说/assignment 1",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2502/报修",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2502/数论",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/cv",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/deep reinforcement learning and control",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/deep reinforcement learning and control/final project",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/iot",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/iot/assignment",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/iot/final project",
+        "labels": [
+            "document",
+            "media",
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/robot",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/thesis i",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/thesis i/presentation",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2504/thesis i/proposal",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2509",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/computer graphics",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/computer graphics/lab",
+        "labels": [
+            "app",
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/software architecture and development environment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/software architecture and development environment/assignment",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/thesis ii",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/thesis ii/latex",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/2509/thesis ii/ppt",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/2602",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/8.15英伟达实习",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/8.15英伟达实习/新建文件夹",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/fzt",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.11写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.14写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.18写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.21写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.28写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/10.7",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/11.1写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/11.4写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/3.21",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.13",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.14",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.23写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.26写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.2写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.3",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.30写作f",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.6",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/9.8",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/ielts/yasige",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/internship",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/internship/game_recording",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/lp/passport",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/实习",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/实习/我的笔记本 @ 厦门大学(马来西亚分校)",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/lp/实习证明",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/收据",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/毕业",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "d:/lp/毕业/本科鉴定表",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/毕业/毕业生登记表",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/lp/申请信息",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/mcsmanager_windows_release",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/meituapp",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/minecraft",
+        "labels": [
+            "app",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/miniconda3",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/modrinth app",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/music",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/music/cloudmusic/vipsongsdownload",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/natpierce",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/netease",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/nicecloud",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/nssm-2.24",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/obs-studio",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/attachments",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/microsoft copilot chat 文件",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/microsoft teams chat files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/microsoft teams 聊天文件",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/应用",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/onedrive - 厦门大学(马来西亚分校)/附件",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/overwolf",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/pictures",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/3dmark",
+        "labels": [
+            "app",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/formatfactory",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/pictures/lightroom",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/pictures/lightroom/old lightroom catalogs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/伊甸咖啡26.2.10/hsp",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/伊甸咖啡26.2.10/jpg",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/伊甸咖啡26.2.10/rw2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/喵来喵去26.2.14/jpg",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/喵来喵去26.2.14/rw2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/婚礼26.1.24-25/png",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/婚礼26.1.24-25/rw2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/进新房26.2.6-7/favorite",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/进新房26.2.6-7/png",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/进新房26.2.6-7/rw2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/阳圩三月三26.4.18/jpg",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/panasonic lumix s5/阳圩三月三26.4.18/raw",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/pictures/ubisoftconnect",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/program files",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/programdata",
+        "labels": [
+            "cache",
+            "db"
+        ]
+    },
+    {
+        "path": "d:/programdata/quark",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/project",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/pythonproject",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/pythonproject-git",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/qq",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/qt",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/quark",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/rail_user_data",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/riot games",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/rog_harpe_ace_aim_lab_edition",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/soft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/source",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/squirreltemp",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/steam",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/sunloginclient",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/sunshine",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/tencent",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/tencent games",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/texlive",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/todesk",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/ugnas",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/videos",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "d:/videos/.gallery",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/videos/.gallery/08b8138a-ed53-4a6d-939e-a702c04a6bf7",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/.gallery/15dcdcf7-ee9e-4efa-9407-c43fc06e271e",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/bilibili",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/videos/cacheclip",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/videos/davinci/drl",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/deltaforcerecord/17599616784054097083",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/lolhighlight/1548316167",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/lolhighlight/469f296f-6dc4-5fc0-8944-104dc4c57815",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/videos/nvidia/slay the spire 2",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/videos/resolve project backups/08b8138a-ed53-4a6d-939e-a702c04a6bf7",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/videos/resolve project backups/15dcdcf7-ee9e-4efa-9407-c43fc06e271e",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/weixin",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/wpsystem",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/wpsystem/s-1-5-21-1382652090-781843373-586846369-1001",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/wxwork",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/xboxgames",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/all_users/config",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/all_users/head_imgs",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/wmpf",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/wxid_awu1mjf2u89u22_e74a/config",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "d:/xwechat_files/wxid_awu1mjf2u89u22_e74a/resource",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/像素蛋糕",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/图吧工具箱202507",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "d:/新建文件夹",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "d:/腾迅会议",
+        "labels": [
+            "app"
+        ]
+    }
+]

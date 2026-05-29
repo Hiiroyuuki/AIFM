@@ -1,0 +1,6768 @@
+[
+    {
+        "path": "D:/ACLOS",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/AIDenoise",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/AMD",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Arknights Endfield bilibili",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdisk",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/BaiduSyncdisk",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Bilibili",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/BiliGame",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Citi2esSky2linesI-Update1.2.0.F1-elamigos",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Cities Skylines II",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Clash Verge",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/CloudMusic",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/content",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/CrystalDiskMark00248B28",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/Davinci",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/deepl",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/deskdock",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/documents",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Everything",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/FFOutput",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/FormatFactory",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/frp_0.68.1_windows_amd64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Git",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/GPU-Z",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/jetbra",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/KOOK",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/leidian",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Lightroom",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/livehime",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/mcsmanager_windows_release",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/MeituApp",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/miniconda3",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Modrinth App",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/music",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/natpierce",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Netease",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/nicecloud",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/nssm-2.24",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/obs-studio",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/overwolf",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pictures",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/Program Files",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/ProgramData",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/project",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/QQ",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Qt",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Quark",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/rail_user_data",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/Riot Games",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/ROG_HARPE_ACE_AIM_LAB_EDITION",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/soft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/SOURCE",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/SquirrelTemp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/Steam",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/SunloginClient",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Sunshine",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Tencent",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Tencent Games",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/texlive",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/todesk",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/UGNAS",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/videos",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/WBS Chart Pro",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/Weixin",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/WpSystem",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/WXWork",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/XboxGames",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/像素蛋糕",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/图吧工具箱202507",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/新建文件夹",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/腾迅会议",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/.minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/Acrobat Pro DC 2023",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/LR CC2025（支持64位win10及以上系统）",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/§4作者：§3乐奇喵",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/夜喵瓦基整合",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/旧版",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/content/MNIST",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/AIFM",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Arduino",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Blackmagic Design",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BoomerangFuReplays",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/DEATH STRANDING 2 - ON THE BEACH",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/FormatFactory",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/KOOK",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/League of Legends",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/leidian9",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Ocean",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/OneNote 笔记本",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/documents/PowerShell",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/PowerToys",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/Python Scripts",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Quicker",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/Sunlogin Files",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Voicemeeter",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WindowsPowerShell",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xiaoye97",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/自定义 Office 模板",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/download/Compressed",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Documents",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/download/Files",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Music",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/download/Pictures",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/download/Programs",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Video",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2409",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2602",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/8.15英伟达实习",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/FZT",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/internship",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/Passport",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/实习",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/实习证明",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/收据",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/毕业",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/申请信息",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/Attachments",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/Microsoft Copilot Chat 文件",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/Microsoft Teams Chat Files",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/Microsoft Teams 聊天文件",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/应用",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/OneDrive - 厦门大学(马来西亚分校)/附件",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/3DMark",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Canon M6",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/ENDFIELD",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Feedback",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pictures/FormatFactory",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/HONOR 70PRO",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Lightroom",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pictures/Lightroom 存储的照片",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/MSI Wallpaper",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Screenshots",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/UbisoftConnect",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/wechat",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/.idea",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/.ipynb_checkpoints",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/.venv",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/.vscode",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Advanced Data Analysis",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/AIFM",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Deep reinforcement Learning",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/encrypt_cv",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/ldy_app",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/LUXAI",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/MSinternship",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/skills",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/StatisticalLearning",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/.vscode",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/CA-Net",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/checkpoints_sr",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/DCA-Unet",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dpickleball-ml-agents",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/kimi2.6",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/LLN",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/nnunetv2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/ties-merging",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/rail_user_data/2001918",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/.gallery",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/bilibili",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/CacheClip",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/videos/Captures",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/Davinci",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/deltaForceRecord",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/Desktop",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/Resolve Project Backups",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/Valorant",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/屏幕录制",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/夜喵瓦基整合/.minecraft",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/BaiduNetdiskDownload/夜喵瓦基整合/PCL",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/1/.qtcreator",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/2/.qtcreator",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3/.qtcreator",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/Log",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/Shaders",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/SteelNomad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/SteelNomadStressTest",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/AIFM/.qtcreator",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Arduino/libraries",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Arduino/sketch_jul1a",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp/baiduyunguanjia",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Blackmagic Design/DaVinci Resolve",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/DEATH STRANDING 2 - ON THE BEACH/76561198351829672",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/KOOK/3657261477",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/KOOK/global",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/League of Legends/Replays",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/For Honor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/Rainbow Six - Siege",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/WarThunder",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Ocean/76561198351829672",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/1548316167",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/2678073616",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/nt_qq",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/All Users",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/Applet",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/WMPF",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/2251803771057018",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Global",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/qtCef",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/[CP] Portrait Anime Mods OhoDavi",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Acrobat",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Adobe_GenP_3.4.14.1",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/AMD_BlueTooth_Drivers",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/ArmouryCrateInstaller_3.2.11.2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Compact",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Diskpart",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/download/Files/DISM",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/forza",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/freeglut",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/IDM-Activation-Script-main",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/IDM_Activation_Script",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/jetbra",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/JetBrains  2023 最新全家桶激活（10.30更新）",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/JetBrains 全家桶激活（2024最新）",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Lang",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/MinWin",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Office_Tool_with_runtime_v10.14.21.8_x64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/RegTweaks",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/ROGHarpeAceAimLabEditon_v1.0.2.8",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/RTBlueR_Installer",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/skada",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/SMAPI 4.1.10 installer",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/SuperRDP-main",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Tools",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/TRCC",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/Unattend",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/v2rayN-windows-64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/VTSControlPad_1.1.1_Win",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/W11ClassicMenu",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/WimScript",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Files/WinNTSetup_v541_x64",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/download/Files/火影忍者剧场版：终章(简体字幕)The.Last.Naruto.the.Movie.2014.720p.HDRip.x264-NoGroup.rar",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/download/Files/皮皮",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Pictures/你的电子女友",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/download/Pictures/新建文件夹",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/download/Pictures/童年回忆",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Architecture",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/fzt",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Principles of Aritifical intelligence",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Statistical learning",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/报修",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Deep Reinforcement Learning and Control",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/robot",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Software Architecture and Development Environment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/8.15英伟达实习/新建文件夹",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.11写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.14写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.18写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.21写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.28写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/10.7",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/11.1写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/11.4写作",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/3.21",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.13",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.14",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.23写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.26写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.2写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.3",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.30写作F",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.6",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/9.8",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/IELTS/yasige",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/internship/game_recording",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/internship/安装2-新版本wbs(1)",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/实习/我的笔记本 @ 厦门大学(马来西亚分校)",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/毕业/本科鉴定表",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/毕业/毕业生登记表",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pictures/3DMark/SteelNomad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/3DMark/SteelNomadStressTest",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/Canon M6/2025.1.19",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Canon M6/2025.1.26",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Feedback/{B8E833E4-6F8C-4BC3-B18B-B49F65710C61}",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Lightroom/Old Lightroom Catalogs",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pictures/Lightroom 存储的照片/三月三_导出",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/PixelCake",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/singapore7.30-31",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/伊甸咖啡26.2.10",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/喵来喵去26.2.14",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/婚礼26.1.24-25",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/浩坤湖25.8.12",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/进新房26.2.6-7",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/阳圩三月三26.4.18",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Advanced Data Analysis/data",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Advanced Data Analysis/test1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/assignment1",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/assignment2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/Final",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab10",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab11",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab12",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab2",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab3",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab4",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab5",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab6",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab7",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab9",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Deep reinforcement Learning/MNIST",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Deep reinforcement Learning/wandb",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/configs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/markdown",
+        "labels": [
+            "user_data",
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/src",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/LUXAI/.vscode",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/LUXAI/agent",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/skills/mcsm-controller",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/skills/server",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/StatisticalLearning/quiz1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/StatisticalLearning/quiz2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/StatisticalLearning/quiz3",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/CAMUS_public",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/build_windows",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/build_windows_V2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/build_windows_V3",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/cnn_module",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/CompetitionScripts",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/drawing",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/fz",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/fz_716",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/lxh_716",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/pyl_716",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/pyl_wxl",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/wxl_716",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/LLN/checkpoints_sr",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/LLN/logs",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/LLN/pytorch_ssim",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/ties-merging/assets",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/ties-merging/configs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/ties-merging/src",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/figs",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/log",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/pytorch_ssim",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/videos/Davinci/DRL",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/deltaForceRecord/17599616784054097083",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/1548316167",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/469f296f-6dc4-5fc0-8944-104dc4c57815",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/Desktop",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/Slay The Spire 2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/Split",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/Street Fighter 6",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/Valorant",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/NVIDIA/War Thunder",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/Resolve Project Backups/08b8138a-ed53-4a6d-939e-a702c04a6bf7",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/Resolve Project Backups/15dcdcf7-ee9e-4efa-9407-c43fc06e271e",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/head_imgs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/login",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/Backup/wxid_awu1mjf2u89u22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/applet",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/emotion_search",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/music",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/subscription",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/resource",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/1/.qtcreator/Python_3_12_12venv",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/2/.qtcreator/Python_3_12_12venv",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/3/.qtcreator/Python_3_12_12venv",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/SteelNomad/gpu_captures",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/3DMark/SteelNomadStressTest/gpu_captures",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp/baiduyunguanjia/Baidu",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp/baiduyunguanjia/onlinedit",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp/baiduyunguanjia/shellmark",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/BaiduNetdiskTmp/baiduyunguanjia/Vad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/DEATH STRANDING 2 - ON THE BEACH/76561198351829672/Download",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/For Honor/Benchmarks",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/For Honor/Screenshots",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/Rainbow Six - Siege/14786e78-db23-44ca-896c-8f5498277d01",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/WarThunder/Saves",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/1548316167/nt_qq",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/2678073616/nt_qq",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/nt_qq/global",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/All Users/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/account_Fzt15806076955",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/BackupFiles",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/Msg",
+        "labels": [
+            "user_data",
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/ResUpdateV2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/account_Chanvery_6w",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/BackupFiles",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/BackupFiles",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/Msg",
+        "labels": [
+            "user_data",
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/ResUpdateV2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/Applet",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/BackupFiles",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/Msg",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/ResUpdateV2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Applets",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Avator",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Backup",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/CacheMapping",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Data",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Emotion",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/Index",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/WeDrive",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/WXWorkCefCache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/head_imgs",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/login",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/sqlite",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/Backup/wxid_awu1mjf2u89u22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/Backup/wxid_v964v8sp1vs422",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/apm_record",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/resource",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/apm_record",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/config",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/msg",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/resource",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/download/Pictures/童年回忆/童年回忆",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/Final",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/midterm",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/PPT",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/quiz1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/quiz2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Architecture/Assignment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Architecture/Assignment 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Architecture/Slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/assignment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/Assignment 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/fzt/AIT2209071",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/fzt/AIT2209071_2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/Geogebra",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/hw1",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/hw2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/hw3",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/hw4",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/hw5",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Numerical Method/Test 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Principles of Aritifical intelligence/assigment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Principles of Aritifical intelligence/Assignment 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Principles of Aritifical intelligence/Final",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说/Assignment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说/Fianl essay",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说/Presentation",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说/slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论/Assignment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论/Assignment 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论/Assignment 3",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论/Assignment 4",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/数论/slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV/assignment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV/assignment 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV/Final Project",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Deep Reinforcement Learning and Control/assignment 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Deep Reinforcement Learning and Control/Final Project",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/assignment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/Final project",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/lab",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/robot/Group project",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/robot/individual assginment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I/Presentation",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I/Proposal",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I/task-driven IQE",
+        "labels": [
+            "document",
+            "db"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics/lab",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics/slide",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Software Architecture and Development Environment/assignment",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Software Architecture and Development Environment/slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/latex",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/PPT",
+        "labels": [
+            "document",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/Reference",
+        "labels": [
+            "document",
+            "db"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/submit",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/turnitin",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/伊甸咖啡26.2.10/HSP",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/伊甸咖啡26.2.10/JPG",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/伊甸咖啡26.2.10/RW2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/喵来喵去26.2.14/JPG",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/喵来喵去26.2.14/RW2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/婚礼26.1.24-25/PNG",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/婚礼26.1.24-25/RW2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/进新房26.2.6-7/favorite",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/进新房26.2.6-7/PNG",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/进新房26.2.6-7/RW2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/阳圩三月三26.4.18/JPG",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pictures/Panasonic LUMIX S5/阳圩三月三26.4.18/RAW",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/assignment2/minist",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/Final/Dataset",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab10/point-e",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab11/dataset",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/Deep reinforcement Learning/MNIST/raw",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/experiments",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/logs",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/models",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/raw-images",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/raw-tiles",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/tiles-data",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/tiles-resized",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/untagged-images-raw",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/mahjong_recognizer/mahjong-dataset/untagged-tiles",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/skills/mcsm-controller/.runtime",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/StatisticalLearning/quiz2/codes",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_images1",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_images2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_labels",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/overlay",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/CAMUS_public/CAMUS_public",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/baseline methods",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Data-split",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Images-processed",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task1-2_Training_Input",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task1_Training_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Test_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Test_Input",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Training_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Training_Input",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Validation_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Validation_Input",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/task1-2",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/task3",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/sharedParams",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_10",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_11",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_12",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_13",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_14",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_16",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_17",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_18",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_19",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_20",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_21",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_23",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_24",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_25",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_26",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_27",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_28",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_29",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_30",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_31",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_32_Latt1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_33_Latt2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_35",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_36",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_37",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_38",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_39",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_4",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_40_ME1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_41",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_42_ME2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_43",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_44",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_45",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_46",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_46_ME3",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_48",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_49",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_5",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_50",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_51",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_52",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_53_ME4_Z",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_54",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_55",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_56",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_56_ME5_Z",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_57",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_58",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_58_ME6_Z",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_59",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_60",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_61_ME7_Z",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_62",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_63",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_64",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_65",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_66",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_67",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_68",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_69",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_7",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_70",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_71",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_72",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_73",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_74",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_74_ME8_Z_self",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_75",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_76",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_8",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/logs/PPO_9",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_0.0001_resnet18_gradprom",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-07_19-58-41",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-10_07-32-30",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-11_01-17-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-11_01-17-47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-13_06-14-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_estr_isic_2025-12-15_07-08-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_gradprom_isic_2025-12-07_19-09-46",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_gradprom_isic_2025-12-10_02-30-49",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-08_15-34-46",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-09_09-01-39",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-12_02-30-44",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-13_02-20-35",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_00-56-50",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_00-58-33",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-02-53",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-03-29",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-05-18",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-06-38",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-08-43",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-16-31",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-17-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-18-11",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-19-27",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_19-14-37",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-32-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-34-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-35-21",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-32-20",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-33-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-34-21",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_isic_2025-12-07_17-40-33",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-07_20-38-59",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-07_21-34-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-08_05-13-39",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-09_03-59-34",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_ours_v2_isic_2025-12-08_05-46-08",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_pcgrad_isic_2025-12-08_06-18-44",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet101_ra_pcgrad_isic_2025-12-09_12-35-28",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_estr_2025-10-29_01-27-40",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_estr_2025-12-03_22-03-18",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_estr_2025-12-03_22-06-15",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_gradprom_isic_2025-12-03_22-28-15",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_layerwise_isic_2025-12-08_14-50-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_layerwise_isic_2025-12-08_14-51-44",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-28-47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-34-20",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-37-38",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-23-43",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-27-37",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-30-30",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_v1_isic_2025-12-08_02-31-10",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_ours_v2_isic_2025-12-08_02-59-30",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_pcgrad_isic_2025-12-08_02-29-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet18_ra_pcgrad_isic_2025-12-08_03-27-13",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_estr_2025-11-04_19-36-19",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_estr_2025-11-10_20-31-47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_estr_2025-11-10_20-38-54",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_estr_isic_2025-12-07_19-43-19",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_gradprom_2025-11-04_19-44-42",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_gradprom_isic_2025-12-07_18-17-52",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_layerwise_isic_2025-12-08_15-12-42",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_ours_isic_2025-12-07_17-09-39",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-07_20-38-32",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-07_20-44-04",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-08_03-49-01",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_ours_v2_isic_2025-12-08_04-19-05",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/dn_SRResNet_resnet50_ra_pcgrad_isic_2025-12-08_04-49-58",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/sr_SRResNet_0.0001_resnet18_estr",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/sr_SRResNet_0.0001_resnet18_gradprom",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/sr_SRResNet_resnet18_ra_estr_2025-10-29_01-36-21",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/sr_SRResNet_resnet18_ra_gradprom_2025-06-11_10-37-07",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/SRResNet_0.0001_resnet18",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/checkpoints_sr/SRResNet_0.001_resnet18",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-07_19-58-41",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-10_07-32-30",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-11_01-17-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-11_01-17-47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-13_06-14-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_estr_isic_2025-12-15_07-08-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_gradprom_isic_2025-12-07_19-09-46",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_gradprom_isic_2025-12-10_02-30-49",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-08_15-34-46",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-09_09-01-39",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-12_02-30-44",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_layerwise_isic_2025-12-13_02-20-35",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_00-56-50",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_00-58-33",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-02-53",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-03-29",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-14_01-05-18",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-06-38",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-08-43",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-16-31",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-17-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-18-11",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-15_01-19-27",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_19-14-37",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-32-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-34-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-16_23-35-21",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-32-20",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-33-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_lln_isic_2025-12-18_01-34-21",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_isic_2025-12-07_17-40-33",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-07_20-38-59",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-07_21-34-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-08_05-13-39",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_v1_isic_2025-12-09_03-59-34",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_ours_v2_isic_2025-12-08_05-46-08",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_pcgrad_isic_2025-12-08_06-18-44",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet101_ra_pcgrad_isic_2025-12-09_12-35-28",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_gradprom_estr_isic_2025-12-03_22-26-21",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_estr_2025-12-03_22-06-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_gradprom_isic_2025-12-03_22-28-15",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_layerwise_isic_2025-12-08_14-51-44",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-28-47",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-34-20",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-04_17-37-38",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-23-43",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-27-37",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_isic_2025-12-07_16-30-30",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_v1_isic_2025-12-08_02-31-10",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_ours_v2_isic_2025-12-08_02-59-30",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet18_ra_pcgrad_isic_2025-12-08_03-27-13",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_estr_isic_2025-12-07_19-43-19",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_gradprom_isic_2025-12-07_18-17-52",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_layerwise_isic_2025-12-08_15-12-42",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_ours_isic_2025-12-07_17-09-39",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-07_20-38-32",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-07_20-44-04",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_ours_v1_isic_2025-12-08_03-49-01",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_ours_v2_isic_2025-12-08_04-19-05",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/Transferable_RA/logs/dn_SRResNet_resnet50_ra_pcgrad_isic_2025-12-08_04-49-58",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/Davinci/DRL/Audio Files",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/deltaForceRecord/17599616784054097083/record",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/1548316167/edit",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/1548316167/record",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/1548316167/videoExportTmp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/469f296f-6dc4-5fc0-8944-104dc4c57815/edit",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/469f296f-6dc4-5fc0-8944-104dc4c57815/record",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/videos/lolhighlight/469f296f-6dc4-5fc0-8944-104dc4c57815/videoExportTmp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/videos/Resolve Project Backups/08b8138a-ed53-4a6d-939e-a702c04a6bf7/daeaab73-5336-44e7-ab4d-37128c9f88db",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/videos/Resolve Project Backups/15dcdcf7-ee9e-4efa-9407-c43fc06e271e/6e1342e9-6c31-4d36-9ccb-dbeb375f2b46",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/config/specialCharacter",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/config/sqlite",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/head_imgs/1073845711",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/all_users/login/wxid_awu1mjf2u89u22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/applet/publicLib",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/emotion_search/26",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/WMPF/subscription/207",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/emoticon",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/favorite",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/sns",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/xeditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/xweb",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2025-08",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2025-09",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/bizchat",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/contact",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/emoticon",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/favorite",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/general",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/hardlink",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/head_image",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/message",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/MMKV",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/session",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/sns",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/attach",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/WarThunder/Saves/202808856",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/My Games/WarThunder/Saves/last",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/1548316167/nt_qq/nt_data",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/1548316167/nt_qq/nt_db",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/Tencent Files/1548316167/nt_qq/nt_temp",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/CustomEmotion",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Fav",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/File",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/General",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Image",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/MPPageFastLoad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/MsgAttach",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/PAG",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Sns",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/TempFromPhone",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/Video",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/FileStorage/XEditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/Msg/MMKV",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_2rc5iht7kfhp22/Msg/Multi",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet/global",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet/globalmmkvstorage",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet/shared",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet/wx141bfb9b73c970a9",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_awu1mjf2u89u22/Applet/wxfc1254bf707dbf1a",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Cache",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/CustomEmotion",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Fav",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/File",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/General",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Image",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/MPPageFastLoad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/MsgAttach",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/PAG",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Sns",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/TempFromPhone",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/Video",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/FileStorage/XEditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/Msg/MMKV",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_cfgy367nce5322/Msg/Multi",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Cache",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/CustomEmotion",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Fav",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/File",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/General",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Image",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/MPPageFastLoad",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/MsgAttach",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/PAG",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Sns",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Temp",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/TempFromPhone",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/Video",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WeChat Files/wxid_j45hzffs1zf322/FileStorage/XEditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/WeDrive/.Temp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/1688857843815844/WeDrive/黑钢国际BSI",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/FileSecurity",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/Fuli",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/minicustomer",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/Solitaire",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/VOICE_RECORDS",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/voice_room",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/VOIP",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/WXWork/Profiles/748A0A57E3C1D197D0796CFD7CD507BC/webview",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/head_imgs/0",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/head_imgs/1042565151",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/head_imgs/1073845711",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/login/wxid_awu1mjf2u89u22",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/all_users/login/wxid_v964v8sp1vs422",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/apm_record/process_duration",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/emoticon",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/favorite",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/InputTemp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/sns",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/xeditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/business/xweb",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2026-02",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2026-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2026-04",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/cache/2026-05",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/config/newclientconfig",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/config/newinit_status",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/config/specialCharacter",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/config/xlab",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/bizchat",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/contact",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/emoticon",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/favorite",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/general",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/hardlink",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/head_image",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/message",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/MMKV",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/session",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/sns",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/db_storage/solitaire",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/attach",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video",
+        "labels": [
+            "user_data",
+            "media"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/temp/head_image",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_awu1mjf2u89u22_e74a/temp/ImageTemp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/apm_record/process_duration",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/emoticon",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/favorite",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/InputTemp",
+        "labels": [
+            "cache"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/sns",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/xeditor",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/business/xweb",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/cache/2026-05",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/config/newclientconfig",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/config/newinit_status",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/config/specialCharacter",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/config/xlab",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/bizchat",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/contact",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/emoticon",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/favorite",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/general",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/hardlink",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/head_image",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/message",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/MMKV",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/session",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/sns",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/db_storage/solitaire",
+        "labels": [
+            "db",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/msg/attach",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/msg/file",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/msg/migrate",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/documents/xwechat_files/wxid_v964v8sp1vs422_a186/msg/video",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/Final/Ablation Study",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/Final/Experiments",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/Final/Intro",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Advanced Machine Learning/Final/Reference",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/Assignment 2/Mission 1",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/Assignment 2/Mission 2",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2409/Computer Network/Assignment 2/Programs",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2502/小说/Fianl essay/group final essay",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV/Final Project/artical",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/CV/Final Project/report",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Deep Reinforcement Learning and Control/assignment 1/video",
+        "labels": [
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Deep Reinforcement Learning and Control/Final Project/Group6",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/assignment/新建文件夹",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/Final project/Adafruit-Motor-Shield-library-master",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/Final project/sketch_jul1a_copy_20250704112637",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/IoT/Final project/sketch_jul1a_copy_20250704112637_v2",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I/Proposal/Reference",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2504/Thesis I/task-driven IQE/dataset",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics/lab/.vscode",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics/lab/codes",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Computer Graphics/lab/slides",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/latex/XMUM_FYP_2_Template",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/Reference/dataset",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/LP/2509/Thesis II/Reference/task-driven IQE",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/assignment2/minist/MNIST",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/Final/Dataset/Test",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/Final/Dataset/Train",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab10/point-e/point_e",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab10/point-e/point_e.egg-info",
+        "labels": [
+            "document"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/CV/lab10/point-e/point_e_model_cache",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/annotations_trainval2017",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/image_info_test2017",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/panoptic_annotations_trainval2017",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/test2017",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/train2017",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/datasets/datasets/val2017",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/experiments/vit-lora-person-car-best",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/logs/vit-lora-person-car",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject/internship_1/outputs/models/vit-base-patch16-224-lora-person-car",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_images1/Lizard_Images1",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_images2/Lizard_Images2",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/lizard_labels/Lizard_Labels",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/archive_5/overlay/Overlay",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/CAMUS_public/CAMUS_public/database_nifti",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/CAMUS_public/CAMUS_public/database_split",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/CAMUS_public/CAMUS_public/jupyter",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/baseline methods/DenseNet169",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/baseline methods/Self-Trans",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Data-split/COVID",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Data-split/NonCOVID",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Images-processed/CT_COVID",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/COVID-CT-Dataset/Images-processed/CT_NonCOVID",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Test_GroundTruth/ISIC2018_Task3_Test_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Test_Input/ISIC2018_Task3_Test_Input",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Training_GroundTruth/ISIC2018_Task3_Training_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Training_Input/ISIC2018_Task3_Training_Input",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/datasets/ISIC2018/ISIC2018_Task3_Validation_GroundTruth/ISIC2018_Task3_Validation_GroundTruth",
+        "labels": [
+            "db"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-231908",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-232158",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-232256",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-233952",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-234437",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-235108",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-235132",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-235435",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-15-235603",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-16-000155",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-16-001431",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/selfplay/2025-07-16-010402_MEatt_Z_countinue8",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/sharedParams/2025-07-07-220013",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/sharedParams/2025-07-07-223703",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/sharedParams/2025-07-07-232710",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/sharedParams/2025-07-08-151830",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-07-234654",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-07-234750",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-07-234928",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-07-235016",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-08-003327",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-08-005942",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-08-042127_Latt_noZ",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-08-152253_Latt_noZ_continue1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-08-224603_MEatt_noZ",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-001041_MEatt_noZ_continue1",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-041408_MEatt_noZ_coutinue2",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-131424",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-132440",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-132920",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-133223-MEatt_noZ_countinue3",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-09-234942",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-10-012545_MEatt_Z_countinue4",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-10-214850_MEatt_Z_countinue5",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-12-013847",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-12-013952_MEatt_Z_countinue6",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-12-160645",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-015425",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-015546",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-015724",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-020410_MEatt_Z_countinue7",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-093648",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-15-231811",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-19-033319",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-19-033422",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/pythonProject-git/dPickleBallEnv/checkpoints/singleSide/2025-07-19-073222",
+        "labels": [
+            "app"
+        ]
+    },
+    {
+        "path": "D:/videos/Davinci/DRL/Audio Files/Renders",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2024-09",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2024-10",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2024-11",
+        "labels": [
+            "document",
+            "media",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2024-12",
+        "labels": [
+            "document",
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-01",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-02",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-03",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-04",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-05",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-06",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-07",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/file/2025-08",
+        "labels": [
+            "user_data"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2024-09",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2024-10",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2024-11",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2024-12",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-01",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-02",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-03",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-04",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-05",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-06",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-07",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-08",
+        "labels": [
+            "media"
+        ]
+    },
+    {
+        "path": "D:/xwechat_files/wxid_awu1mjf2u89u22_e74a/msg/video/2025-09",
+        "labels": [
+            "media"
+        ]
+    }
+]
