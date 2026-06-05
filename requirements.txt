@@ -1,0 +1,9 @@
+# AIFM — Python backend dependencies
+# Install: pip install -r requirements.txt
+#
+# Note: PySide6 is no longer required (the Qt frontend has been retired).
+# The React frontend is built with Node.js/npm — see README.md for setup.
+
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0   # [standard] bundles websockets + httptools
+requests>=2.31.0             # used by the LLM model-list fetcher
