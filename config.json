@@ -31,7 +31,7 @@
         },
         "deepseek": {
             "nickname": "DeepSeek",
-            "api_key": "sk-7bb0920585ac41c6ba450e930b9dd2f7",
+            "api_key": "",
             "default_model": "deepseek-v4-pro",
             "model_envs": [
                 "deepseek-v4-pro"
@@ -40,7 +40,7 @@
         },
         "mimo": {
             "nickname": "Xiaomi",
-            "api_key": "sk-cckc3eahucqnlnnvompskvct2vazbkhko6cn56dsue9lzkk8",
+            "api_key": "",
             "default_model": "mimo-v2-pro",
             "model_envs": [
                 "mimo-v2-pro"
