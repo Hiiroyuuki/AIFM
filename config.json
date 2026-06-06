@@ -13,7 +13,7 @@
                 "MiniMax-M2",
                 "MiniMax-M2.7-highspeed"
             ],
-            "default_model": "MiniMax-M2.7-highspeed",
+            "default_model": "MiniMax-M2.7",
             "nickname": "MiniMax"
         },
         "moonshot": {
@@ -28,6 +28,24 @@
             ],
             "default_model": "Kimi-3.5",
             "nickname": "Moonshot"
+        },
+        "deepseek": {
+            "nickname": "DeepSeek",
+            "api_key": "sk-7bb0920585ac41c6ba450e930b9dd2f7",
+            "default_model": "deepseek-v4-pro",
+            "model_envs": [
+                "deepseek-v4-pro"
+            ],
+            "base_url": "https://api.deepseek.com"
+        },
+        "mimo": {
+            "nickname": "Xiaomi",
+            "api_key": "sk-cckc3eahucqnlnnvompskvct2vazbkhko6cn56dsue9lzkk8",
+            "default_model": "mimo-v2-pro",
+            "model_envs": [
+                "mimo-v2-pro"
+            ],
+            "base_url": "https://api.xiaomimimo.com/v1"
         }
     },
     "max_agent_steps": 10,
@@ -41,7 +59,7 @@
     "everything_result_limit": 5000,
     "everything_timeout": 6,
     "default_analysis_db": "folder_analysis.sqlite3",
-    "provider": "minimax",
+    "provider": "mimo",
     "file_type_names": {
         ".7z": "7-Zip archive",
         ".avi": "AVI video",

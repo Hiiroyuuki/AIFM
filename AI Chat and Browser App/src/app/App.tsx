@@ -1,25 +1,24 @@
 /**
  * App — top-level controller for the AIFM React front-end.
  *
- * Phase 4 additions over Phase 3:
- *   • AgentPanel replaces the "AI Preview" placeholder (streaming WS chat)
- *   • LLMSettingsDialog wired to the Settings button (provider CRUD)
- *   • PreviewPanel now shows text content + inline images
+ * Multi-tab support: each tab has independent browsing state (path, history,
+ * entries, sorting, selection, search mode).  Shared state (clipboard,
+ * undo/redo, dialogs) lives outside the tabs array.
  */
 import {
-  useState, useEffect, useCallback, useRef,
-  type MouseEvent,
+  useState, useEffect, useCallback, useRef, useMemo,
+  type MouseEvent, type KeyboardEvent,
 } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import {
   Sparkles, ChevronLeft, ChevronRight, Search,
   Undo2, Redo2, ScanSearch, FolderPlus, Copy, Scissors,
-  Trash2, Settings, RefreshCw, Loader2, AlertCircle,
-  ClipboardPaste,
+  Trash2, Settings, RefreshCw, Loader2,
+  ClipboardPaste, Plus, X, LayoutGrid, FolderOpen,
 } from 'lucide-react';
 
 import {
-  listFolder, searchFiles, pasteFiles, deleteFiles,
+  API_BASE, listFolder, searchFiles, pasteFiles, deleteFiles,
   undoOperation, redoOperation, getUndoState,
   runAnalysis, createAIFolder,
 } from '../api/client';
@@ -32,14 +31,11 @@ import { AgentPanel }          from './components/AgentPanel';
 import { LLMSettingsDialog }   from './components/LLMSettingsDialog';
 import { DeleteConfirmDialog } from './components/DeleteConfirmDialog';
 import { NewAIFolderDialog }   from './components/NewAIFolderDialog';
+import { AppsGrid }            from './components/AppsGrid';
 
 import {
-  ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
+  ContextMenu, ContextMenuTrigger, ContextMenuContent,
+  ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut,
 } from './components/ui/context-menu';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -47,60 +43,113 @@ import {
 interface Clipboard { paths: string[]; move: boolean }
 interface ContextTarget { path: string; is_dir: boolean }
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+type TabState = {
+  id: string
+  path: string
+  history: string[]
+  historyIndex: number
+  label: string             // last path segment, or "C:" for drive root
+  navInput: string
+  entries: FileEntry[]
+  loading: boolean
+  sortCol: SortCol
+  sortDir: SortDir
+  selectedPaths: Set<string>
+  focusedPath: string | null
+  folderMeta: { total: number; files: number; folders: number }
+  isSearchMode: boolean
+  searchEntries: SearchEntry[]
+  searchMeta: { query: string; shown: number; total: number; message: string } | null
+  searchLoading: boolean
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const DEFAULT_PATH = 'C:\\';
+const SEARCH_PREFIX = '__s__:';
 const TEMP_STATUS_DURATION = 3500;
+const DRIVE_ROOT_RE = /^[A-Za-z]:[/\\]?$/;
+
+function tabLabelFromPath(p: string): string {
+  const cleaned = p.replace(/\\+$/, '');
+  if (DRIVE_ROOT_RE.test(cleaned)) return cleaned[0].toUpperCase() + ':';
+  const parts = cleaned.split('\\');
+  return parts[parts.length - 1] || cleaned;
+}
+
+function makeTab(path = DEFAULT_PATH): TabState {
+  return {
+    id: crypto.randomUUID(),
+    path,
+    history: [path],
+    historyIndex: 0,
+    label: tabLabelFromPath(path),
+    navInput: path,
+    entries: [],
+    loading: false,
+    sortCol: 'name',
+    sortDir: 'asc',
+    selectedPaths: new Set(),
+    focusedPath: null,
+    folderMeta: { total: 0, files: 0, folders: 0 },
+    isSearchMode: false,
+    searchEntries: [],
+    searchMeta: null,
+    searchLoading: false,
+  };
+}
 
 // ── App ───────────────────────────────────────────────────────────────────────
 
 export default function App() {
 
-  // ── Navigation ──────────────────────────────────────────────────────────────
-  const [currentPath, setCurrentPath] = useState(DEFAULT_PATH);
-  const [navInput,    setNavInput]    = useState(DEFAULT_PATH);
-  const [history,     setHistory]     = useState<string[]>([DEFAULT_PATH]);
-  const [histIdx,     setHistIdx]     = useState(0);
+  // === Per-tab state ===
+  const [tabs,        setTabs]        = useState<TabState[]>([makeTab()]);
+  const [activeTabId, setActiveTabId] = useState(tabs[0].id);
 
-  // ── File table ──────────────────────────────────────────────────────────────
-  const [entries,     setEntries]     = useState<FileEntry[]>([]);
-  const [loading,     setLoading]     = useState(false);
-  const [sortCol,     setSortCol]     = useState<SortCol>('name');
-  const [sortDir,     setSortDir]     = useState<SortDir>('asc');
-  const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
-  const [focusedPath, setFocusedPath] = useState<string | null>(null);
-  const [folderMeta,  setFolderMeta]  = useState({ total: 0, files: 0, folders: 0 });
+  // Derive the active tab (never null — always at least one tab).
+  const activeTab = useMemo(
+    () => tabs.find(t => t.id === activeTabId) ?? tabs[0],
+    [tabs, activeTabId],
+  );
 
-  // ── Search mode ─────────────────────────────────────────────────────────────
-  const [isSearchMode,  setIsSearchMode]  = useState(false);
-  const [searchEntries, setSearchEntries] = useState<SearchEntry[]>([]);
-  const [searchMeta,    setSearchMeta]    = useState<{ query: string; shown: number; total: number; message: string } | null>(null);
-  const [searchLoading, setSearchLoading] = useState(false);
+  // Abort controllers live in a ref so navigateTo doesn't depend on `tabs`.
+  const abortRefs = useRef<Map<string, AbortController>>(new Map());
+  // Active tab id ref — always up-to-date, used inside navigateTo/timeouts.
+  const activeTabIdRef = useRef(activeTabId);
+  useEffect(() => { activeTabIdRef.current = activeTabId; }, [activeTabId]);
 
-  // ── Write operations ────────────────────────────────────────────────────────
+  // Convenience updater: applys a patch to ONLY the active tab.
+  const patchActive = useCallback((patch: Partial<TabState>) => {
+    setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, ...patch } : t));
+  }, [activeTabId]);
+
+  // === Shared (non-tab) state ===
+
   const [clipboard,     setClipboard]    = useState<Clipboard | null>(null);
   const [canUndo,       setCanUndo]      = useState(false);
   const [canRedo,       setCanRedo]      = useState(false);
   const [opLoading,     setOpLoading]    = useState(false);
   const [analyseLoading,setAnalyseLoading] = useState(false);
 
-  // ── Dialogs ─────────────────────────────────────────────────────────────────
   const [delConfirmOpen,   setDelConfirmOpen]   = useState(false);
   const [pathsToDelete,    setPathsToDelete]    = useState<string[]>([]);
   const [aiFolderOpen,     setAiFolderOpen]     = useState(false);
   const [aiFolderParent,   setAiFolderParent]   = useState('');
   const [llmSettingsOpen,  setLlmSettingsOpen]  = useState(false);
+  const [configVersion,    setConfigVersion]    = useState(0);
+  const [view,             setView]             = useState<'files' | 'apps'>('files');
+  const [previousView,     setPreviousView]     = useState<'files' | 'apps' | null>(null);
 
-  // ── Context menu ────────────────────────────────────────────────────────────
+  const switchView = useCallback((v: 'files' | 'apps') => {
+    if (v === view) return;
+    setPreviousView(view);
+    setView(v);
+  }, [view]);
+
   const [contextTarget, setContextTarget] = useState<ContextTarget | null>(null);
-
-  // ── Status bar ──────────────────────────────────────────────────────────────
-  const [tempStatus, setTempStatus] = useState<string | null>(null);
+  const [tempStatus,   setTempStatus]     = useState<string | null>(null);
   const tempTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const abortRef = useRef<AbortController | null>(null);
-
-  // ── Helpers ──────────────────────────────────────────────────────────────────
 
   const showStatus = useCallback((msg: string, dur = TEMP_STATUS_DURATION) => {
     setTempStatus(msg);
@@ -108,119 +157,178 @@ export default function App() {
     tempTimerRef.current = setTimeout(() => setTempStatus(null), dur);
   }, []);
 
-  const syncUndoState = useCallback((can_undo: boolean, can_redo: boolean) => {
-    setCanUndo(can_undo);
-    setCanRedo(can_redo);
+  const syncUndoState = useCallback((u: boolean, r: boolean) => {
+    setCanUndo(u); setCanRedo(r);
   }, []);
 
-  // ── Navigation ───────────────────────────────────────────────────────────────
+  // ── Navigation (per-tab) ─────────────────────────────────────────────────
 
   const navigateTo = useCallback(async (path: string, addToHistory = true) => {
-    abortRef.current?.abort();
+    const tabId = activeTabIdRef.current;   // always fresh, even inside setTimeout
+    abortRefs.current.get(tabId)?.abort();
     const ctrl = new AbortController();
-    abortRef.current = ctrl;
+    abortRefs.current.set(tabId, ctrl);
 
-    setLoading(true);
-    setIsSearchMode(false);
-    setSelectedPaths(new Set());
-    setFocusedPath(null);
+    // Mark this tab as loading, reset its select/search state.
+    setTabs(prev => prev.map(t =>
+      t.id === tabId
+        ? { ...t, loading: true, isSearchMode: false, selectedPaths: new Set(), focusedPath: null }
+        : t,
+    ));
 
     try {
       const data = await listFolder(path);
       if (ctrl.signal.aborted) return;
 
-      setCurrentPath(data.path);
-      setNavInput(data.path);
-      setEntries(data.entries);
-      setFolderMeta({ total: data.total, files: data.files, folders: data.folders });
-
-      if (addToHistory) {
-        setHistory(prev => {
-          const trimmed = prev.slice(0, histIdx + 1);
-          if (trimmed.at(-1)?.toLowerCase() === data.path.toLowerCase()) return trimmed;
-          return [...trimmed, data.path];
-        });
-        setHistIdx(prev => prev + 1);
-      }
+      setTabs(prev => prev.map(t => {
+        if (t.id !== tabId) return t;
+        let newHist = t.history;
+        let newIdx = t.historyIndex;
+        if (addToHistory) {
+          const trimmed = t.history.slice(0, t.historyIndex + 1);
+          if (trimmed.at(-1)?.toLowerCase() !== data.path.toLowerCase()) {
+            trimmed.push(data.path);
+          }
+          newHist = trimmed;
+          newIdx = newHist.length - 1;
+        }
+        return {
+          ...t,
+          path: data.path,
+          navInput: data.path,
+          label: tabLabelFromPath(data.path),
+          entries: data.entries,
+          folderMeta: { total: data.total, files: data.files, folders: data.folders },
+          history: newHist,
+          historyIndex: newIdx,
+          loading: false,
+        };
+      }));
     } catch (err: unknown) {
       if (ctrl.signal.aborted) return;
-      // Treat navigation failures as search queries.
+      setTabs(prev => prev.map(t => t.id === tabId ? { ...t, loading: false } : t));
       if (addToHistory) runSearch(path);
-    } finally {
-      if (!ctrl.signal.aborted) setLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [histIdx]);
+  }, [activeTabId]);
 
-  const runSearch = useCallback(async (query: string) => {
-    setSearchLoading(true);
-    setIsSearchMode(true);
-    setSelectedPaths(new Set());
-    setFocusedPath(null);
-    setNavInput(query);
+  const runSearch = useCallback(async (query: string, addToHistory = true) => {
+    const tabId = activeTabId;
+    setTabs(prev => prev.map(t =>
+      t.id === tabId
+        ? { ...t, searchLoading: true, isSearchMode: true, selectedPaths: new Set(), focusedPath: null, navInput: query }
+        : t,
+    ));
     try {
       const data = await searchFiles(query);
-      setSearchEntries(toSearchEntries(data.paths));
-      setSearchMeta({ query: data.query, shown: data.shown, total: data.total, message: data.message });
+      setTabs(prev => prev.map(t => {
+        if (t.id !== tabId) return t;
+        const entry = SEARCH_PREFIX + query;
+        let newHist = t.history;
+        let newIdx = t.historyIndex;
+        if (addToHistory) {
+          const trimmed = t.history.slice(0, t.historyIndex + 1);
+          if (trimmed.at(-1) !== entry) trimmed.push(entry);
+          newHist = trimmed;
+          newIdx = newHist.length - 1;
+        }
+        return {
+          ...t, searchLoading: false,
+          searchEntries: toSearchEntries(data.paths),
+          searchMeta: { query: data.query, shown: data.shown, total: data.total, message: data.message },
+          history: newHist, historyIndex: newIdx, path: entry,
+        };
+      }));
     } catch (err: unknown) {
       showStatus(`Search error: ${err instanceof Error ? err.message : String(err)}`);
-      setSearchEntries([]);
-    } finally {
-      setSearchLoading(false);
+      setTabs(prev => prev.map(t =>
+        t.id === tabId ? { ...t, searchLoading: false, searchEntries: [] } : t,
+      ));
     }
-  }, [showStatus]);
+  }, [activeTabId, showStatus]);
 
   const handleNavSubmit = useCallback(() => {
-    const raw = navInput.trim();
+    const raw = activeTab.navInput.trim();
     if (raw) navigateTo(raw);
-  }, [navInput, navigateTo]);
+  }, [activeTab.navInput, navigateTo]);
 
-  const canGoBack    = histIdx > 0;
-  const canGoForward = histIdx < history.length - 1;
+  const canGoBack    = activeTab.historyIndex > 0;
+  const canGoForward = activeTab.historyIndex < activeTab.history.length - 1;
 
   const goBack = useCallback(() => {
     if (!canGoBack) return;
-    const idx = histIdx - 1;
-    setHistIdx(idx);
-    navigateTo(history[idx], false);
-  }, [canGoBack, histIdx, history, navigateTo]);
+    const idx = activeTab.historyIndex - 1;
+    const entry = activeTab.history[idx];
+    setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, historyIndex: idx } : t));
+    if (entry.startsWith(SEARCH_PREFIX)) {
+      runSearch(entry.slice(SEARCH_PREFIX.length), false);
+    } else {
+      navigateTo(entry, false);
+    }
+  }, [canGoBack, activeTabId, activeTab.history, activeTab.historyIndex, navigateTo, runSearch]);
 
   const goForward = useCallback(() => {
     if (!canGoForward) return;
-    const idx = histIdx + 1;
-    setHistIdx(idx);
-    navigateTo(history[idx], false);
-  }, [canGoForward, histIdx, history, navigateTo]);
+    const idx = activeTab.historyIndex + 1;
+    const entry = activeTab.history[idx];
+    setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, historyIndex: idx } : t));
+    if (entry.startsWith(SEARCH_PREFIX)) {
+      runSearch(entry.slice(SEARCH_PREFIX.length), false);
+    } else {
+      navigateTo(entry, false);
+    }
+  }, [canGoForward, activeTabId, activeTab.history, activeTab.historyIndex, navigateTo, runSearch]);
 
   const handleRefresh = useCallback(() => {
-    if (isSearchMode && searchMeta) runSearch(searchMeta.query);
-    else navigateTo(currentPath, false);
-  }, [isSearchMode, searchMeta, currentPath, navigateTo, runSearch]);
+    if (activeTab.isSearchMode && activeTab.searchMeta) runSearch(activeTab.searchMeta.query, false);
+    else navigateTo(activeTab.path, false);
+  }, [activeTab.isSearchMode, activeTab.searchMeta, activeTab.path, navigateTo, runSearch]);
 
-  // ── Sort / Select ────────────────────────────────────────────────────────────
+  // ── Sort / Select ─────────────────────────────────────────────────────────
 
   const handleSort = useCallback((col: SortCol) => {
-    if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    else { setSortCol(col); setSortDir('asc'); }
-  }, [sortCol]);
+    setTabs(prev => prev.map(t => {
+      if (t.id !== activeTabId) return t;
+      if (t.sortCol === col) return { ...t, sortDir: t.sortDir === 'asc' ? 'desc' : 'asc' as SortDir };
+      return { ...t, sortCol: col, sortDir: 'asc' as SortDir };
+    }));
+  }, [activeTabId]);
 
   const handleSelect = useCallback((path: string, checked: boolean) => {
-    setSelectedPaths(prev => {
-      const next = new Set(prev);
+    setTabs(prev => prev.map(t => {
+      if (t.id !== activeTabId) return t;
+      const next = new Set(t.selectedPaths);
       if (checked) next.add(path); else next.delete(path);
-      return next;
-    });
-  }, []);
+      return { ...t, selectedPaths: next };
+    }));
+  }, [activeTabId]);
 
   const handleSelectAll = useCallback((checked: boolean) => {
-    if (isSearchMode) {
-      setSelectedPaths(checked ? new Set(searchEntries.map(e => e.path)) : new Set());
-    } else {
-      setSelectedPaths(checked ? new Set(entries.map(e => e.path)) : new Set());
-    }
-  }, [isSearchMode, searchEntries, entries]);
+    setTabs(prev => prev.map(t => {
+      if (t.id !== activeTabId) return t;
+      if (t.isSearchMode) return { ...t, selectedPaths: checked ? new Set(t.searchEntries.map(e => e.path)) : new Set() };
+      return { ...t, selectedPaths: checked ? new Set(t.entries.map(e => e.path)) : new Set() };
+    }));
+  }, [activeTabId]);
 
-  // ── Clipboard ────────────────────────────────────────────────────────────────
+  const handleSelectOnly = useCallback((path: string) => {
+    patchActive({ selectedPaths: new Set([path]), focusedPath: path });
+  }, [patchActive]);
+
+  const handleSelectRange = useCallback((fromPath: string, toPath: string) => {
+    setTabs(prev => prev.map(t => {
+      if (t.id !== activeTabId) return t;
+      const list = t.isSearchMode ? t.searchEntries.map(e => e.path) : t.entries.map(e => e.path);
+      const fi = list.indexOf(fromPath), ti = list.indexOf(toPath);
+      if (fi < 0 || ti < 0) return t;
+      const lo = Math.min(fi, ti), hi = Math.max(fi, ti);
+      return { ...t, selectedPaths: new Set(list.slice(lo, hi + 1)) };
+    }));
+  }, [activeTabId]);
+
+  // ── Clipboard ─────────────────────────────────────────────────────────────
+
+  const { selectedPaths, focusedPath, entries, isSearchMode, path: currentPath } = activeTab;
 
   const handleCopy = useCallback(() => {
     const paths = Array.from(selectedPaths);
@@ -246,111 +354,77 @@ export default function App() {
       syncUndoState(res.can_undo, res.can_redo);
       if (clipboard.move) setClipboard(null);
       await navigateTo(currentPath, false);
-      showStatus(
-        `${clipboard.move ? 'Moved' : 'Copied'}: ${res.done.length}` +
-        (res.errors.length ? ` | Errors: ${res.errors.length}` : '')
-      );
+      showStatus(`${clipboard.move ? 'Moved' : 'Copied'}: ${res.done.length}` +
+        (res.errors.length ? ` | Errors: ${res.errors.length}` : ''));
     } catch (err: unknown) {
       showStatus(`Paste failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setOpLoading(false);
-    }
+    } finally { setOpLoading(false); }
   }, [canPaste, clipboard, currentPath, navigateTo, syncUndoState, showStatus]);
 
-  // ── Delete ───────────────────────────────────────────────────────────────────
-
-  const DRIVE_ROOT_RE = /^[A-Za-z]:[/\\]?$/;
+  // ── Delete ────────────────────────────────────────────────────────────────
 
   const handleDeleteRequest = useCallback(() => {
     const paths = Array.from(selectedPaths).filter(p => !DRIVE_ROOT_RE.test(p));
     if (!paths.length) { showStatus('No items selected for delete.'); return; }
     setPathsToDelete(paths);
     setDelConfirmOpen(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPaths, showStatus]);
 
   const handleDeleteConfirmed = useCallback(async () => {
-    setDelConfirmOpen(false);
-    setOpLoading(true);
+    setDelConfirmOpen(false); setOpLoading(true);
     try {
       const res = await deleteFiles(pathsToDelete);
       syncUndoState(res.can_undo, res.can_redo);
-      setSelectedPaths(new Set());
+      patchActive({ selectedPaths: new Set() });
       await navigateTo(currentPath, false);
-      showStatus(
-        `Deleted: ${res.done.length}` +
-        (res.errors.length ? ` | Errors: ${res.errors.length}` : '')
-      );
+      showStatus(`Deleted: ${res.done.length}` + (res.errors.length ? ` | Errors: ${res.errors.length}` : ''));
     } catch (err: unknown) {
       showStatus(`Delete failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setOpLoading(false);
-    }
-  }, [pathsToDelete, currentPath, navigateTo, syncUndoState, showStatus]);
+    } finally { setOpLoading(false); }
+  }, [pathsToDelete, currentPath, navigateTo, syncUndoState, showStatus, patchActive]);
 
-  // ── Undo / Redo ──────────────────────────────────────────────────────────────
+  // ── Undo / Redo ───────────────────────────────────────────────────────────
 
   const handleUndo = useCallback(async () => {
-    if (!canUndo) return;
-    setOpLoading(true);
+    if (!canUndo) return; setOpLoading(true);
     try {
       const res = await undoOperation();
       syncUndoState(res.can_undo, res.can_redo);
       await navigateTo(currentPath, false);
-      showStatus(
-        `Undo: ${res.done.length}` +
-        (res.errors.length ? ` | Errors: ${res.errors.length}` : '')
-      );
+      showStatus(`Undo: ${res.done.length}` + (res.errors.length ? ` | Errors: ${res.errors.length}` : ''));
     } catch (err: unknown) {
       showStatus(`Undo failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setOpLoading(false);
-    }
+    } finally { setOpLoading(false); }
   }, [canUndo, currentPath, navigateTo, syncUndoState, showStatus]);
 
   const handleRedo = useCallback(async () => {
-    if (!canRedo) return;
-    setOpLoading(true);
+    if (!canRedo) return; setOpLoading(true);
     try {
       const res = await redoOperation();
       syncUndoState(res.can_undo, res.can_redo);
       await navigateTo(currentPath, false);
-      showStatus(
-        `Redo: ${res.done.length}` +
-        (res.errors.length ? ` | Errors: ${res.errors.length}` : '')
-      );
+      showStatus(`Redo: ${res.done.length}` + (res.errors.length ? ` | Errors: ${res.errors.length}` : ''));
     } catch (err: unknown) {
       showStatus(`Redo failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setOpLoading(false);
-    }
+    } finally { setOpLoading(false); }
   }, [canRedo, currentPath, navigateTo, syncUndoState, showStatus]);
 
-  // ── Analyse ──────────────────────────────────────────────────────────────────
+  // ── Analyse ───────────────────────────────────────────────────────────────
 
   const handleAnalyse = useCallback(async (targetPath?: string) => {
-    // Prefer explicit path, then focused folder, then current folder.
-    const path =
-      targetPath ??
-      (focusedPath && entries.find(e => e.path === focusedPath && e.is_dir)?.path) ??
-      currentPath;
-
+    const path = targetPath ?? (focusedPath && entries.find(e => e.path === focusedPath && e.is_dir)?.path) ?? currentPath;
     setAnalyseLoading(true);
     showStatus(`Analysing: ${path}`, 60_000);
     try {
       const res = await runAnalysis(path);
-      await navigateTo(currentPath, false);   // Refresh Size column.
-      showStatus(
-        `Analysed: ${res.folder_count + 1} folders | ${res.file_count} files | ${res.size}`
-      );
+      await navigateTo(currentPath, false);
+      showStatus(`Analysed: ${res.folder_count + 1} folders | ${res.file_count} files | ${res.size}`);
     } catch (err: unknown) {
       showStatus(`Analysis failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setAnalyseLoading(false);
-    }
+    } finally { setAnalyseLoading(false); }
   }, [focusedPath, entries, currentPath, navigateTo, showStatus]);
 
-  // ── New AIFolder ─────────────────────────────────────────────────────────────
+  // ── New AIFolder ──────────────────────────────────────────────────────────
 
   const handleNewAIFolder = useCallback((parentPath?: string) => {
     setAiFolderParent(parentPath ?? currentPath);
@@ -358,20 +432,17 @@ export default function App() {
   }, [currentPath]);
 
   const handleCreateAIFolder = useCallback(async (parent: string, name: string, authMode: string) => {
-    setAiFolderOpen(false);
-    setOpLoading(true);
+    setAiFolderOpen(false); setOpLoading(true);
     try {
       await createAIFolder(parent, name, authMode);
       await navigateTo(parent, false);
       showStatus(`Created AIFolder: ${name} (${authMode})`);
     } catch (err: unknown) {
       showStatus(`AIFolder creation failed: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setOpLoading(false);
-    }
+    } finally { setOpLoading(false); }
   }, [navigateTo, showStatus]);
 
-  // ── Context menu helper ───────────────────────────────────────────────────────
+  // ── Context menu ──────────────────────────────────────────────────────────
 
   const handleTableContextMenu = useCallback((e: MouseEvent) => {
     const row = (e.target as Element).closest('[data-path]');
@@ -380,32 +451,57 @@ export default function App() {
       const entry = entries.find(x => x.path === path) ?? null;
       if (entry) {
         setContextTarget({ path, is_dir: entry.is_dir });
-        // Auto-select the right-clicked item if not already in selection.
-        if (!selectedPaths.has(path)) {
-          setSelectedPaths(new Set([path]));
-          setFocusedPath(path);
-        }
-      } else {
-        setContextTarget(null);
+        if (!selectedPaths.has(path)) patchActive({ selectedPaths: new Set([path]), focusedPath: path });
+      } else { setContextTarget(null); }
+    } else { setContextTarget(null); }
+  }, [entries, isSearchMode, selectedPaths, patchActive]);
+
+  // ── Tab management ────────────────────────────────────────────────────────
+
+  const handleNewTab = useCallback(() => {
+    const t = makeTab();
+    setTabs(prev => [...prev, t]);
+    setActiveTabId(t.id);
+  }, []);
+
+  const handleCloseTab = useCallback((tabId: string) => {
+    setTabs(prev => {
+      if (prev.length <= 1) {
+        // Last tab: reset to C:\ instead of removing.
+        return [{ ...makeTab(), id: prev[0].id }];
       }
-    } else {
-      setContextTarget(null);
+      const remaining = prev.filter(t => t.id !== tabId);
+      if (tabId === activeTabId) {
+        const idx = prev.findIndex(t => t.id === tabId);
+        setActiveTabId(remaining[Math.min(idx, remaining.length - 1)].id);
+      }
+      // Clean up abort controller
+      abortRefs.current.get(tabId)?.abort();
+      abortRefs.current.delete(tabId);
+      return remaining;
+    });
+  }, [activeTabId]);
+
+  const handleTabClick = useCallback((tabId: string) => {
+    if (tabId !== activeTabId) {
+      setActiveTabId(tabId);
+      // Re-navigate if the tab hasn't loaded yet (entries empty and path not C:\).
+      const tab = tabs.find(t => t.id === tabId);
+      if (tab && tab.entries.length === 0 && !tab.loading) {
+        navigateTo(tab.path, false);
+      }
     }
-  }, [entries, isSearchMode, selectedPaths]);
+  }, [activeTabId, tabs, navigateTo]);
 
-  // ── Keyboard shortcuts ───────────────────────────────────────────────────────
-  // Use a ref to always have the latest handler versions without re-attaching.
+  // ── Keyboard shortcuts ───────────────────────────────────────────────────
 
-  const handlersRef = useRef({
-    handleCopy, handleCut, handlePaste, handleDeleteRequest,
-    handleUndo, handleRedo, handleSelectAll,
-  });
-  useEffect(() => {
-    handlersRef.current = {
-      handleCopy, handleCut, handlePaste, handleDeleteRequest,
-      handleUndo, handleRedo, handleSelectAll,
-    };
-  });
+  const handlersRef = useRef({ handleCopy, handleCut, handlePaste, handleDeleteRequest, handleUndo, handleRedo, handleSelectAll });
+  useEffect(() => { handlersRef.current = { handleCopy, handleCut, handlePaste, handleDeleteRequest, handleUndo, handleRedo, handleSelectAll }; });
+
+  const tabsRef = useRef(tabs);
+  useEffect(() => { tabsRef.current = tabs; }, [tabs]);
+  const activeRef = useRef(activeTabId);
+  useEffect(() => { activeRef.current = activeTabId; }, [activeTabId]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -421,6 +517,16 @@ export default function App() {
           case 'a': e.preventDefault(); h.handleSelectAll(true); return;
           case 'z': e.preventDefault(); h.handleUndo(); return;
           case 'y': e.preventDefault(); h.handleRedo(); return;
+          case 't': e.preventDefault(); handleNewTab(); return;
+          case 'w': e.preventDefault(); handleCloseTab(activeRef.current); return;
+          case 'tab': {
+            e.preventDefault();
+            const ts = tabsRef.current;
+            const idx = ts.findIndex(t => t.id === activeRef.current);
+            const next = (idx + 1) % ts.length;
+            setActiveTabId(ts[next].id);
+            return;
+          }
         }
       }
       if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
@@ -432,9 +538,9 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);   // Runs once; latest handlers accessed via ref.
+  }, [handleNewTab, handleCloseTab]);
 
-  // ── Initialisation ───────────────────────────────────────────────────────────
+  // ── Initialisation ────────────────────────────────────────────────────────
 
   useEffect(() => {
     navigateTo(DEFAULT_PATH, false);
@@ -442,107 +548,143 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Status text ──────────────────────────────────────────────────────────────
+  // ── Status text ────────────────────────────────────────────────────────────
 
+  const { folderMeta, searchMeta } = activeTab;
   const baseStatus = isSearchMode && searchMeta
     ? `Results: ${searchMeta.shown} shown / ${searchMeta.total} total${searchMeta.message ? '  |  ' + searchMeta.message : ''}`
     : `Items: ${folderMeta.total}  |  Files: ${folderMeta.files}  |  Folders: ${folderMeta.folders}`;
-
   const statusText = tempStatus ?? baseStatus;
 
-  const busy = loading || searchLoading || opLoading || analyseLoading;
+  const busy = activeTab.loading || activeTab.searchLoading || opLoading || analyseLoading;
 
-  // ── Render ────────────────────────────────────────────────────────────────────
+  // ── Tab bar scroll ref ─────────────────────────────────────────────────────
+
+  const tabBarRef = useRef<HTMLDivElement>(null);
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+
   return (
     <div className="size-full flex bg-white">
 
-      {/* ── Left sidebar ────────────────────────────────────────────────────── */}
+      {/* ── Left sidebar ──────────────────────────────────────────────────── */}
       <div className="w-[180px] bg-gray-50 border-r border-gray-200 flex flex-col shrink-0">
-        <div className="p-3 space-y-2 flex-1 overflow-y-auto">
-
+        <div className="p-3 space-y-1 flex-1 overflow-y-auto">
+          {/* View switcher */}
           <button
-            onClick={() => handleAnalyse()}
-            disabled={analyseLoading}
-            className="w-full px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-60"
+            onClick={() => switchView('files')}
+            className={[
+              'w-full px-3 py-2 rounded-md transition-colors text-sm font-medium flex items-center gap-2',
+              view === 'files'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                : 'text-gray-600 hover:bg-gray-100 border border-transparent',
+            ].join(' ')}
           >
+            <FolderOpen className="w-4 h-4" /> Files
+          </button>
+          <button
+            onClick={() => switchView('apps')}
+            className={[
+              'w-full px-3 py-2 rounded-md transition-colors text-sm font-medium flex items-center gap-2',
+              view === 'apps'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                : 'text-gray-600 hover:bg-gray-100 border border-transparent',
+            ].join(' ')}
+          >
+            <LayoutGrid className="w-4 h-4" /> Installed Apps
+          </button>
+
+          <div className="pt-2" />  {/* spacer */}
+
+          <button onClick={() => handleAnalyse()} disabled={analyseLoading}
+            className="w-full px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-60">
             {analyseLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ScanSearch className="w-4 h-4" />}
             Analyse
           </button>
-
-          <button
-            onClick={() => handleNewAIFolder()}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-          >
+          <button onClick={() => handleNewAIFolder()}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2">
             <FolderPlus className="w-4 h-4" /> New AIFolder
           </button>
-
-          <button
-            onClick={handleCopy}
-            disabled={selectedPaths.size === 0}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40"
-          >
+          <button onClick={handleCopy} disabled={selectedPaths.size === 0}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40">
             <Copy className="w-4 h-4" /> Copy
           </button>
-
-          <button
-            onClick={handleCut}
-            disabled={selectedPaths.size === 0}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40"
-          >
+          <button onClick={handleCut} disabled={selectedPaths.size === 0}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40">
             <Scissors className="w-4 h-4" /> Cut
           </button>
-
-          <button
-            onClick={handlePaste}
-            disabled={!canPaste || opLoading}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40"
-          >
-            <ClipboardPaste className="w-4 h-4" />
-            {clipboard?.move ? 'Move here' : 'Paste'}
+          <button onClick={handlePaste} disabled={!canPaste || opLoading}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40">
+            <ClipboardPaste className="w-4 h-4" />{clipboard?.move ? 'Move here' : 'Paste'}
           </button>
-
-          <button
-            onClick={handleDeleteRequest}
-            disabled={selectedPaths.size === 0 || opLoading}
-            className="w-full px-3 py-2 bg-white border border-red-200 text-red-600 rounded-md hover:bg-red-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40 disabled:text-gray-400 disabled:border-gray-300"
-          >
+          <button onClick={handleDeleteRequest} disabled={selectedPaths.size === 0 || opLoading}
+            className="w-full px-3 py-2 bg-white border border-red-200 text-red-600 rounded-md hover:bg-red-50 transition-colors text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40 disabled:text-gray-400 disabled:border-gray-300">
             <Trash2 className="w-4 h-4" /> Delete
           </button>
-
-          <button
-            onClick={handleRefresh}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-          >
+          <button onClick={handleRefresh}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2">
             <RefreshCw className="w-4 h-4" /> Refresh
           </button>
-
-          <button
-            onClick={() => setLlmSettingsOpen(true)}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-          >
+          <button onClick={() => setLlmSettingsOpen(true)}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2">
             <Settings className="w-4 h-4" /> Settings
           </button>
         </div>
-
-        {/* LLM quick-access button at the bottom of the sidebar */}
         <div className="p-3 border-t border-gray-200 shrink-0">
-          <button
-            onClick={() => setLlmSettingsOpen(true)}
-            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-          >
+          <button onClick={() => setLlmSettingsOpen(true)}
+            className="w-full px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2">
             <Settings className="w-4 h-4" /> LLM Settings
           </button>
         </div>
       </div>
 
-      {/* ── Main content ────────────────────────────────────────────────────── */}
+      {/* ── Main content ──────────────────────────────────────────────────── */}
+      {view === 'apps' ? (
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="px-4 py-2.5 flex items-center gap-2 border-b border-gray-200">
+            {previousView && (
+              <button onClick={() => { setView(previousView); setPreviousView(null); }}
+                className="p-1 rounded hover:bg-gray-200 shrink-0" title={`Back to ${previousView}`}>
+                <ChevronLeft className="w-4 h-4 text-gray-600" />
+              </button>
+            )}
+            <LayoutGrid className="w-5 h-5 text-blue-600 shrink-0" />
+            <h1 className="font-semibold text-gray-900">Installed Applications</h1>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <AppsGrid
+              onOpenInAIFM={(dir) => {
+                const t = makeTab(dir);
+                setTabs(prev => [...prev, t]);
+                setActiveTabId(t.id);
+                activeTabIdRef.current = t.id;
+                switchView('files');
+                navigateTo(dir, false);
+              }}
+              onOpenInExplorer={(dir) => {
+                fetch(`${API_BASE}/api/fs/open`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ path: dir }),
+                }).catch(() => {});
+              }}
+            />
+          </div>
+        </div>
+      ) : (
       <div className="flex-1 flex flex-col min-w-0">
 
         {/* Title row */}
         <div className="px-4 py-2.5 flex items-center gap-2 border-b border-gray-200">
           <Sparkles className="w-5 h-5 text-blue-600 shrink-0" />
           <h1 className="font-semibold text-gray-900">AI File Manager</h1>
-          {busy && <Loader2 className="w-4 h-4 animate-spin text-blue-400 ml-auto" />}
+          {previousView && (
+            <button onClick={() => { setView(previousView); setPreviousView(null); }}
+              className="p-1 rounded hover:bg-gray-200 shrink-0 ml-auto" title={`Back to ${previousView}`}>
+              <ChevronLeft className="w-4 h-4 text-gray-600" />
+            </button>
+          )}
+          {busy && <Loader2 className="w-4 h-4 animate-spin text-blue-400" />}
         </div>
 
         {/* Navigation toolbar */}
@@ -557,8 +699,8 @@ export default function App() {
           </button>
           <input
             type="text"
-            value={navInput}
-            onChange={e => setNavInput(e.target.value)}
+            value={activeTab.navInput}
+            onChange={e => patchActive({ navInput: e.target.value })}
             onKeyDown={e => e.key === 'Enter' && handleNavSubmit()}
             className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 min-w-0"
             placeholder="Path or search query…"
@@ -570,171 +712,120 @@ export default function App() {
           </button>
         </div>
 
+        {/* ── Tab bar ─────────────────────────────────────────────────────── */}
+        <div
+          ref={tabBarRef}
+          className="flex items-center bg-gray-100 border-b border-gray-200 overflow-x-auto shrink-0"
+        >
+          {tabs.map(tab => (
+            <div
+              key={tab.id}
+              onClick={() => handleTabClick(tab.id)}
+              className={[
+                'flex items-center gap-1 px-3 py-1.5 text-xs cursor-pointer border-r border-gray-200 hover:bg-gray-200 transition-colors select-none group shrink min-w-[72px]',
+                tab.id === activeTabId ? 'bg-white border-b-[2px] border-b-blue-500 font-medium text-gray-900' : 'text-gray-600 border-b-2 border-b-transparent',
+              ].join(' ')}
+              style={{ flexBasis: '160px' }}
+            >
+              <span className="truncate flex-1 min-w-0">{tab.label}</span>
+              <button
+                onClick={e => { e.stopPropagation(); handleCloseTab(tab.id); }}
+                className="w-4 h-4 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-300 transition-colors shrink-0"
+                title="Close tab (Ctrl+W)"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={handleNewTab}
+            className="px-2.5 py-1.5 text-gray-500 hover:bg-gray-200 transition-colors shrink-0"
+            title="New tab (Ctrl+T)"
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
         {/* Three-pane content */}
         <div className="flex-1 overflow-hidden">
           <PanelGroup direction="horizontal">
-
-            {/* ── Tree + Table ───────────────────────────────────────────── */}
             <Panel defaultSize={65} minSize={40}>
               <PanelGroup direction="horizontal">
-
-                {/* Folder tree */}
                 <Panel defaultSize={28} minSize={15}>
-                  <FolderTree currentPath={currentPath} onNavigate={navigateTo} />
+                  <FolderTree currentPath={activeTab.path} onNavigate={navigateTo} />
                 </Panel>
-
                 <PanelResizeHandle className="w-px bg-gray-200 hover:bg-blue-400 transition-colors" />
-
-                {/* File table + status bar */}
                 <Panel defaultSize={72}>
                   <div className="h-full flex flex-col">
-
-                    {/* Context-menu wraps the table */}
                     <ContextMenu onOpenChange={open => { if (!open) setContextTarget(null); }}>
                       <ContextMenuTrigger asChild>
-                      <div
-                        className="flex-1 overflow-hidden"
-                        onContextMenu={handleTableContextMenu}
-                      >
+                      <div className="flex-1 overflow-hidden" onContextMenu={handleTableContextMenu}>
                         <FileTable
-                          entries={entries}
-                          isSearchMode={isSearchMode}
-                          searchEntries={searchEntries}
-                          sortCol={sortCol}
-                          sortDir={sortDir}
-                          selectedPaths={selectedPaths}
-                          focusedPath={focusedPath}
+                          entries={activeTab.entries}
+                          isSearchMode={activeTab.isSearchMode}
+                          searchEntries={activeTab.searchEntries}
+                          sortCol={activeTab.sortCol}
+                          sortDir={activeTab.sortDir}
+                          selectedPaths={activeTab.selectedPaths}
+                          focusedPath={activeTab.focusedPath}
                           onSort={handleSort}
                           onSelect={handleSelect}
+                          onSelectOnly={handleSelectOnly}
+                          onSelectRange={handleSelectRange}
                           onSelectAll={handleSelectAll}
-                          onFocus={path => setFocusedPath(path)}
+                          onFocus={p => patchActive({ focusedPath: p })}
                           onNavigate={navigateTo}
                         />
                       </div>
                       </ContextMenuTrigger>
-
                       <ContextMenuContent className="w-56">
-                        {/* Entry-specific items */}
-                        {contextTarget && (
-                          <>
-                            {contextTarget.is_dir && (
-                              <ContextMenuItem onClick={() => navigateTo(contextTarget.path)}>
-                                Open
-                              </ContextMenuItem>
-                            )}
-                            {contextTarget.is_dir && (
-                              <ContextMenuItem onClick={() => handleAnalyse(contextTarget.path)}>
-                                Analyse
-                              </ContextMenuItem>
-                            )}
-                            <ContextMenuItem onClick={() => handleNewAIFolder(contextTarget.is_dir ? contextTarget.path : undefined)}>
-                              New AIFolder…
-                            </ContextMenuItem>
-                            <ContextMenuSeparator />
-                          </>
-                        )}
-
-                        {/* Clipboard */}
-                        <ContextMenuItem onClick={handleCopy} disabled={selectedPaths.size === 0}>
-                          Copy <ContextMenuShortcut>Ctrl+C</ContextMenuShortcut>
-                        </ContextMenuItem>
-                        <ContextMenuItem onClick={handleCut} disabled={selectedPaths.size === 0}>
-                          Cut <ContextMenuShortcut>Ctrl+X</ContextMenuShortcut>
-                        </ContextMenuItem>
-                        <ContextMenuItem onClick={handlePaste} disabled={!canPaste}>
-                          Paste <ContextMenuShortcut>Ctrl+V</ContextMenuShortcut>
-                        </ContextMenuItem>
-                        <ContextMenuItem
-                          onClick={handleDeleteRequest}
-                          disabled={selectedPaths.size === 0}
-                          className="text-red-600 focus:text-red-600"
-                        >
-                          Delete <ContextMenuShortcut>Del</ContextMenuShortcut>
-                        </ContextMenuItem>
-
+                        {contextTarget && (<>
+                          {contextTarget.is_dir && <ContextMenuItem onClick={() => navigateTo(contextTarget.path)}>Open</ContextMenuItem>}
+                          {contextTarget.is_dir && <ContextMenuItem onClick={() => handleAnalyse(contextTarget.path)}>Analyse</ContextMenuItem>}
+                          <ContextMenuItem onClick={() => handleNewAIFolder(contextTarget.is_dir ? contextTarget.path : undefined)}>New AIFolder…</ContextMenuItem>
+                          <ContextMenuSeparator />
+                        </>)}
+                        <ContextMenuItem onClick={handleCopy} disabled={selectedPaths.size === 0}>Copy <ContextMenuShortcut>Ctrl+C</ContextMenuShortcut></ContextMenuItem>
+                        <ContextMenuItem onClick={handleCut} disabled={selectedPaths.size === 0}>Cut <ContextMenuShortcut>Ctrl+X</ContextMenuShortcut></ContextMenuItem>
+                        <ContextMenuItem onClick={handlePaste} disabled={!canPaste}>Paste <ContextMenuShortcut>Ctrl+V</ContextMenuShortcut></ContextMenuItem>
+                        <ContextMenuItem onClick={handleDeleteRequest} disabled={selectedPaths.size === 0} className="text-red-600 focus:text-red-600">Delete <ContextMenuShortcut>Del</ContextMenuShortcut></ContextMenuItem>
                         <ContextMenuSeparator />
-
-                        {/* Undo / Redo */}
-                        <ContextMenuItem onClick={handleUndo} disabled={!canUndo}>
-                          Undo <ContextMenuShortcut>Ctrl+Z</ContextMenuShortcut>
-                        </ContextMenuItem>
-                        <ContextMenuItem onClick={handleRedo} disabled={!canRedo}>
-                          Redo <ContextMenuShortcut>Ctrl+Y</ContextMenuShortcut>
-                        </ContextMenuItem>
-
+                        <ContextMenuItem onClick={handleUndo} disabled={!canUndo}>Undo <ContextMenuShortcut>Ctrl+Z</ContextMenuShortcut></ContextMenuItem>
+                        <ContextMenuItem onClick={handleRedo} disabled={!canRedo}>Redo <ContextMenuShortcut>Ctrl+Y</ContextMenuShortcut></ContextMenuItem>
                         <ContextMenuSeparator />
-
-                        {/* Non-entry items */}
-                        {!contextTarget && (
-                          <ContextMenuItem onClick={() => handleNewAIFolder()}>
-                            New AIFolder…
-                          </ContextMenuItem>
-                        )}
-                        <ContextMenuItem onClick={handleRefresh}>
-                          Refresh <ContextMenuShortcut>F5</ContextMenuShortcut>
-                        </ContextMenuItem>
-                        <ContextMenuItem onClick={() => handleSelectAll(true)}>
-                          Select All <ContextMenuShortcut>Ctrl+A</ContextMenuShortcut>
-                        </ContextMenuItem>
+                        {!contextTarget && <ContextMenuItem onClick={() => handleNewAIFolder()}>New AIFolder…</ContextMenuItem>}
+                        <ContextMenuItem onClick={handleRefresh}>Refresh <ContextMenuShortcut>F5</ContextMenuShortcut></ContextMenuItem>
+                        <ContextMenuItem onClick={() => handleSelectAll(true)}>Select All <ContextMenuShortcut>Ctrl+A</ContextMenuShortcut></ContextMenuItem>
                       </ContextMenuContent>
                     </ContextMenu>
-
                     {/* Status bar */}
                     <div className="shrink-0 bg-gray-50 border-t border-gray-200 px-3 py-1 flex items-center gap-3">
-                      <button
-                        onClick={handleUndo}
-                        disabled={!canUndo || opLoading}
-                        title="Undo (Ctrl+Z)"
-                        className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
+                      <button onClick={handleUndo} disabled={!canUndo || opLoading} title="Undo (Ctrl+Z)" className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed">
                         <Undo2 className="w-3.5 h-3.5 text-gray-600" />
                       </button>
-                      <button
-                        onClick={handleRedo}
-                        disabled={!canRedo || opLoading}
-                        title="Redo (Ctrl+Y)"
-                        className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
+                      <button onClick={handleRedo} disabled={!canRedo || opLoading} title="Redo (Ctrl+Y)" className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed">
                         <Redo2 className="w-3.5 h-3.5 text-gray-600" />
                       </button>
-                      <span className={`text-xs truncate flex-1 ${tempStatus ? 'text-blue-700 font-medium' : 'text-gray-600'}`}>
-                        {statusText}
-                      </span>
-                      {selectedPaths.size > 0 && (
-                        <span className="text-xs text-blue-600 shrink-0">
-                          {selectedPaths.size} selected
-                        </span>
-                      )}
-                      {clipboard && (
-                        <span className="text-xs text-amber-600 shrink-0">
-                          {clipboard.paths.length} {clipboard.move ? 'cut' : 'copied'}
-                        </span>
-                      )}
+                      <span className={`text-xs truncate flex-1 ${tempStatus ? 'text-blue-700 font-medium' : 'text-gray-600'}`}>{statusText}</span>
+                      {selectedPaths.size > 0 && <span className="text-xs text-blue-600 shrink-0">{selectedPaths.size} selected</span>}
+                      {clipboard && <span className="text-xs text-amber-600 shrink-0">{clipboard.paths.length} {clipboard.move ? 'cut' : 'copied'}</span>}
                     </div>
                   </div>
                 </Panel>
               </PanelGroup>
             </Panel>
-
             <PanelResizeHandle className="w-px bg-gray-200 hover:bg-blue-400 transition-colors" />
-
-            {/* ── Preview panels ─────────────────────────────────────────── */}
             <Panel defaultSize={35} minSize={20}>
               <PanelGroup direction="vertical">
-
                 <Panel defaultSize={50} minSize={25}>
                   <div className="h-full bg-white flex flex-col border-l border-gray-200">
                     <div className="px-3 py-2 bg-gray-50 border-b border-gray-200 shrink-0">
                       <h3 className="text-sm font-semibold text-gray-900">File Preview</h3>
                     </div>
-                    <div className="flex-1 overflow-hidden">
-                      <PreviewPanel path={focusedPath} />
-                    </div>
+                    <div className="flex-1 overflow-hidden"><PreviewPanel path={focusedPath} /></div>
                   </div>
                 </Panel>
-
                 <PanelResizeHandle className="h-px bg-gray-200 hover:bg-blue-400 transition-colors" />
-
                 <Panel defaultSize={50} minSize={25}>
                   <div className="h-full bg-white flex flex-col border-l border-gray-200">
                     <div className="px-3 py-2 bg-gray-50 border-b border-gray-200 shrink-0 flex items-center gap-1.5">
@@ -743,11 +834,12 @@ export default function App() {
                     </div>
                     <div className="flex-1 overflow-hidden">
                       <AgentPanel
-                        currentPath={currentPath}
-                        selectedPaths={selectedPaths}
-                        focusedPath={focusedPath}
-                        searchQuery={isSearchMode && searchMeta ? searchMeta.query : ''}
+                        currentPath={activeTab.path}
+                        selectedPaths={activeTab.selectedPaths}
+                        focusedPath={activeTab.focusedPath}
+                        searchQuery={activeTab.isSearchMode && activeTab.searchMeta ? activeTab.searchMeta.query : ''}
                         onRefresh={handleRefresh}
+                        configVersion={configVersion}
                       />
                     </div>
                   </div>
@@ -757,26 +849,11 @@ export default function App() {
           </PanelGroup>
         </div>
       </div>
+      )}
 
-      {/* ── Dialogs ─────────────────────────────────────────────────────────── */}
-      <DeleteConfirmDialog
-        open={delConfirmOpen}
-        paths={pathsToDelete}
-        onConfirm={handleDeleteConfirmed}
-        onCancel={() => setDelConfirmOpen(false)}
-      />
-
-      <NewAIFolderDialog
-        open={aiFolderOpen}
-        defaultParent={aiFolderParent}
-        onConfirm={handleCreateAIFolder}
-        onCancel={() => setAiFolderOpen(false)}
-      />
-
-      <LLMSettingsDialog
-        open={llmSettingsOpen}
-        onClose={() => setLlmSettingsOpen(false)}
-      />
+      <DeleteConfirmDialog open={delConfirmOpen} paths={pathsToDelete} onConfirm={handleDeleteConfirmed} onCancel={() => setDelConfirmOpen(false)} />
+      <NewAIFolderDialog open={aiFolderOpen} defaultParent={aiFolderParent} onConfirm={handleCreateAIFolder} onCancel={() => setAiFolderOpen(false)} />
+      <LLMSettingsDialog open={llmSettingsOpen} onClose={() => { setLlmSettingsOpen(false); setConfigVersion(v => v + 1); }} onConfigChanged={() => setConfigVersion(v => v + 1)} />
     </div>
   );
 }

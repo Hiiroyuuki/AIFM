@@ -150,6 +150,8 @@ interface AgentPanelProps {
   focusedPath: string | null;
   searchQuery?: string;
   onRefresh: () => void;
+  /** Incremented when LLM config changes; AgentPanel reconnects on change. */
+  configVersion: number;
 }
 
 type Status = 'idle' | 'running' | 'pending';
@@ -160,6 +162,7 @@ export function AgentPanel({
   focusedPath,
   searchQuery = '',
   onRefresh,
+  configVersion,
 }: AgentPanelProps) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput]       = useState('');
@@ -254,6 +257,21 @@ export function AgentPanel({
       wsRef.current?.close();
     };
   }, [connect]);
+
+  // Reconnect WebSocket when LLM config changes (provider add/edit/delete).
+  const prevVersionRef = useRef(configVersion);
+  useEffect(() => {
+    if (prevVersionRef.current === configVersion) return;   // skip initial
+    prevVersionRef.current = configVersion;
+    setMessages([]);
+    setStatus('idle');
+    setPendingData(null);
+    if (retryRef.current) clearTimeout(retryRef.current);
+    // Close the old socket and immediately create a fresh connection.
+    // (Don't rely on onclose to fire — it won't if the socket is already CLOSED.)
+    wsRef.current?.close();
+    connect();
+  }, [configVersion, connect]);
 
   // ── Send request ──────────────────────────────────────────────────────────
 

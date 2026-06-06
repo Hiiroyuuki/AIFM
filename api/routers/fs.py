@@ -2,6 +2,7 @@
 
 GET  /api/fs/list       – list a folder (entries + child analysis sizes)
 GET  /api/fs/stat       – metadata + analysis summary for one path
+GET  /api/fs/icon       – extract system icon for any file as PNG
 POST /api/fs/open       – open a path with the OS default app
 POST /api/fs/paste      – copy or move files (pushes undo entry)
 POST /api/fs/delete     – move to app-trash (pushes undo entry)
@@ -12,6 +13,9 @@ GET  /api/fs/undo-state – current can_undo / can_redo flags
 from __future__ import annotations
 
 import asyncio
+import ctypes
+import ctypes.wintypes as w
+import io
 import mimetypes
 import os
 from datetime import datetime
@@ -409,3 +413,125 @@ async def serve_image(path: str = Query(..., description="Absolute image file pa
         media_type=mime_type,
         headers={"Cache-Control": "public, max-age=60"},
     )
+
+
+# --------------------------------------------------------------------------
+# GET /api/fs/icon  – system file icon as PNG
+# --------------------------------------------------------------------------
+
+@router.get("/icon")
+async def file_icon(
+    path: str = Query(..., description="Absolute file or folder path"),
+    size: int = Query(16, ge=16, le=64, description="Icon size in pixels"),
+):
+    """Return the Windows system icon for *path* as a PNG image."""
+    png = await asyncio.to_thread(_extract_file_icon_png, path, size)
+    if png is None:
+        png = _generic_file_png(size)
+    return Response(content=png, media_type="image/png",
+                    headers={"Cache-Control": "public, max-age=3600"})
+
+
+def _extract_file_icon_png(file_path: str, icon_size: int) -> bytes | None:
+    """Use ``SHGetFileInfoW`` to get the system icon for any path."""
+    try:
+        from PIL import Image   # type: ignore[import-untyped]
+    except ImportError:
+        return None
+
+    p = Path(file_path)
+    if not p.exists() and not p.parent.exists():
+        return None   # no point trying for nonexistent paths
+
+    shell32 = ctypes.windll.shell32
+    user32  = ctypes.windll.user32
+    gdi32   = ctypes.windll.gdi32
+
+    SHGFI_ICON        = 0x000000100
+    SHGFI_LARGEICON   = 0x000000000   # large icon
+    SHGFI_SMALLICON   = 0x000000001   # small icon
+    SHGFI_USEFILEATTRIBUTES = 0x000000010
+
+    class SHFILEINFOW(ctypes.Structure):
+        _fields_ = [
+            ("hIcon",         w.HICON),
+            ("iIcon",         w.INT),
+            ("dwAttributes",  w.DWORD),
+            ("szDisplayName", w.WCHAR * 260),
+            ("szTypeName",    w.WCHAR * 80),
+        ]
+
+    flags = SHGFI_ICON | SHGFI_LARGEICON
+    info = SHFILEINFOW()
+    shell32.SHGetFileInfoW(
+        str(p), 0, ctypes.byref(info), ctypes.sizeof(info), flags
+    )
+    hicon = info.hIcon
+    if not hicon:
+        return None
+
+    try:
+        draw_size = icon_size * 2   # supersample
+        hdc = user32.GetDC(0)
+        mem_dc = gdi32.CreateCompatibleDC(hdc)
+        hbmp = gdi32.CreateCompatibleBitmap(hdc, draw_size, draw_size)
+        old_bmp = gdi32.SelectObject(mem_dc, hbmp)
+        user32.DrawIconEx(mem_dc, 0, 0, hicon, draw_size, draw_size, 0, 0, 3)
+        gdi32.SelectObject(mem_dc, old_bmp)
+
+        class BITMAPINFOHEADER(ctypes.Structure):
+            _fields_ = [
+                ("biSize",          w.DWORD), ("biWidth",         w.LONG),
+                ("biHeight",        w.LONG),  ("biPlanes",        w.WORD),
+                ("biBitCount",      w.WORD),  ("biCompression",   w.DWORD),
+                ("biSizeImage",     w.DWORD), ("biXPelsPerMeter", w.LONG),
+                ("biYPelsPerMeter", w.LONG),  ("biClrUsed",       w.DWORD),
+                ("biClrImportant",  w.DWORD),
+            ]
+        bi = BITMAPINFOHEADER()
+        bi.biSize = ctypes.sizeof(bi)
+        bi.biWidth = draw_size
+        bi.biHeight = -draw_size
+        bi.biPlanes = 1
+        bi.biBitCount = 32
+        bi.biCompression = 0
+
+        buf = (w.BYTE * (draw_size * draw_size * 4))()
+        gdi32.GetDIBits(mem_dc, hbmp, 0, draw_size, buf, ctypes.byref(bi), 0)
+
+        img = Image.frombuffer("RGBA", (draw_size, draw_size), bytes(buf), "raw", "BGRA", 0, 1)
+        img = img.resize((icon_size, icon_size), Image.LANCZOS)
+
+        out = io.BytesIO()
+        img.save(out, "PNG")
+        return out.getvalue()
+    finally:
+        user32.DestroyIcon(hicon)
+        gdi32.DeleteObject(hbmp)
+        gdi32.DeleteDC(mem_dc)
+        user32.ReleaseDC(0, hdc)
+
+
+def _generic_file_png(size: int) -> bytes:
+    """Return a minimal placeholder PNG for files with no icon."""
+    try:
+        from PIL import Image, ImageDraw
+        img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+        margin = max(2, size // 8)
+        draw.rounded_rectangle(
+            [margin, margin, size - margin, size - margin],
+            radius=margin, fill=(180, 180, 190, 255),
+        )
+        buf = io.BytesIO()
+        img.save(buf, "PNG")
+        return buf.getvalue()
+    except Exception:
+        return _MINI_PNG
+
+_MINI_PNG = (
+    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x10\x00\x00\x00\x10\x08\x06"
+    b"\x00\x00\x00\x1f\xf3\xffa\x00\x00\x00\x01sRGB\x00\xae\xce\x1c\xe9"
+    b"\x00\x00\x00\nIDATx\xdac\xf8\xcf\xc0\x00\x00\x01\x01\x00\x05\x18\xd8N"
+    b"\x00\x00\x00\x00IEND\xaeB`\x82"
+)

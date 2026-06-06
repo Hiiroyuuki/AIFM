@@ -237,6 +237,13 @@ class FileManagerAgent:
                 handler=self.tool_get_folder_analysis,
             ),
             ToolDefinition(
+                name="list_installed_apps",
+                description="List installed Windows applications. Optionally filter by name.",
+                arguments={"query": "optional name filter (case-insensitive substring match)"},
+                requires_confirmation=False,
+                handler=self.tool_list_installed_apps,
+            ),
+            ToolDefinition(
                 name="copy_paths",
                 description="Copy files or folders to a destination folder.",
                 arguments={"paths": "list of source paths", "destination": "folder path"},
@@ -630,6 +637,34 @@ class FileManagerAgent:
                 }
                 for path, size in child_sizes.items()
             },
+        }
+
+    def tool_list_installed_apps(self, arguments: JsonDict, _context: AgentContext) -> JsonDict:
+        """List installed Windows applications with optional name filtering."""
+        from installed_apps import get_installed_apps, is_system_component
+
+        apps = get_installed_apps()
+        # Filter out system components so the model only sees user-facing apps.
+        apps = [a for a in apps if not is_system_component(a)]
+
+        query: str = str(arguments.get("query") or "").strip().lower()
+        if query:
+            apps = [a for a in apps if query in a.name.lower()]
+
+        result = [
+            {
+                "name": a.name,
+                "publisher": a.publisher,
+                "version": a.version,
+                "install_location": a.install_location,
+            }
+            for a in apps[:50]
+        ]
+
+        return {
+            "total": len(apps),
+            "shown": len(result),
+            "apps": result,
         }
 
     def tool_copy_paths(self, arguments: JsonDict, context: AgentContext) -> JsonDict:

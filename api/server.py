@@ -26,7 +26,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from api.state import state
-from api.routers import ai_folders, analysis, config, fs, search, ws_agent
+from api.routers import ai_folders, analysis, apps, config, fs, search, ws_agent
 
 _REACT_DIST = Path(__file__).resolve().parent.parent / "AI Chat and Browser App" / "dist"
 
@@ -59,6 +59,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(apps.router)
 app.include_router(fs.router)
 app.include_router(search.router)
 app.include_router(analysis.router)

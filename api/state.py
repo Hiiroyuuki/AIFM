@@ -39,6 +39,7 @@ class AppState:
         self._everything_started = False
         self.undo_stack: list[UndoEntry] = []
         self.redo_stack: list[UndoEntry] = []
+        self._apps_cache: list | None = None   # installed_apps scan result, lazy-filled
 
     # ------------------------------------------------------------------
     # Everything startup

@@ -129,7 +129,7 @@ export const setActiveProvider = (provider: string) =>
 
 export const updateProvider = (
   name: string,
-  data: { nickname: string; api_key: string; model: string; base_url?: string },
+  data: { nickname: string; api_key?: string; model: string; base_url?: string },
 ) =>
   apiFetch<{ ok: boolean }>(`/api/config/providers/${enc(name)}`, {
     method: 'PUT',

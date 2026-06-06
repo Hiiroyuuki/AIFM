@@ -59,7 +59,7 @@ interface ProviderCardProps {
   canDelete: boolean;
 }
 
-interface SaveData { nickname: string; api_key: string; model: string; base_url: string }
+interface SaveData { nickname: string; api_key?: string; model: string; base_url: string }
 
 function ProviderCard({ provider, isActive, onSetActive, onSave, onDelete, canDelete }: ProviderCardProps) {
   const [expanded, setExpanded] = useState(isActive);
@@ -94,8 +94,12 @@ function ProviderCard({ provider, isActive, onSetActive, onSave, onDelete, canDe
   const handleSave = async () => {
     setSaveLoading(true);
     try {
-      await onSave(provider.name, form);
-      setForm(prev => ({ ...prev, api_key: '' }));   // clear key from UI
+      // Only send api_key if the user typed a new one; empty = keep existing.
+      await onSave(provider.name, {
+        ...form,
+        api_key: form.api_key.trim() || undefined,
+      });
+      setForm(prev => ({ ...prev, api_key: '' }));
     } finally {
       setSaveLoading(false);
     }
@@ -247,9 +251,11 @@ interface AddData { provider: string; nickname: string; api_key: string; base_ur
 interface LLMSettingsDialogProps {
   open: boolean;
   onClose: () => void;
+  /** Fired every time a config mutation succeeds — triggers WS reconnect. */
+  onConfigChanged: () => void;
 }
 
-export function LLMSettingsDialog({ open, onClose }: LLMSettingsDialogProps) {
+export function LLMSettingsDialog({ open, onClose, onConfigChanged }: LLMSettingsDialogProps) {
   const [providers,        setProviders]        = useState<ProviderView[]>([]);
   const [activeProviderName, setActiveProviderName] = useState('');
   const [loading,          setLoading]          = useState(false);
@@ -273,22 +279,26 @@ export function LLMSettingsDialog({ open, onClose }: LLMSettingsDialogProps) {
 
   const handleSetActive = async (name: string) => {
     await setActiveProvider(name);
+    onConfigChanged();
     await load();
   };
 
   const handleSave = async (name: string, data: SaveData) => {
     await updateProvider(name, data);
+    onConfigChanged();
     await load();
   };
 
   const handleAdd = async (data: AddData) => {
     await addProvider(data);
+    onConfigChanged();
     await load();
   };
 
   const handleDelete = async (name: string) => {
     if (!confirm(`Delete provider "${name}"?`)) return;
     await deleteProvider(name);
+    onConfigChanged();
     await load();
   };
 

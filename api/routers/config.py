@@ -34,7 +34,7 @@ class ActiveProviderRequest(BaseModel):
 
 class ProviderWriteRequest(BaseModel):
     nickname: str
-    api_key: str
+    api_key: Optional[str] = None   # None/"" → keep existing key; non-empty → update
     model: str
     base_url: Optional[str] = None
 
@@ -149,7 +149,11 @@ async def update_provider(name: str, req: ProviderWriteRequest):
         raise HTTPException(400, f"Malformed provider config for: {name}")
 
     provider_cfg["nickname"] = req.nickname
-    provider_cfg["api_key"] = req.api_key
+    # Only overwrite api_key when the caller supplies a non-empty value.
+    # This prevents accidental key erasure when the frontend edits other fields
+    # without re-entering the (never-displayed) saved key.
+    if req.api_key and req.api_key.strip():
+        provider_cfg["api_key"] = req.api_key.strip()
     provider_cfg["default_model"] = req.model
     if req.base_url:
         provider_cfg["base_url"] = req.base_url

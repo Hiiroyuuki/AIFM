@@ -5,6 +5,8 @@ Usage
 -----
   python start.py                 Production mode — serves the pre-built React app
                                   at http://127.0.0.1:8000/
+  python start.py --app           Desktop window mode — opens a native PySide6
+                                  window instead of the system browser
   python start.py --dev           Dev mode — expects `npm run dev` to be running
                                   separately; opens http://127.0.0.1:5173/
   python start.py --reload        Enable uvicorn hot-reload (useful during backend work)
@@ -87,6 +89,37 @@ def wait_for_server(timeout: int = 20) -> bool:
     return False
 
 
+def open_app_window(url: str) -> None:
+    """Open *url* in a native PySide6 + QWebEngineView desktop window.
+
+    The import is local so that users who only ever run in browser mode
+    never need to install PySide6.  When PySide6 is missing the function
+    prints a friendly message and returns immediately.
+    """
+    try:
+        from PySide6.QtCore import QUrl                 # type: ignore[import-untyped]
+        from PySide6.QtWebEngineWidgets import QWebEngineView    # type: ignore[import-untyped]
+        from PySide6.QtWidgets import QApplication       # type: ignore[import-untyped]
+    except ImportError:
+        print(
+            "PySide6 is not installed.  Install it to use --app mode:\n"
+            "  pip install PySide6\n"
+            "Falling back to browser mode."
+        )
+        import webbrowser
+        webbrowser.open(url)
+        return
+
+    app = QApplication(["AIFM"])
+    view = QWebEngineView()
+    view.setWindowTitle("AIFM — AI File Manager")
+    view.resize(1280, 800)
+    view.load(QUrl(url))
+    view.show()
+    print("Desktop window opened.  Close the window to exit.")
+    app.exec()  # blocks until the user closes the window
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -105,6 +138,11 @@ def main() -> None:
         "--reload",
         action="store_true",
         help="Pass --reload to uvicorn (auto-restart on Python file changes)",
+    )
+    parser.add_argument(
+        "--app",
+        action="store_true",
+        help="Open the UI in a native desktop window instead of the browser",
     )
     parser.add_argument(
         "--no-browser",
@@ -131,15 +169,25 @@ def main() -> None:
     proc = start_uvicorn(reload=args.dev or args.reload)
 
     # Wait up to 20 s for the server to accept connections.
-    if wait_for_server(timeout=20):
-        target_url = DEV_URL if args.dev else API_URL
+    target_url = DEV_URL if args.dev else API_URL
+    server_ready = wait_for_server(timeout=20)
+
+    if server_ready:
         print(f"Server ready → {target_url}")
-        if not args.no_browser:
-            webbrowser.open(target_url)
     else:
-        print("WARNING: server did not respond within 20 s; opening browser anyway.")
-        if not args.no_browser:
-            webbrowser.open(API_URL if not args.dev else DEV_URL)
+        print("WARNING: server did not respond within 20 s; opening UI anyway.")
+
+    if not args.no_browser:
+        if args.app:
+            # Desktop window mode — open_app_window blocks until the user closes
+            # the window, then we shut down uvicorn cleanly.
+            open_app_window(target_url)
+            print("Window closed.  Shutting down…")
+            proc.terminate()
+            proc.wait()
+            return
+        else:
+            webbrowser.open(target_url)
 
     if args.dev:
         print(

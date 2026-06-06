@@ -126,13 +126,19 @@ async def agent_ws(websocket: WebSocket) -> None:
     # Build a per-connection streaming subclass.
     eq: SimpleQueue = SimpleQueue()
     StreamingAgent = type("StreamingAgent", (_StreamingMixin, FileManagerAgent), {})
-    agent = StreamingAgent(
-        config=state.config,
-        search_engine=state.search_engine,
-        analysis_store=state.analysis_store,
-        file_operations=state.file_operations,
-    )
-    agent._eq = eq
+
+    try:
+        agent = StreamingAgent(
+            config=state.config,
+            search_engine=state.search_engine,
+            analysis_store=state.analysis_store,
+            file_operations=state.file_operations,
+        )
+        agent._eq = eq
+    except Exception as exc:
+        await websocket.send_json({"type": "error", "message": str(exc)})
+        await websocket.close()
+        return
 
     try:
         while True:
