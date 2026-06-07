@@ -12,3 +12,6 @@ checkpoints
 test.py
 demo_filter.py
 node_modules
+aifm_projection
+app_file_index.sqlite3
+config.json
