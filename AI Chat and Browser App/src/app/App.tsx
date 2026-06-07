@@ -32,6 +32,7 @@ import { LLMSettingsDialog }   from './components/LLMSettingsDialog';
 import { DeleteConfirmDialog } from './components/DeleteConfirmDialog';
 import { NewAIFolderDialog }   from './components/NewAIFolderDialog';
 import { AppsGrid }            from './components/AppsGrid';
+import { AppFilesDialog }      from './components/AppFilesDialog';
 
 import {
   ContextMenu, ContextMenuTrigger, ContextMenuContent,
@@ -137,6 +138,8 @@ export default function App() {
   const [aiFolderOpen,     setAiFolderOpen]     = useState(false);
   const [aiFolderParent,   setAiFolderParent]   = useState('');
   const [llmSettingsOpen,  setLlmSettingsOpen]  = useState(false);
+  const [appFilesDialogOpen, setAppFilesDialogOpen] = useState(false);
+  const [appFilesDialogName, setAppFilesDialogName] = useState('');
   const [configVersion,    setConfigVersion]    = useState(0);
   const [view,             setView]             = useState<'files' | 'apps'>('files');
   const [previousView,     setPreviousView]     = useState<'files' | 'apps' | null>(null);
@@ -442,6 +445,13 @@ export default function App() {
     } finally { setOpLoading(false); }
   }, [navigateTo, showStatus]);
 
+  // ── App file index ────────────────────────────────────────────────────────
+
+  const handleViewAppFiles = useCallback((appName: string) => {
+    setAppFilesDialogName(appName);
+    setAppFilesDialogOpen(true);
+  }, []);
+
   // ── Context menu ──────────────────────────────────────────────────────────
 
   const handleTableContextMenu = useCallback((e: MouseEvent) => {
@@ -668,6 +678,7 @@ export default function App() {
                   body: JSON.stringify({ path: dir }),
                 }).catch(() => {});
               }}
+              onViewFiles={handleViewAppFiles}
             />
           </div>
         </div>
@@ -854,6 +865,7 @@ export default function App() {
       <DeleteConfirmDialog open={delConfirmOpen} paths={pathsToDelete} onConfirm={handleDeleteConfirmed} onCancel={() => setDelConfirmOpen(false)} />
       <NewAIFolderDialog open={aiFolderOpen} defaultParent={aiFolderParent} onConfirm={handleCreateAIFolder} onCancel={() => setAiFolderOpen(false)} />
       <LLMSettingsDialog open={llmSettingsOpen} onClose={() => { setLlmSettingsOpen(false); setConfigVersion(v => v + 1); }} onConfigChanged={() => setConfigVersion(v => v + 1)} />
+      <AppFilesDialog open={appFilesDialogOpen} appName={appFilesDialogName} onClose={() => setAppFilesDialogOpen(false)} />
     </div>
   );
 }

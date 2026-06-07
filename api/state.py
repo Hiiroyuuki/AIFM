@@ -10,6 +10,8 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from config_loader import Config
+from app_file_index import AppFileIndexStore
+from link_projection import LinkProjectionBuilder
 from mainFunctions import (
     AIFolderStore,
     EverythingSdkSearch,
@@ -35,6 +37,8 @@ class AppState:
         self.file_operations = FileOperationService()
         self.analysis_store = FolderAnalysisStore()
         self.ai_folder_store = AIFolderStore()
+        self.app_file_index = AppFileIndexStore()
+        self.link_projection = LinkProjectionBuilder()
         self.search_engine = EverythingSdkSearch()
         self._everything_started = False
         self.undo_stack: list[UndoEntry] = []

@@ -6,7 +6,7 @@
  * double-click launches the application.
  */
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Loader2, Package } from 'lucide-react';
+import { Loader2, Package, RefreshCw, Eye } from 'lucide-react';
 import { API_BASE } from '../../api/client';
 import {
   ContextMenu, ContextMenuTrigger, ContextMenuContent,
@@ -49,13 +49,14 @@ function AppIcon({ iconPath, name }: { iconPath: string | null; name: string }) 
 // ── App tile ──────────────────────────────────────────────────────────────────
 
 function AppTile({
-  app, onOpenInAIFM, onOpenInExplorer, onLaunch, onDelete,
+  app, onOpenInAIFM, onOpenInExplorer, onLaunch, onDelete, onViewFiles,
 }: {
   app: AppItem
   onOpenInAIFM: (app: AppItem) => void
   onOpenInExplorer: (app: AppItem) => void
   onLaunch: (app: AppItem) => void
   onDelete: (app: AppItem) => void
+  onViewFiles: (app: AppItem) => void
 }) {
   return (
     <ContextMenu>
@@ -89,6 +90,10 @@ function AppTile({
             Open in Explorer
           </ContextMenuItem>
         )}
+        <ContextMenuItem onClick={() => onViewFiles(app)}>
+          <Eye className="w-3.5 h-3.5 mr-1.5" />
+          View files
+        </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem onClick={() => onDelete(app)} className="text-red-600 focus:text-red-600">
           Delete from list
@@ -103,14 +108,17 @@ function AppTile({
 interface AppsGridProps {
   onOpenInAIFM: (installDir: string) => void;
   onOpenInExplorer: (installDir: string) => void;
+  onViewFiles: (appName: string) => void;
 }
 
-export function AppsGrid({ onOpenInAIFM, onOpenInExplorer }: AppsGridProps) {
+export function AppsGrid({ onOpenInAIFM, onOpenInExplorer, onViewFiles }: AppsGridProps) {
   const [apps,     setApps]     = useState<AppItem[]>([]);
   const [hidden,   setHidden]   = useState<Set<string>>(new Set());
   const [filter,   setFilter]   = useState('');
   const [loading,  setLoading]  = useState(true);
   const [error,    setError]    = useState('');
+  const [rebuilding, setRebuilding] = useState(false);
+  const [rebuildStats, setRebuildStats] = useState<{scanned: number; matched: number; apps_with_files: number} | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -148,6 +156,21 @@ export function AppsGrid({ onOpenInAIFM, onOpenInExplorer }: AppsGridProps) {
     setHidden(prev => new Set(prev).add(app.name));
   }, []);
 
+  const handleRebuild = useCallback(async () => {
+    setRebuilding(true);
+    setRebuildStats(null);
+    try {
+      const r = await fetch(`${API_BASE}/api/app-files/rebuild`, { method: 'POST' });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const stats = await r.json();
+      setRebuildStats(stats);
+    } catch (e) {
+      console.error('Rebuild failed:', e);
+    } finally {
+      setRebuilding(false);
+    }
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center gap-2 p-8 text-gray-400">
@@ -166,6 +189,23 @@ export function AppsGrid({ onOpenInAIFM, onOpenInExplorer }: AppsGridProps) {
       {/* Header + filter */}
       <div className="flex items-center gap-3 shrink-0">
         <h2 className="text-base font-semibold text-gray-900">Installed Applications</h2>
+        <button
+          onClick={handleRebuild}
+          disabled={rebuilding}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+        >
+          {rebuilding ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <RefreshCw className="w-3.5 h-3.5" />
+          )}
+          Rebuild index
+        </button>
+        {rebuildStats && (
+          <span className="text-xs text-green-600">
+            scanned {rebuildStats.scanned} / matched {rebuildStats.matched} / {rebuildStats.apps_with_files} apps
+          </span>
+        )}
         <span className="text-xs text-gray-400 ml-auto">
           {visible.length} / {apps.length}
         </span>
@@ -197,6 +237,7 @@ export function AppsGrid({ onOpenInAIFM, onOpenInExplorer }: AppsGridProps) {
               onOpenInAIFM={a => { if (a.install_location) onOpenInAIFM(a.install_location); }}
               onOpenInExplorer={a => { if (a.install_location) onOpenInExplorer(a.install_location); }}
               onDelete={handleDelete}
+              onViewFiles={a => onViewFiles(a.name)}
             />
           ))}
         </div>

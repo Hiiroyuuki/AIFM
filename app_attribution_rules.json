@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "app_name": "Qt",
+      "match": [
+        {"type": "root", "value": "D:/Qt"}
+      ],
+      "origin": "manual",
+      "note": "Qt SDK install root"
+    },
+    {
+      "app_name": "Cursor (User)",
+      "match": [
+        {"type": "root", "value": "C:/Users/15483/AppData/Local/Programs/cursor"},
+        {"type": "keyword", "value": "cursor"}
+      ],
+      "origin": "manual",
+      "note": "Cursor editor — root dir + keyword backup"
+    },
+    {
+      "app_name": "npm packages",
+      "match": [
+        {"type": "re", "value": "node_modules.*package\\.json$"}
+      ],
+      "origin": "manual",
+      "note": "Regex example: match package.json under any node_modules"
+    }
+  ]
+}
